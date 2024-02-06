@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "741858065565",
+    "project_id": "social-co2",
+    "storage_bucket": "social-co2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741858065565:android:4a92fbb0e0846d4f22a874",
+        "android_client_info": {
+          "package_name": "com.example.social_co2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1UAFvblz_8xylYI911ktu4aGV8qEz1MU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

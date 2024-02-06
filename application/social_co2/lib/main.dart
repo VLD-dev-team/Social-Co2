@@ -10,8 +10,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in_dartio/google_sign_in_dartio.dart';
 import 'firebase_options.dart';
 
-// Importation du screen de page d'accueil
+// Importation du screen de page d'accueil et de l'écran de connexion/création de compte
 import 'screens/homeScreen.dart';
+import 'package:social_co2/screens/authScreen.dart';
 
 // Déclaration des variables Firebase
 late final FirebaseApp firebaseApp;
@@ -24,7 +25,7 @@ Future<void> main() async {
     // Initialisation de firebase avec le fichier de configuration généré par la CLI flutterfire
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+
   firebaseAuth = FirebaseAuth.instanceFor(app: firebaseApp);
   FirebaseAuth.instance.authStateChanges().listen((User? user) {
     if (user == null) {
@@ -58,7 +59,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: appName),
+      home: StreamBuilder<User?>(
+        stream: firebaseAuth.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return const HomeScreen();
+          }
+          return const AuthScreen();
+        },
+      ),
     );
   }
 }
+
+
+//const HomeScreen(title: appName)

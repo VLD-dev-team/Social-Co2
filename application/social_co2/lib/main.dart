@@ -24,7 +24,9 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // Instanciation de firebase Auth (gestionnaire de compte utilisateurs)
   firebaseAuth = FirebaseAuth.instanceFor(app: firebaseApp);
+  // TODO : à voir si c'est utile à l'avenir étant donné qu'on a un stream en dessous
   FirebaseAuth.instance.authStateChanges().listen((User? user) {
     if (user == null) {
       print('User is currently signed out!');
@@ -33,7 +35,10 @@ Future<void> main() async {
     }
   });
 
+  // Vérification du type de client
+  // Google Signin étant initialisé automatiquement uniquement sur les pages web
   if (!kIsWeb) {
+    // On initialise Google Signin manuellement sur les clients autre que Web
     await GoogleSignInDart.register(
       clientId:
           '741858065565-c6flb27i9du2l9qp31hj025l9scomiqp.apps.googleusercontent.com',
@@ -61,7 +66,7 @@ class MyApp extends StatelessWidget {
         // Initilisation du streamBuilder pour surveiller si l'utilisateur est connecté ou non
         stream: firebaseAuth.authStateChanges(),
         builder: (context, snapshot) {
-          // On construit l'écran d'accueil ou l'écran d'authentification en fonction du statut de connexion
+          // Construction de l'écran d'accueil ou l'écran d'authentification en fonction du statut de connexion
           if (snapshot.hasData) {
             return const HomeScreen();
           }

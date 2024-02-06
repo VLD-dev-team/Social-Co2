@@ -1,6 +1,4 @@
 // Importation des packages requis pour flutter
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -60,8 +58,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: StreamBuilder<User?>(
+        // Initilisation du streamBuilder pour surveiller si l'utilisateur est connecté ou non
         stream: firebaseAuth.authStateChanges(),
         builder: (context, snapshot) {
+          // On construit l'écran d'accueil ou l'écran d'authentification en fonction du statut de connexion
           if (snapshot.hasData) {
             return const HomeScreen();
           }
@@ -71,6 +71,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-//const HomeScreen(title: appName)

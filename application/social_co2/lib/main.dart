@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: appName,
       theme: ThemeData(
+        useMaterial3: true,
         primarySwatch: Colors.blue,
       ),
       home: StreamBuilder<User?>(

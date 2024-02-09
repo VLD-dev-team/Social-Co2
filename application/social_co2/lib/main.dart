@@ -35,16 +35,6 @@ Future<void> main() async {
     }
   });
 
-  // Vérification du type de client
-  // Google Signin étant initialisé automatiquement uniquement sur les pages web
-  /* if (!kIsWeb) {
-    // On initialise Google Signin manuellement sur les clients autre que Web
-    await GoogleSignInDart.register(
-      clientId:
-          '741858065565-c6flb27i9du2l9qp31hj025l9scomiqp.apps.googleusercontent.com',
-    );
-  } */
-
   runApp(const MyApp()); // Lancement de l'application avec la class MyApp
 }
 

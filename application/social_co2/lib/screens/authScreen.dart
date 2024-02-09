@@ -234,7 +234,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ],
                         ),
                       TextFormField(
-                        // Champ de texte pour l'emai
+                        // Champ de texte pour l'email
                         controller: emailInputController,
                         decoration: const InputDecoration(
                           hintText: '*Adresse email',
@@ -274,23 +274,26 @@ class _AuthScreenState extends State<AuthScreen> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      if (currentAuthType == AuthTypes.signin)
+                      if (currentAuthType ==
+                          AuthTypes
+                              .signin) // Implémentation du bouton de création de compte / connexion
                         Column(
                           children: [
                             FilledButton(
                                 onPressed: () {
                                   if (formKey.currentState!.validate()) {
+                                    // On valide le formulaire, si il est valide, on lance la connexion
                                     signin();
                                   }
                                 },
-                                child: const Text(
-                                    'Connexion')), // TODO : boutons de connexion par encore clairs ni fini, à implementer
+                                child: const Text('Connexion')),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const Text("Pas encore de compte ?"),
                                 TextButton(
-                                    onPressed: changeAuthType,
+                                    onPressed:
+                                        changeAuthType, // Changement de type de connexion
                                     child: const Text("Créer mon compte")),
                               ],
                             )
@@ -302,6 +305,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             FilledButton(
                                 onPressed: () {
                                   if (formKey.currentState!.validate()) {
+                                    // On valide le formulaire, si il est valide, on lance la connexion
                                     signup();
                                   }
                                 },
@@ -311,7 +315,8 @@ class _AuthScreenState extends State<AuthScreen> {
                               children: [
                                 const Text("Vous possédez déjà un compte ?"),
                                 TextButton(
-                                    onPressed: changeAuthType,
+                                    onPressed:
+                                        changeAuthType, // Changement de type de connexion
                                     child: const Text("Se connecter")),
                               ],
                             )

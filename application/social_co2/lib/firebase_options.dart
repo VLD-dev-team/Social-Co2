@@ -67,6 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '741858065565',
     projectId: 'social-co2',
     storageBucket: 'social-co2.appspot.com',
+    androidClientId: '741858065565-17f32upi8c40crbi1bg68e5v7au24sbo.apps.googleusercontent.com',
+    iosClientId: '741858065565-nr3mk7l8t7asrmh06ljf6iuoe3aj0r67.apps.googleusercontent.com',
     iosBundleId: 'com.example.socialCo2',
   );
 
@@ -76,6 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '741858065565',
     projectId: 'social-co2',
     storageBucket: 'social-co2.appspot.com',
+    androidClientId: '741858065565-17f32upi8c40crbi1bg68e5v7au24sbo.apps.googleusercontent.com',
+    iosClientId: '741858065565-nr3mk7l8t7asrmh06ljf6iuoe3aj0r67.apps.googleusercontent.com',
     iosBundleId: 'com.example.socialCo2',
   );
 }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 // Importation des préférences firebase pour l'authentification ainsi que des packages firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in_dartio/google_sign_in_dartio.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'firebase_options.dart';
 
 // Importation du screen de page d'accueil et de l'écran de connexion/création de compte
@@ -37,13 +37,13 @@ Future<void> main() async {
 
   // Vérification du type de client
   // Google Signin étant initialisé automatiquement uniquement sur les pages web
-  if (!kIsWeb) {
+  /* if (!kIsWeb) {
     // On initialise Google Signin manuellement sur les clients autre que Web
     await GoogleSignInDart.register(
       clientId:
           '741858065565-c6flb27i9du2l9qp31hj025l9scomiqp.apps.googleusercontent.com',
     );
-  }
+  } */
 
   runApp(const MyApp()); // Lancement de l'application avec la class MyApp
 }

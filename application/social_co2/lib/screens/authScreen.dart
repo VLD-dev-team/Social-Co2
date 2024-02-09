@@ -15,7 +15,7 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   // Définition des variables globales et des controlleurs pour le form
-  AuthTypes auth_type = AuthTypes.signin;
+  AuthTypes currentAuthType = AuthTypes.signin;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController nameInputController = TextEditingController();
   TextEditingController emailInputController = TextEditingController();
@@ -32,10 +32,10 @@ class _AuthScreenState extends State<AuthScreen> {
   // Définition de la fonction qui change le type d'authentification
   void changeAuthType() {
     setState(() {
-      if (auth_type == AuthTypes.signin) {
-        auth_type = AuthTypes.signup;
+      if (currentAuthType == AuthTypes.signin) {
+        currentAuthType = AuthTypes.signup;
       } else {
-        auth_type = AuthTypes.signin;
+        currentAuthType = AuthTypes.signin;
       }
     });
   }
@@ -118,11 +118,14 @@ class _AuthScreenState extends State<AuthScreen> {
       // Obtention des droits d'accès à l'email et le profil du compte google
       googleProvider.addScope('profile').addScope('email');
 
+      print(googleProvider);
+
       // Tentative de connexion avec les credentials
       return await FirebaseAuth.instance.signInWithPopup(googleProvider);
     } else {
       // Si l'application est sur Android ou Ios
       // Démarrage de l'authentification google
+
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
       // Obtention des détails de l'utilisateurs
@@ -185,7 +188,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           leading: const Icon(Icons.close),
                         ),
                       Text(
-                        (auth_type ==
+                        (currentAuthType ==
                                 AuthTypes
                                     .signin) // Réglage du titre au dessus des champs pour informer du type d'authentification
                             ? "Se connecter"
@@ -204,7 +207,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      if (auth_type ==
+                      if (currentAuthType ==
                           AuthTypes
                               .signup) // En cas de création de compte, affichage du champ de texte pour définir le nom public du nouvel utilisateur
                         Column(
@@ -256,7 +259,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           hintText: '*Mot de passe',
                           border: OutlineInputBorder(),
                         ),
-                        autofillHints: (auth_type ==
+                        autofillHints: (currentAuthType ==
                                 AuthTypes
                                     .signin) // Informations nécessaires pour les éventuels services d'autocomplétion
                             ? const [AutofillHints.password]
@@ -271,7 +274,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      if (auth_type == AuthTypes.signin)
+                      if (currentAuthType == AuthTypes.signin)
                         Column(
                           children: [
                             FilledButton(
@@ -293,7 +296,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             )
                           ],
                         ),
-                      if (auth_type == AuthTypes.signup)
+                      if (currentAuthType == AuthTypes.signup)
                         Column(
                           children: [
                             FilledButton(

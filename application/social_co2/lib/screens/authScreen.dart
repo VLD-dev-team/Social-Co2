@@ -21,6 +21,7 @@ class _AuthScreenState extends State<AuthScreen> {
   TextEditingController emailInputController = TextEditingController();
   TextEditingController pswInputController = TextEditingController();
   String error = "";
+  bool isLoading = false;
 
   // Définition du toast d'affichage des erreurs
   void displayError(String errorMessage) {
@@ -41,19 +42,9 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void loading(visibility) {
-    if (visibility) {
-      showModalBottomSheet(
-          isDismissible: false,
-          context: context,
-          builder: (BuildContext context) {
-            return const SizedBox(
-              height: 300,
-              child: Center(child: CircularProgressIndicator()),
-            );
-          });
-    } else {
-      Navigator.pop(context);
-    }
+    setState(() {
+      isLoading = visibility;
+    });
   }
 
   // Fonction de connexion avec Email et mot de passe
@@ -105,6 +96,8 @@ class _AuthScreenState extends State<AuthScreen> {
       loading(false);
       displayError(e.toString());
     }
+
+    loading(false);
   }
 
   // Fonction de création de compte/connexion avec Google
@@ -152,181 +145,206 @@ class _AuthScreenState extends State<AuthScreen> {
       },
       child: Scaffold(
         appBar: AppBar(title: const Text('SCO2'), centerTitle: true),
-        body: Center(
-          child: SingleChildScrollView(
-              // Implémentation du scroll sur l'écran
-              child: SafeArea(
-                  // Ajout d'une SafeArea pour contenir le formulaire de connexion/creation de compte
-                  child: Form(
-            key: formKey,
-            autovalidateMode: AutovalidateMode
-                .onUserInteraction, // Automatisation de la validation du formulaire quand l'utilisateur entre des données
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 400),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (error != "")
-                        ListTile(
-                          onTap: () {
-                            setState(() {
-                              error = "";
-                            });
-                          },
-                          tileColor: Colors.red,
-                          iconColor: Colors.white,
-                          title: const Text(
-                            "Échec de l'authentification",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          subtitle: Text(
-                            error,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          leading: const Icon(Icons.close),
-                        ),
-                      Text(
-                        (currentAuthType ==
-                                AuthTypes
-                                    .signin) // Réglage du titre au dessus des champs pour informer du type d'authentification
-                            ? "Se connecter"
-                            : "Créer un compte",
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      OutlinedButton.icon(
-                          onPressed: () {
-                            signInWithGoogle();
-                          },
-                          icon: Icon(Icons.web),
-                          label: Text('Connexion avec Google')),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      if (currentAuthType ==
-                          AuthTypes
-                              .signup) // En cas de création de compte, affichage du champ de texte pour définir le nom public du nouvel utilisateur
-                        Column(
-                          children: [
-                            TextFormField(
-                              controller: nameInputController,
-                              decoration: const InputDecoration(
-                                hintText: '*Nom public',
-                                border: OutlineInputBorder(),
-                              ),
-                              autofillHints: const [
-                                AutofillHints.newUsername
-                              ], // Information nécessaire pour les éventuels services d'autocomplétion
-                              keyboardType: TextInputType.text,
-                              validator:
-                                  (value) => // TODO : Améliorer la validation de ce champ
-                                      value != null && value.isNotEmpty
-                                          ? null
-                                          : 'Nom requis',
-                            ),
-                            const SizedBox(
-                              height: 20.0,
-                            ),
-                          ],
-                        ),
-                      TextFormField(
-                        // Champ de texte pour l'email
-                        controller: emailInputController,
-                        decoration: const InputDecoration(
-                          hintText: '*Adresse email',
-                          border: OutlineInputBorder(),
-                        ),
-                        autofillHints: const [AutofillHints.email],
-                        keyboardType: TextInputType.emailAddress,
-                        validator:
-                            (value) => // TODO : Améliorer la validation de ce champ (rajouter une verif d'un @ par exemple)
-                                value != null && value.isNotEmpty
-                                    ? null
-                                    : 'Email requis',
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      TextFormField(
-                        controller: pswInputController,
-                        obscureText:
-                            true, // On cache le mot de passe des regards indiscrets
-                        decoration: const InputDecoration(
-                          hintText: '*Mot de passe',
-                          border: OutlineInputBorder(),
-                        ),
-                        autofillHints: (currentAuthType ==
-                                AuthTypes
-                                    .signin) // Informations nécessaires pour les éventuels services d'autocomplétion
-                            ? const [AutofillHints.password]
-                            : const [AutofillHints.newPassword],
-                        keyboardType: TextInputType.text,
-                        validator: (value) => value != null &&
-                                value
-                                    .isNotEmpty // TODO : améliorer la validation de ce champ
-                            ? null
-                            : 'Mot de passe requis',
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      if (currentAuthType ==
-                          AuthTypes
-                              .signin) // Implémentation du bouton de création de compte / connexion
-                        Column(
-                          children: [
-                            FilledButton(
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    // On valide le formulaire, si il est valide, on lance la connexion
-                                    signin();
-                                  }
-                                },
-                                child: const Text('Connexion')),
-                            Row(
+        body:
+            !isLoading // Affichage le form si aucune action d'authentication est en cours
+                ? Center(
+                    child: SingleChildScrollView(
+                        // Implémentation du scroll sur l'écran
+                        child: SafeArea(
+                            // Ajout d'une SafeArea pour contenir le formulaire de connexion/creation de compte
+                            child: Form(
+                      key: formKey,
+                      autovalidateMode: AutovalidateMode
+                          .onUserInteraction, // Automatisation de la validation du formulaire quand l'utilisateur entre des données
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 400),
+                          child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text("Pas encore de compte ?"),
-                                TextButton(
-                                    onPressed:
-                                        changeAuthType, // Changement de type de connexion
-                                    child: const Text("Créer mon compte")),
-                              ],
-                            )
-                          ],
+                                if (error != "")
+                                  ListTile(
+                                    onTap: () {
+                                      setState(() {
+                                        error = "";
+                                      });
+                                    },
+                                    tileColor: Colors.red,
+                                    iconColor: Colors.white,
+                                    title: const Text(
+                                      "Échec de l'authentification",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    subtitle: Text(
+                                      error,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                    leading: const Icon(Icons.close),
+                                  ),
+                                Text(
+                                  (currentAuthType ==
+                                          AuthTypes
+                                              .signin) // Réglage du titre au dessus des champs pour informer du type d'authentification
+                                      ? "Se connecter"
+                                      : "Créer un compte",
+                                  style: const TextStyle(fontSize: 20),
+                                ),
+                                const SizedBox(
+                                  height: 20.0,
+                                ),
+                                OutlinedButton.icon(
+                                    onPressed: () {
+                                      signInWithGoogle();
+                                    },
+                                    icon: Icon(Icons.web),
+                                    label: Text('Connexion avec Google')),
+                                const SizedBox(
+                                  height: 20.0,
+                                ),
+                                if (currentAuthType ==
+                                    AuthTypes
+                                        .signup) // En cas de création de compte, affichage du champ de texte pour définir le nom public du nouvel utilisateur
+                                  Column(
+                                    children: [
+                                      TextFormField(
+                                        controller: nameInputController,
+                                        decoration: const InputDecoration(
+                                          hintText: '*Nom public',
+                                          border: OutlineInputBorder(),
+                                        ),
+                                        autofillHints: const [
+                                          AutofillHints.newUsername
+                                        ], // Information nécessaire pour les éventuels services d'autocomplétion
+                                        keyboardType: TextInputType.text,
+                                        validator:
+                                            (value) => // TODO : Améliorer la validation de ce champ
+                                                value != null &&
+                                                        value.isNotEmpty
+                                                    ? null
+                                                    : 'Nom requis',
+                                      ),
+                                      const SizedBox(
+                                        height: 20.0,
+                                      ),
+                                    ],
+                                  ),
+                                TextFormField(
+                                  // Champ de texte pour l'email
+                                  controller: emailInputController,
+                                  decoration: const InputDecoration(
+                                    hintText: '*Adresse email',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  autofillHints: const [AutofillHints.email],
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator:
+                                      (value) => // TODO : Améliorer la validation de ce champ (rajouter une verif d'un @ par exemple)
+                                          value != null && value.isNotEmpty
+                                              ? null
+                                              : 'Email requis',
+                                ),
+                                const SizedBox(
+                                  height: 20.0,
+                                ),
+                                TextFormField(
+                                  controller: pswInputController,
+                                  obscureText:
+                                      true, // On cache le mot de passe des regards indiscrets
+                                  decoration: const InputDecoration(
+                                    hintText: '*Mot de passe',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  autofillHints: (currentAuthType ==
+                                          AuthTypes
+                                              .signin) // Informations nécessaires pour les éventuels services d'autocomplétion
+                                      ? const [AutofillHints.password]
+                                      : const [AutofillHints.newPassword],
+                                  keyboardType: TextInputType.text,
+                                  validator: (value) => value != null &&
+                                          value
+                                              .isNotEmpty // TODO : améliorer la validation de ce champ
+                                      ? null
+                                      : 'Mot de passe requis',
+                                ),
+                                const SizedBox(
+                                  height: 20.0,
+                                ),
+                                if (currentAuthType ==
+                                    AuthTypes
+                                        .signin) // Implémentation du bouton de création de compte / connexion
+                                  Column(
+                                    children: [
+                                      FilledButton(
+                                          onPressed: () {
+                                            if (formKey.currentState!
+                                                .validate()) {
+                                              // On valide le formulaire, si il est valide, on lance la connexion
+                                              signin();
+                                            }
+                                          },
+                                          child: const Text('Connexion')),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text("Pas encore de compte ?"),
+                                          TextButton(
+                                              onPressed:
+                                                  changeAuthType, // Changement de type de connexion
+                                              child: const Text(
+                                                  "Créer mon compte")),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                if (currentAuthType == AuthTypes.signup)
+                                  Column(
+                                    children: [
+                                      FilledButton(
+                                          onPressed: () {
+                                            if (formKey.currentState!
+                                                .validate()) {
+                                              // On valide le formulaire, si il est valide, on lance la connexion
+                                              signup();
+                                            }
+                                          },
+                                          child: const Text('Créer un compte')),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                              "Vous possédez déjà un compte ?"),
+                                          TextButton(
+                                              onPressed:
+                                                  changeAuthType, // Changement de type de connexion
+                                              child:
+                                                  const Text("Se connecter")),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                              ]),
                         ),
-                      if (currentAuthType == AuthTypes.signup)
-                        Column(
-                          children: [
-                            FilledButton(
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    // On valide le formulaire, si il est valide, on lance la connexion
-                                    signup();
-                                  }
-                                },
-                                child: const Text('Créer un compte')),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text("Vous possédez déjà un compte ?"),
-                                TextButton(
-                                    onPressed:
-                                        changeAuthType, // Changement de type de connexion
-                                    child: const Text("Se connecter")),
-                              ],
-                            )
-                          ],
-                        ),
-                    ]),
-              ),
-            ),
-          ))),
-        ),
+                      ),
+                    ))),
+                  )
+                :
+                // Affichage de l'écran de chargement
+                Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const CircularProgressIndicator(),
+                        (currentAuthType == AuthTypes.signin)
+                            ? const Text("Connexion en cours")
+                            : const Text("Création de votre compte")
+                      ],
+                    ),
+                  ),
       ),
     );
   }

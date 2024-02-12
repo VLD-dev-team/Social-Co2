@@ -43,7 +43,45 @@ class _WebAdaptativeHomeScreenState extends State<WebAdaptativeHomeScreen> {
     return Scaffold(
         body: Row(
       children: [
-        //navBar(),
+        NavigationRail(
+          backgroundColor: Colors.green,
+          extended: true,
+          minExtendedWidth: 200,
+          minWidth: 80,
+          destinations: const [
+            NavigationRailDestination(
+              label: Text("Accueil"),
+              icon: Icon(Icons.home_outlined),
+            ),
+            NavigationRailDestination(
+              label: Text("Recherche"),
+              icon: Icon(Icons.search_outlined),
+            ),
+            NavigationRailDestination(
+              label: Text("Activité"),
+              icon: Icon(Icons.energy_savings_leaf_outlined),
+            ),
+            NavigationRailDestination(
+              label: Text("Messages"),
+              icon: Icon(Icons.message_outlined),
+            ),
+            NavigationRailDestination(
+              label: Text("Classement"),
+              icon: Icon(Icons.leaderboard_outlined),
+            ),
+            NavigationRailDestination(
+              label: Text("Paramètres"),
+              icon: Icon(Icons.settings_outlined),
+            ),
+          ],
+          selectedIndex: selectedIndex,
+          useIndicator: false,
+          onDestinationSelected: (int index) {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
+        )
       ],
     ));
   }

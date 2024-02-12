@@ -19,18 +19,22 @@ class _MobileAdaptativeHomeScreenState
     return Scaffold(
         body: const Text("Mobile Natif"),
         bottomNavigationBar: BottomNavigationBar(
+          showUnselectedLabels: true,
+          selectedItemColor: Colors.red,
+          unselectedItemColor: Colors.black,
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home_outlined), label: "Accueil"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.leaderboard_outlined), label: "Classement"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.add_box_outlined), label: "Ajouter"),
+                icon: Icon(Icons.energy_savings_leaf), label: "Activités"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.message_outlined), label: "Messages"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle_outlined), label: "Profil")
           ],
+          currentIndex: selectedIndex,
           onTap: (index) {
             setState(() {
               selectedIndex = index;

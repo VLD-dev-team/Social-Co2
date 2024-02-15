@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:social_co2/screens/homeScreen/styles/webDrawersStyle.dart';
 
 class WebAdaptativeHomeScreen extends StatefulWidget {
   const WebAdaptativeHomeScreen({super.key});
@@ -53,19 +54,22 @@ class _WebAdaptativeHomeScreenState extends State<WebAdaptativeHomeScreen> {
     return Scaffold(
         body: Row(
       children: [
-        SizedBox(
-          width: 200,
-          child: ListView.builder(
-              itemCount: drawerEntries.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  onTap: () {
-                    changeIndex(index);
-                  },
-                  title: Text(drawerEntries[index][0]),
-                  leading: Icon(drawerEntries[index][1]),
-                );
-              }),
+        Container(
+          decoration: const BoxDecoration(gradient: drawerBackground),
+          child: SizedBox(
+            width: 300,
+            child: ListView.builder(
+                itemCount: drawerEntries.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    onTap: () {
+                      changeIndex(index);
+                    },
+                    title: Text(drawerEntries[index][0]),
+                    leading: Icon(drawerEntries[index][1]),
+                  );
+                }),
+          ),
         )
       ],
     ));

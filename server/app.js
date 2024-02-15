@@ -19,8 +19,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // importer les routes depuis le fichier routes/index.js
-const routes = require('./routes/index.js');
-app.use('/', routes)
+const apiroutes = require('./routes/index.js');
+app.use('/api', apiroutes)
 
 // lancement du serveur
 app.listen(3000, () => {

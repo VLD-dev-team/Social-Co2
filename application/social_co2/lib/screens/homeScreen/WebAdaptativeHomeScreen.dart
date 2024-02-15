@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class WebAdaptativeHomeScreen extends StatefulWidget {
@@ -32,6 +33,15 @@ class _WebAdaptativeHomeScreenState extends State<WebAdaptativeHomeScreen> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
+    final List<List> drawerEntries = <List>[
+      ["Accueil", Icons.home_outlined],
+      ["Recherche", Icons.search_outlined],
+      ["Activité", Icons.energy_savings_leaf_outlined],
+      ["Rapport", Icons.feedback_outlined],
+      ["Messages", Icons.message_outlined],
+      ["Paramètres", Icons.settings_outlined],
+      ["Aide", Icons.help_outline],
+    ];
     int selectedIndex = 0;
 
     void changeIndex(index) {
@@ -43,44 +53,19 @@ class _WebAdaptativeHomeScreenState extends State<WebAdaptativeHomeScreen> {
     return Scaffold(
         body: Row(
       children: [
-        NavigationRail(
-          backgroundColor: Colors.green,
-          extended: true,
-          minExtendedWidth: 200,
-          minWidth: 80,
-          destinations: const [
-            NavigationRailDestination(
-              label: Text("Accueil"),
-              icon: Icon(Icons.home_outlined),
-            ),
-            NavigationRailDestination(
-              label: Text("Recherche"),
-              icon: Icon(Icons.search_outlined),
-            ),
-            NavigationRailDestination(
-              label: Text("Activité"),
-              icon: Icon(Icons.energy_savings_leaf_outlined),
-            ),
-            NavigationRailDestination(
-              label: Text("Messages"),
-              icon: Icon(Icons.message_outlined),
-            ),
-            NavigationRailDestination(
-              label: Text("Classement"),
-              icon: Icon(Icons.leaderboard_outlined),
-            ),
-            NavigationRailDestination(
-              label: Text("Paramètres"),
-              icon: Icon(Icons.settings_outlined),
-            ),
-          ],
-          selectedIndex: selectedIndex,
-          useIndicator: false,
-          onDestinationSelected: (int index) {
-            setState(() {
-              selectedIndex = index;
-            });
-          },
+        SizedBox(
+          width: 200,
+          child: ListView.builder(
+              itemCount: drawerEntries.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  onTap: () {
+                    changeIndex(index);
+                  },
+                  title: Text(drawerEntries[index][0]),
+                  leading: Icon(drawerEntries[index][1]),
+                );
+              }),
         )
       ],
     ));

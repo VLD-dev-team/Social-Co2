@@ -50,8 +50,8 @@ class Sco2 extends StatelessWidget {
     return MaterialApp(
       title: appName,
       theme: ThemeData(
-        useMaterial3: true,
-        primarySwatch: Colors.red,
+        //useMaterial3: true,
+        primarySwatch: Colors.green,
       ),
       home: StreamBuilder<User?>(
         // Initilisation du streamBuilder pour surveiller si l'utilisateur est connecté ou non

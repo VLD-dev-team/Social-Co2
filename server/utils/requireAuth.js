@@ -12,6 +12,17 @@ const verifyAuthToken = (req, res, next) => {
   // On vérifie le token avec firebase-admin
   admin.auth().verifyIdToken(authToken)
     .then(decodedToken => {
+      const userIDFromToken = decodedToken.uid;
+
+      // Récupérer le userID depuis le header
+      const userIDFromHeader = req.headers.userid;
+
+      // Comparer les userID
+      if (userIDFromToken !== userIDFromHeader) {
+        return res.status(401).json({ error: 'Token invalide pour cet utilisateur' });
+      }
+
+      // Si les userID correspondent, ajoutez l'utilisateur à la demande
       req.user = decodedToken;
       next();
     })
@@ -21,5 +32,5 @@ const verifyAuthToken = (req, res, next) => {
     });
 };
 
-// On export le token pour l'utiliser en middleware
-module.exports = verifyAuthToken
+// On exporte le middleware pour l'utiliser
+module.exports = verifyAuthToken;

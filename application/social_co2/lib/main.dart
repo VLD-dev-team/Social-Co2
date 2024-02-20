@@ -2,10 +2,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+// Importation des polices d'écriture
+import 'package:google_fonts/google_fonts.dart';
+
 // Importation des préférences firebase pour l'authentification ainsi que des packages firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'firebase_options.dart';
+import 'package:social_co2/firebase_options.dart';
 
 // Importation du screen de page d'accueil et de l'écran de connexion/création de compte
 import 'package:social_co2/screens/authScreen.dart';
@@ -52,6 +55,7 @@ class Sco2 extends StatelessWidget {
       theme: ThemeData(
         //useMaterial3: true,
         primarySwatch: Colors.green,
+        textTheme: GoogleFonts.readexProTextTheme(),
       ),
       home: StreamBuilder<User?>(
         // Initilisation du streamBuilder pour surveiller si l'utilisateur est connecté ou non

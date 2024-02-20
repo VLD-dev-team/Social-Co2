@@ -46,6 +46,7 @@ class _WebAdaptativeHomeScreenState extends State<WebAdaptativeHomeScreen> {
     int selectedIndex = 0;
 
     void changeIndex(index) {
+      print(index);
       setState(() {
         selectedIndex = index;
       });
@@ -59,14 +60,36 @@ class _WebAdaptativeHomeScreenState extends State<WebAdaptativeHomeScreen> {
           child: SizedBox(
             width: 300,
             child: ListView.builder(
+                padding: const EdgeInsets.only(right: 20),
                 itemCount: drawerEntries.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    onTap: () {
-                      changeIndex(index);
-                    },
-                    title: Text(drawerEntries[index][0]),
-                    leading: Icon(drawerEntries[index][1]),
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.horizontal(
+                          right: Radius.circular(25), left: Radius.zero),
+                      boxShadow: [
+                        BoxShadow(color: Color.fromARGB(99, 66, 66, 66)),
+                        BoxShadow(
+                          color: Colors.white,
+                          offset: Offset(0, 2),
+                          blurRadius: 1,
+                          spreadRadius: -1,
+                        )
+                      ],
+                    ),
+                    child: ListTile(
+                      onTap: () {
+                        changeIndex(index);
+                      },
+                      title: Text(
+                        drawerEntries[index][0],
+                        style: const TextStyle(fontWeight: FontWeight.normal),
+                      ),
+                      leading: Icon(drawerEntries[index][1]),
+                      iconColor: Colors.black,
+                      textColor: Colors.black,
+                    ),
                   );
                 }),
           ),

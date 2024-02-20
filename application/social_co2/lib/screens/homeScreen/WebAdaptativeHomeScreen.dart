@@ -34,7 +34,10 @@ class _WebAdaptativeHomeScreenState extends State<WebAdaptativeHomeScreen> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
+
+    // Liste des options possible dans le menu latéral
     final List<List> drawerEntries = <List>[
+      ["Logo", Icons.home_outlined], // logo de l'application dans le menu
       ["Accueil", Icons.home_outlined],
       ["Recherche", Icons.search_outlined],
       ["Activité", Icons.energy_savings_leaf_outlined],
@@ -43,10 +46,14 @@ class _WebAdaptativeHomeScreenState extends State<WebAdaptativeHomeScreen> {
       ["Paramètres", Icons.settings_outlined],
       ["Aide", Icons.help_outline],
     ];
+    // variable d'index de l'écran d'accueil
     int selectedIndex = 0;
 
+    // Fonction de changement d'écran général
     void changeIndex(index) {
-      print(index);
+      if (index == 0) {
+        index = 1;
+      }
       setState(() {
         selectedIndex = index;
       });
@@ -63,34 +70,35 @@ class _WebAdaptativeHomeScreenState extends State<WebAdaptativeHomeScreen> {
                 padding: const EdgeInsets.only(right: 20),
                 itemCount: drawerEntries.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.horizontal(
-                          right: Radius.circular(25), left: Radius.zero),
-                      boxShadow: [
-                        BoxShadow(color: Color.fromARGB(99, 66, 66, 66)),
-                        BoxShadow(
-                          color: Colors.white,
-                          offset: Offset(0, 2),
-                          blurRadius: 1,
-                          spreadRadius: -1,
-                        )
-                      ],
-                    ),
-                    child: ListTile(
-                      onTap: () {
-                        changeIndex(index);
-                      },
-                      title: Text(
-                        drawerEntries[index][0],
-                        style: const TextStyle(fontWeight: FontWeight.normal),
+                  if (index == 0) {
+                    // Si l'index est égal à 0, alors on affiche le logo de l'application
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 15),
+                      child: const Text(
+                        "SCO2",
+                        style: TextStyle(fontSize: 70),
                       ),
-                      leading: Icon(drawerEntries[index][1]),
-                      iconColor: Colors.black,
-                      textColor: Colors.black,
-                    ),
-                  );
+                    );
+                  } else {
+                    return Container(
+                      // Puis on affiche les autres options du menu
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      decoration: drawerTileShadow,
+                      child: ListTile(
+                        onTap: () {
+                          changeIndex(index);
+                        },
+                        title: Text(
+                          drawerEntries[index][0],
+                          style: const TextStyle(fontWeight: FontWeight.normal),
+                        ),
+                        leading: Icon(drawerEntries[index][1]),
+                        iconColor: Colors.black,
+                        textColor: Colors.black,
+                      ),
+                    );
+                  }
                 }),
           ),
         )

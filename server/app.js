@@ -6,39 +6,35 @@ const express = require('express');
 // Le module bodyParser
 const bodyParser = require('body-parser');
 
-// Le module path
-const path = require('path');
-
 // initialisation de la variable environnement
 require('dotenv').config()
 
 // initialisation d'express
 const app = express();
 
-const admin = require('firebase-admin');
-
-const serviceAccount = require('./utils/google-services.json');
-
-// Initialisation de la configuration dans firebase
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-};
-
-// Création ud crédential firebase
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+// initialisation de firebase admin
+var firebaseAdmin = require("firebase-admin");
+var serviceAccount = require("./server/credentials/firebaseAdminCredentials.json");
+firebaseAdmin.initializeApp({
+  credential: firebaseAdmin.credential.cert(serviceAccount)
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const apiroutes = require('./routes/index.js');
-app.use('/api', apiroutes)
+app.use('/api', apiroutes);
+
+/* const loadFirebaseDatabaseEvents = (client, dir = "./events/firebase") => { // chargement des event firebase depuis ./events/firebase
+  const functions = readdirSync(`${dir}`).filter(files => files.endsWith(".js"));
+  for (const firebasefonction of functions) {
+    console.log(`[Lists Loader] ${firebasefonction} chargé`);
+    const { load } = require(`../${dir}/${firebasefonction}`);
+    load(client, client.FirebaseDatabaseAdminClient)
+  };
+  return console.log(`[loader] Event firebase chargés`);
+}
+*/
 
 // lancement du serveur
 app.listen(3000, () => {

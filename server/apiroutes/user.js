@@ -6,7 +6,7 @@ const admin = require('firebase-admin');
 
 router.route('/*')
     .all((req, res, next) => verifyAuthToken(req, res, next));
-    
+
 router.route('/')
     .get(async (req, res) => {
         try {
@@ -16,7 +16,7 @@ router.route('/')
                 return res.status(400).send('Invalid user ID');
             }
 
-            // Récupérer les informations d'authentification de l'utilisateur
+            // Récupérétation des informations d'authentification de l'utilisateur
             const authUser = await admin.auth().getUser(userID);
 
             // On récupère le score depuis la base de données SQL
@@ -24,12 +24,14 @@ router.route('/')
             const sqlResult = await executeQuery(sqlQuery, [userID]);
 
             if (sqlResult.length > 0) {
-                // Créer un objet avec les données d'authentification et le score
+                // Création d'un objet avec les données d'authentification et le score
                 const userData = {
                     authInfo: {
+                        userId : userID,
                         uid: authUser.uid,
                         email: authUser.email,
-                        // Ajoutez d'autres propriétés si nécessaire
+                        dateCreation: authUser.metadata.creationTime,
+                        derniereConnexion: authUser.metadata.lastSignInTime
                     },
                     score: sqlResult[0].score,
                 };

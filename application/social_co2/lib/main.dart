@@ -12,8 +12,8 @@ import 'package:social_co2/firebase_options.dart';
 
 // Importation du screen de page d'accueil et de l'écran de connexion/création de compte
 import 'package:social_co2/screens/authScreen.dart';
-import 'package:social_co2/screens/homeScreen/MobileAdaptativeHomeScreen.dart';
-import 'package:social_co2/screens/homeScreen/WebAdaptativeHomeScreen.dart';
+import 'package:social_co2/screens/mainScreen/MobileAdaptativeMainScreen.dart';
+import 'package:social_co2/screens/mainScreen/WebAdaptativeMainScreen.dart';
 
 // Déclaration des variables Firebase
 late final FirebaseApp firebaseApp;
@@ -86,9 +86,9 @@ class HomeScreen extends StatelessWidget {
     */
 
     if (kIsWeb) {
-      return const WebAdaptativeHomeScreen(); // Si le client est un navigateur web, on renvoie la classe correspondante
+      return const WebAdaptativeMainScreen(); // Si le client est un navigateur web, on renvoie la classe correspondante
     } else {
-      return const MobileAdaptativeHomeScreen(); // Sinon , c'est une application native, on renvoie la classe correspondante
+      return const MobileAdaptativeMainScreen(); // Sinon , c'est une application native, on renvoie la classe correspondante
     }
   }
 }

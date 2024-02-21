@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class MobileAdaptativeHomeScreen extends StatefulWidget {
-  const MobileAdaptativeHomeScreen({super.key});
+class MobileAdaptativeMainScreen extends StatefulWidget {
+  const MobileAdaptativeMainScreen({super.key});
 
   @override
-  State<MobileAdaptativeHomeScreen> createState() =>
-      _MobileAdaptativeHomeScreenState();
+  State<MobileAdaptativeMainScreen> createState() =>
+      _MobileAdaptativeMainScreenState();
 }
 
-class _MobileAdaptativeHomeScreenState
-    extends State<MobileAdaptativeHomeScreen> {
+class _MobileAdaptativeMainScreenState
+    extends State<MobileAdaptativeMainScreen> {
   int selectedIndex =
       0; // Index de l'onglet actuellement selectionné dans la BottomNavigationBar
 

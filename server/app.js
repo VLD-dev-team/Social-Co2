@@ -54,3 +54,4 @@ app.listen(process.env.BDDport || 3000, () => {
 //   res.status('200').send(activity);
 // })
 
+//Commandes à taper pour le docker : Construire et lancer les conteneurs :docker-compose up --build et les arrêter : docker-compose down

@@ -6,6 +6,8 @@ const express = require('express');
 // Le module bodyParser
 const bodyParser = require('body-parser');
 
+const { executeQuery } = require('./utils/database.js');
+
 // initialisation de la variable environnement
 require('dotenv').config()
 
@@ -14,7 +16,7 @@ const app = express();
 
 // initialisation de firebase admin
 var firebaseAdmin = require("firebase-admin");
-var serviceAccount = require("../server/credentials/firebaseAdminCredentials.json");
+var serviceAccount = require("./credentials/firebaseAdminCredentials.json");
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount)
 });
@@ -37,8 +39,8 @@ app.use('/api', apiroutes);
 */
 
 // lancement du serveur
-app.listen(3000, () => {
-  console.log('Server listening on port 3000');
+app.listen(process.env.BDDport || 3000, () => {
+  console.log(`Server listening on port ${process.env.BDDport || 3000}`);
 });
 
 // Exemple de post

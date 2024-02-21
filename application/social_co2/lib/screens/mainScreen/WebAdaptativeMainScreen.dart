@@ -2,10 +2,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:social_co2/screens/homeScreen/HomeScreen.dart';
 
 // Importation des styles et des providers pour le menu/drawer
 import 'package:social_co2/screens/mainScreen/styles/webDrawersStyle.dart';
-import 'package:social_co2/models/IndexProvider.dart';
+import 'package:social_co2/providers/IndexProvider.dart';
+import 'package:social_co2/utils/responsiveHandler.dart';
 
 class WebAdaptativeMainScreen extends StatefulWidget {
   const WebAdaptativeMainScreen({super.key});
@@ -18,7 +20,7 @@ class WebAdaptativeMainScreen extends StatefulWidget {
 class _WebAdaptativeMainScreenState extends State<WebAdaptativeMainScreen> {
   @override
   Widget build(BuildContext context) {
-    MediaQueryData media = MediaQuery.of(context);
+    ResponsiveFormats responsive_format = whichResponsiveFormat(context);
 
     return ChangeNotifierProvider(
         // Création du Provider à partir du modèle IndexProvider
@@ -34,7 +36,8 @@ class _WebAdaptativeMainScreenState extends State<WebAdaptativeMainScreen> {
                     gradient:
                         drawerBackground), // Fond dégradé du drawer enregistré dans les fichiers de style
                 child: SizedBox(
-                  width: 300, // TODO: à adapter pour les tailles d'écran
+                  width:
+                      (responsive_format == ResponsiveFormats.mid) ? 60 : 300,
                   child: ListView.builder(
                       // Construction du drawer
                       padding: const EdgeInsets.only(right: 20),
@@ -65,10 +68,16 @@ class _WebAdaptativeMainScreenState extends State<WebAdaptativeMainScreen> {
                                     .setSelectedIndex(
                                         index); // On change l'index (voir liste des index dans [webDrawerStyle.dart])
                               },
-                              title: Text(
-                                drawerEntries[index][0], // titre de l'option
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.normal),
+                              title: Visibility(
+                                visible:
+                                    (responsive_format == ResponsiveFormats.mid)
+                                        ? false
+                                        : true,
+                                child: Text(
+                                  drawerEntries[index][0], // titre de l'option
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.normal),
+                                ),
                               ),
                               leading: Icon(
                                   drawerEntries[index][1]), // Icon de l'option
@@ -87,7 +96,7 @@ class _WebAdaptativeMainScreenState extends State<WebAdaptativeMainScreen> {
                   child: Consumer<IndexProvider>(
                     // On appelle le consumer pour connaitre en permanence le selectedIndex et donc l'écran choisi dans le menu
                     builder: (context, value, child) {
-                      return Text('index: ${value.selectedIndex}'); 
+                      return const HomeScreen();
                     },
                   ))
             ],

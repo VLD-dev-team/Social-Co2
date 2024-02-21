@@ -30,7 +30,7 @@ const express = require('express');
 const router = express.Router();
 
 // on importe les fonctions des routes
-const index = require('./react.js');
+const react = require('./react.js');
 const websocket = require('./websocket.js')
 const user = require('./user.js')
 const activity = require('./activity.js')
@@ -44,15 +44,15 @@ const social = require('./userRoutes/social.js')
 // définition des routes
 
 /// Pages principale de l'espace de travail
-router.use('/', index);
-router.use('/websocket', websocket);
+//router.use('/', react);
+//router.use('/websocket', websocket);
 router.use('/user', user);
-router.use('/activity', activity);
-router.use('/like', like);
-router.use('/comments', comments);
-router.use('/user/activities', activities);
-router.use('/user/friends', friends);
-router.use('/user/notifications', notifications);
-router.use('/user/social', social);
+//router.use('/activity', activity);
+//router.use('/like', like);
+//router.use('/comments', comments);
+//router.use('/user/activities', activities);
+//router.use('/user/friends', friends);
+//router.use('/user/notifications', notifications);
+//router.use('/user/social', social);
 
 module.exports = router;

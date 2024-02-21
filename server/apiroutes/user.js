@@ -6,7 +6,7 @@ const admin = require('firebase-admin');
 
 router.route('/*')
     .all((req, res, next) => verifyAuthToken(req, res, next));
-
+    
 router.route('/')
     .get(async (req, res) => {
         try {
@@ -16,23 +16,28 @@ router.route('/')
                 return res.status(400).send('Invalid user ID');
             }
 
-            // On récupère les données depuis la table Firebase
-            const userSnapshot = await admin.firestore().collection('users').doc(userID).get();
-            if (!userSnapshot.exists) {
-                return res.status(404).send('User not found');
-            }
-            const userData = userSnapshot.data();
+            // Récupérer les informations d'authentification de l'utilisateur
+            const authUser = await admin.auth().getUser(userID);
 
             // On récupère le score depuis la base de données SQL
             const sqlQuery = `SELECT score FROM users WHERE userID = ?`;
             const sqlResult = await executeQuery(sqlQuery, [userID]);
 
             if (sqlResult.length > 0) {
-                // On ajoute le score à la réponse JSON
-                userData.score = sqlResult[0].score;
-            }
+                // Créer un objet avec les données d'authentification et le score
+                const userData = {
+                    authInfo: {
+                        uid: authUser.uid,
+                        email: authUser.email,
+                        // Ajoutez d'autres propriétés si nécessaire
+                    },
+                    score: sqlResult[0].score,
+                };
 
-            return res.status(200).json(userData);
+                return res.status(200).json(userData);
+            } else {
+                return res.status(404).send('User not found in SQL database');
+            }
         } catch (error) {
             console.error('Error retrieving user data:', error);
             return res.status(500).send('Internal Server Error');

@@ -14,7 +14,7 @@ const app = express();
 
 // initialisation de firebase admin
 var firebaseAdmin = require("firebase-admin");
-var serviceAccount = require("./server/credentials/firebaseAdminCredentials.json");
+var serviceAccount = require("../server/credentials/firebaseAdminCredentials.json");
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount)
 });
@@ -22,7 +22,7 @@ firebaseAdmin.initializeApp({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const apiroutes = require('./routes/index.js');
+const apiroutes = require('./apiroutes/index.js');
 app.use('/api', apiroutes);
 
 /* const loadFirebaseDatabaseEvents = (client, dir = "./events/firebase") => { // chargement des event firebase depuis ./events/firebase

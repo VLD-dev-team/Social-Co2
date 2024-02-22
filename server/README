@@ -1,2 +1,79 @@
-# La partie serveur
+## Partie serveur
 
+### La Base de donnée SQL
+
+Pour creer la BDD SQL, il faut utiliser un docker pour ce faire suivre les étapes suivantes :
+
+1. Création d'un fichier docker-compose.yml à la racine du dossier server :
+
+```yml
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/app
+    environment:
+      - FIREBASE_CREDENTIALS=./credentials/firebaseAdminCredentials.json
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: process.env.BDDpsw
+      MYSQL_DATABASE: process.env.BDDdatabase
+
+```
+
+2. Création du fichier Dockerfile à la racine du dossier server :
+
+```Dockerfile
+FROM node:14
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["node", "app.js"]
+```
+
+3. Création d'un fichier .dockerignore, il faut mettre les éléments suivants à l'intérieur de celui-ci :
+
+```.dockerignore
+npm-debug.log
+/node_modules
+```
+
+4. Création du docker via le terminal
+
+```
+docker run --name Docker-mysql -e MYSQL_ROOT_PASSWORD=MyLuckyluck6*ql -d mysql:latest
+
+docker exec -it Docker-mysql bash
+
+------------------------------------------------------------------------------------------
+// Sans automatisation
+
+docker build -t docker_sco2 .
+
+docker run -p 3000:3000 docker_sco2
+
+------------------------------------------------------------------------------------------
+// Avec automatisation (server automatisé)
+
+docker-compose up --build
+
+docker-compose down
+
+```

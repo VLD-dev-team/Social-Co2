@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./app:/app
+      - ./app
     environment:
       - FIREBASE_CREDENTIALS=./credentials/firebaseAdminCredentials.json
     depends_on:

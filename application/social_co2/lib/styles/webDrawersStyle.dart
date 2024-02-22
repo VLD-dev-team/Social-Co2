@@ -13,12 +13,19 @@ final List<List> drawerEntries = <List>[
 ];
 
 // Fond dégradé du menu
-const LinearGradient drawerBackground = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [
-      Color.fromARGB(255, 108, 163, 94),
-      Color.fromARGB(255, 99, 136, 137)
+const BoxDecoration drawerDecoration = BoxDecoration(
+    gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color.fromARGB(255, 108, 163, 94),
+          Color.fromARGB(255, 99, 136, 137)
+        ]),
+    boxShadow: [
+      BoxShadow(
+          color: Color.fromARGB(255, 0, 0, 0),
+          blurRadius: 4,
+          offset: Offset(5, 0)),
     ]);
 
 // Design des options du menu
@@ -26,7 +33,7 @@ const BoxDecoration drawerTileShadow = BoxDecoration(
   borderRadius:
       BorderRadius.horizontal(right: Radius.circular(25), left: Radius.zero),
   boxShadow: [
-    BoxShadow(color: Color.fromARGB(255, 66, 66, 66)),
+    BoxShadow(color: Color.fromARGB(65, 66, 66, 66)),
     BoxShadow(
       color: Colors.white,
       offset: Offset(0, 2),

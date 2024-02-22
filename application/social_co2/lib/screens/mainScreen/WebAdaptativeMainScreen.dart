@@ -32,9 +32,8 @@ class _WebAdaptativeMainScreenState extends State<WebAdaptativeMainScreen> {
               body: Row(
             children: [
               Container(
-                decoration: const BoxDecoration(
-                    gradient:
-                        drawerBackground), // Fond dégradé du drawer enregistré dans les fichiers de style
+                decoration:
+                    drawerDecoration, // Fond dégradé du drawer enregistré dans les fichiers de style + ombre
                 child: SizedBox(
                   width: (responsive_format == ResponsiveFormats.small ||
                           responsive_format == ResponsiveFormats.mobile)
@@ -116,22 +115,18 @@ class _WebAdaptativeMainScreenState extends State<WebAdaptativeMainScreen> {
                       }),
                 ),
               ),
-              Container(
-                  // Conteneur de l'écran selectionné depuis le menu
-                  decoration:
-                      const BoxDecoration(color: Color.fromARGB(255, 0, 0, 0)),
-                  child: Consumer<IndexProvider>(
-                    // On appelle le consumer pour connaitre en permanence le selectedIndex et donc l'écran choisi dans le menu
-                    builder: (context, value, child) {
-                      switch (value.selectedIndex) {
-                        // On affiche l'écran correspondant
-                        case 1:
-                          return const HomeScreen(); // ACCUEIL
-                        default:
-                          return const HomeScreen(); // ACCUEIL
-                      }
-                    },
-                  ))
+              Consumer<IndexProvider>(
+                // On appelle le consumer pour connaitre en permanence le selectedIndex et donc l'écran choisi dans le menu
+                builder: (context, value, child) {
+                  switch (value.selectedIndex) {
+                    // On affiche l'écran correspondant
+                    case 1:
+                      return const HomeScreen(); // ACCUEIL
+                    default:
+                      return const HomeScreen(); // ACCUEIL
+                  }
+                },
+              )
             ],
           ));
         });

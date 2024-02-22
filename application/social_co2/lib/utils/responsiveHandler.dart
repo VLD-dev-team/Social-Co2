@@ -29,7 +29,7 @@ ResponsiveFormats whichResponsiveFormat(BuildContext context) {
   } else if (media.size.width >= 1200) {
     // Utilisation sur un écran moyen -> Small sur Figma
     return ResponsiveFormats.mid;
-  } else if (media.size.width >= 700) {
+  } else if (media.size.width >= 600) {
     // Utilisation web sur un écran très peu large -> XSmall sur Figma
     return ResponsiveFormats.small;
   } else {

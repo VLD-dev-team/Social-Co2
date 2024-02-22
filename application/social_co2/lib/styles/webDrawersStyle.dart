@@ -26,7 +26,7 @@ const BoxDecoration drawerTileShadow = BoxDecoration(
   borderRadius:
       BorderRadius.horizontal(right: Radius.circular(25), left: Radius.zero),
   boxShadow: [
-    BoxShadow(color: Color.fromARGB(99, 66, 66, 66)),
+    BoxShadow(color: Color.fromARGB(255, 66, 66, 66)),
     BoxShadow(
       color: Colors.white,
       offset: Offset(0, 2),

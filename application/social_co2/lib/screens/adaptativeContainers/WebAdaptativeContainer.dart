@@ -9,15 +9,13 @@ import 'package:social_co2/styles/webDrawersStyle.dart';
 import 'package:social_co2/providers/IndexProvider.dart';
 import 'package:social_co2/utils/responsiveHandler.dart';
 
-class WebAdaptativeMainScreen extends StatefulWidget {
-  const WebAdaptativeMainScreen({super.key});
-
+class WebAdaptativeContainer extends StatefulWidget {
   @override
-  State<WebAdaptativeMainScreen> createState() =>
-      _WebAdaptativeMainScreenState();
+  State<WebAdaptativeContainer> createState() =>
+      _WebAdaptativeContainerState();
 }
 
-class _WebAdaptativeMainScreenState extends State<WebAdaptativeMainScreen> {
+class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
   @override
   Widget build(BuildContext context) {
     ResponsiveFormats responsive_format = whichResponsiveFormat(context);

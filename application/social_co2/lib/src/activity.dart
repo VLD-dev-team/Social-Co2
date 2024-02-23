@@ -1,3 +1,0 @@
-class SCO2activity {
-  
-}

@@ -1,15 +1,20 @@
 // Importation des packages requis pour flutter
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+// Importation des providers requis
 import 'package:social_co2/providers/IndexProvider.dart';
+
+// Importation des styles et du module responsive
+import 'package:social_co2/styles/HomeScreenStyle.dart';
+import 'package:social_co2/utils/responsiveHandler.dart';
+
+// Importation des widgets
 import 'package:social_co2/screens/widgets/Feed.dart';
 import 'package:social_co2/screens/widgets/LeaderBoard.dart';
 import 'package:social_co2/screens/widgets/ReccurentActivities.dart';
-import 'package:social_co2/screens/widgets/ScoreQuickDash.dart';
-
-// Importation des styles et du module responsive
-import '../../styles/HomeScreenStyle.dart';
-import '../../utils/responsiveHandler.dart';
+import 'package:social_co2/screens/widgets/ScoreQuickOverview.dart';
+import 'package:social_co2/screens/widgets/CallToPost.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -32,7 +37,7 @@ class HomeScreen extends StatelessWidget {
                     : (MediaQuery.of(context).size.width -
                         drawerWidth), // On définie notre colonne de gauche comme faisait soit deux tiers de l'écran quand il est large ou comme 100% de l'espace d'écran si jamais il est plus petits
                 child: Column(children: [
-                  const ScoreQuickDash(),
+                  ScoreQuickOverview(),
                   // On intégre les widgets de droite en dessous du recap du score sur les plus petits écrans
                   (responsiveFormat == ResponsiveFormats.mid ||
                           responsiveFormat == ResponsiveFormats.small)
@@ -47,6 +52,7 @@ class HomeScreen extends StatelessWidget {
                           width: 0,
                           height: 0,
                         ),
+                  const CallToPost(),
                   const Feed()
                 ])),
             if (responsiveFormat ==

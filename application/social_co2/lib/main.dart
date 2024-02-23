@@ -12,8 +12,8 @@ import 'package:social_co2/firebase_options.dart';
 
 // Importation du screen de page d'accueil et de l'écran de connexion/création de compte
 import 'package:social_co2/screens/authScreen.dart';
-import 'package:social_co2/screens/mainScreen/MobileAdaptativeMainScreen.dart';
-import 'package:social_co2/screens/mainScreen/WebAdaptativeMainScreen.dart';
+import 'package:social_co2/screens/adaptativeContainers/MobileAdaptativeContainer.dart';
+import 'package:social_co2/screens/adaptativeContainers/WebAdaptativeContainer.dart';
 
 // Déclaration des variables Firebase
 late final FirebaseApp firebaseApp;
@@ -30,11 +30,13 @@ Future<void> main() async {
   // Instanciation de firebase Auth (gestionnaire de compte utilisateurs)
   firebaseAuth = FirebaseAuth.instanceFor(app: firebaseApp);
   // TODO : à voir si c'est utile à l'avenir étant donné qu'on a un stream en dessous
-  FirebaseAuth.instance.authStateChanges().listen((User? user) {
+  FirebaseAuth.instance.authStateChanges().listen((User? user) async {
     if (user == null) {
       print('User is currently signed out!');
     } else {
       print('User is signed in!');
+      final token = await FirebaseAuth.instance.currentUser!.getIdToken();
+      print(token);
     }
   });
 
@@ -86,9 +88,9 @@ class HomeScreen extends StatelessWidget {
     */
 
     if (kIsWeb) {
-      return const WebAdaptativeMainScreen(); // Si le client est un navigateur web, on renvoie la classe correspondante
+      return WebAdaptativeContainer(); // Si le client est un navigateur web, on renvoie la classe correspondante
     } else {
-      return const MobileAdaptativeMainScreen(); // Sinon , c'est une application native, on renvoie la classe correspondante
+      return const MobileAdaptativeContainer(); // Sinon , c'est une application native, on renvoie la classe correspondante
     }
   }
 }

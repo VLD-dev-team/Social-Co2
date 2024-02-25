@@ -1,6 +1,6 @@
-## Partie serveur
+# Partie serveur
 
-### Documentation Docker
+## Documentation Docker
 
 Pour creer la BDD SQL, il faut utiliser un docker pour ce faire suivre les étapes suivantes :
 
@@ -78,7 +78,7 @@ docker-compose down
 
 ```
 
-### Documentation BDD SQL
+## Documentation BDD SQL
 
 1. Installation de mysql
 

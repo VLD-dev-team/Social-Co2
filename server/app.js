@@ -27,31 +27,8 @@ app.use(bodyParser.json());
 const apiroutes = require('./apiroutes/index.js');
 app.use('/api', apiroutes);
 
-/* const loadFirebaseDatabaseEvents = (client, dir = "./events/firebase") => { // chargement des event firebase depuis ./events/firebase
-  const functions = readdirSync(`${dir}`).filter(files => files.endsWith(".js"));
-  for (const firebasefonction of functions) {
-    console.log(`[Lists Loader] ${firebasefonction} chargé`);
-    const { load } = require(`../${dir}/${firebasefonction}`);
-    load(client, client.FirebaseDatabaseAdminClient)
-  };
-  return console.log(`[loader] Event firebase chargés`);
-}
-*/
-
+// Utiliser un port différent que socket.io -> port 3006
 // lancement du serveur
-app.listen(process.env.BDDport || 3000, () => {
+app.listen(process.env.BDDport || 3006, () => {
   console.log(`Server listening on port ${process.env.BDDport || 3000}`);
 });
-
-// Exemple de post
-
-// app.post('/activity', (req, res) => {
-//   const authToken = req.headers.authToken
-//   // Validation token
-
-//   actitity = Actitity.getActivity(req.body.actitityID);
-
-//   res.status('200').send(activity);
-// })
-
-//Commandes à taper pour le docker : Construire et lancer les conteneurs :docker-compose up --build et les arrêter : docker-compose down

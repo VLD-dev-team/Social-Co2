@@ -15,9 +15,13 @@ const initializeSocket = (server) => {
 
         // Écoute des événements liés aux notifications
         socket.on('notification', (notificationData) => {
-            // Émettre la notification à l'utilisateur concerné
             const { userID, notificationContent } = notificationData;
             io.to(userID).emit('newNotification', { notificationContent });
+        });
+        // Écoute des événements liés aux messages
+        socket.on('message', (messageData) => {
+            const { convID, messageSenderID, messageTextContent } = messageData;
+            io.to(convID).emit('newMessage', { messageSenderID, messageTextContent });
         });
     });
 

@@ -7,7 +7,7 @@ const admin = require('firebase-admin');
 router.route('/*')
     .all((req, res, next) => verifyAuthToken(req, res, next));
 
-router.route('/activity/:activityId')
+router.route('/:activityId')
     .get(async (req, res) => {
         try {
             const userID = req.headers.id;

@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 
 const { executeQuery } = require('./utils/database.js');
 
+const websocketRouter = require('./apiroutes//websocket.js'); // Importer le routeur WebSocket
+
 // initialisation de la variable environnement
 require('dotenv').config()
 
@@ -29,6 +31,9 @@ app.use('/api', apiroutes);
 
 // Utiliser un port différent que socket.io -> port 3006
 // lancement du serveur
-app.listen(process.env.BDDport || 3006, () => {
-  console.log(`Server listening on port ${process.env.BDDport || 3000}`);
+const server = app.listen(process.env.BDDport || 3006, () => {
+  console.log(`Server listening on port ${process.env.BDDport || 3006}`);
 });
+
+// Utilisation du routeur WebSocket sur /api/websocket
+app.use('/api/websocket', websocketRouter);

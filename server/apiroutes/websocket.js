@@ -40,3 +40,5 @@ server.listen(3000, () => {
 });
 
 module.exports = io;
+
+//Du côté frontend il faut écouter cet événement newNotification pour réagir à l'arrivée de nouvelles notifications... Valentin à toi de jouer

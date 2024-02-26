@@ -179,3 +179,27 @@ CREATE TABLE comments(
   commentCreatedAt CURRENT_TIMESTAMP
 )
 ```
+
+## Plan des routes 
+
+- * (get) 404
+- / (get) Application React
+- /api (get)
+    - /websocket (socket.io)
+        - score
+        - messages
+        - notifications
+        - conversations
+    - /user (get)
+        - /activities (get)
+        - /friends (get)
+            - /search (get)
+            - /status (post)
+        - /notifications (get)
+        - /social (get)
+            - /feed (get)
+            - /conversations (get) & (post)
+                - /messages (get)
+    - /activity (get) & (post) & (put) & (delete)
+    - /like (post)
+    - /comments (post)

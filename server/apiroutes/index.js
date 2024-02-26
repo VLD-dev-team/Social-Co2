@@ -1,6 +1,6 @@
 // Gestionnaire de routes
 
-/* Plan du site
+/* Plan des routes
 
 - * (get) 404
 - / (get) Application React
@@ -39,6 +39,7 @@ const activities = require('./userRoutes/activities.js')
 const friends = require('./userRoutes/friends.js')
 const notifications = require('./userRoutes/notifications.js')
 const social = require('./userRoutes/social.js')
+const notFoundRoute = require('./notFoundRoute.js');
 
 // définition des routes
 
@@ -52,5 +53,6 @@ router.use('/user/activities', activities);
 router.use('/user/friends', friends);
 router.use('/user/notifications', notifications);
 router.use('/user/social', social);
+router.use(notFoundRoute);
 
 module.exports = router;

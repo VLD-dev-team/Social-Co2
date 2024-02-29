@@ -1,6 +1,7 @@
 // Importation des packages requis pour flutter
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 // Importation des polices d'écriture
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +9,12 @@ import 'package:google_fonts/google_fonts.dart';
 // Importation des préférences firebase pour l'authentification ainsi que des packages firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:social_co2/firebase_options.dart';
+
+// Importation des providers
+import 'package:social_co2/providers/IndexProvider.dart';
+import 'package:social_co2/providers/UserActivitiesProvider.dart';
 
 // Importation du screen de page d'accueil et de l'écran de connexion/création de compte
 import 'package:social_co2/screens/authScreen.dart';
@@ -40,6 +46,7 @@ Future<void> main() async {
     }
   });
 
+  usePathUrlStrategy(); // Optimisation des URL pour les navigateurs
   runApp(const Sco2()); // Lancement de l'application avec la class Sco2
 }
 
@@ -87,10 +94,23 @@ class HomeScreen extends StatelessWidget {
     Cependant, les composants graphiques de l'application seront appelés dans les deux classes, avec un design responsive
     */
 
-    if (kIsWeb) {
-      return WebAdaptativeContainer(); // Si le client est un navigateur web, on renvoie la classe correspondante
-    } else {
-      return const MobileAdaptativeContainer(); // Sinon , c'est une application native, on renvoie la classe correspondante
-    }
+    // On renvoie les providers necessaire aux passages de données dans les écrans
+    return MultiProvider(
+      providers: [
+        ListenableProvider<IndexProvider>(
+            create: (_) =>
+                IndexProvider()), // Provider d'écran pour le selected_index
+        ListenableProvider<UserActivitiesProvider>(
+            create: (_) =>
+                UserActivitiesProvider()), // Provider des activitiés de l'utilisateur courant
+      ],
+      builder: (context, child) {
+        if (kIsWeb) {
+          return WebAdaptativeContainer(); // Si le client est un navigateur web, on renvoie la classe correspondante
+        } else {
+          return const MobileAdaptativeContainer(); // Sinon , c'est une application native, on renvoie la classe correspondante
+        }
+      },
+    );
   }
 }

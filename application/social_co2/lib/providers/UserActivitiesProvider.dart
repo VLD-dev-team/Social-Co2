@@ -6,7 +6,23 @@ import 'package:http/http.dart' as http;
 import 'package:social_co2/main.dart';
 
 class UserActivitiesProvider extends ChangeNotifier {
-  List<SCO2activity> userActivities = [];
+  // TODO: supprimer ces activités quand les requettes seront opé
+  List<SCO2activity> userActivities = [
+    SCO2activity(
+        activityID: 0,
+        userID: '00',
+        activityType: ActivityType.food,
+        activityCO2Impact: 0,
+        activityName: 'Repas du midi',
+        activityTimestamp: DateTime(2004)),
+    SCO2activity(
+        activityID: 0,
+        userID: '00',
+        activityType: ActivityType.food,
+        activityCO2Impact: 0,
+        activityName: 'Repas du soir',
+        activityTimestamp: DateTime(2004))
+  ];
   bool isLoading = false;
 
   Future<List<SCO2activity>> getCurrentUserActivities(int index) async {
@@ -14,20 +30,7 @@ class UserActivitiesProvider extends ChangeNotifier {
     final String? token = await firebaseAuth.currentUser?.getIdToken();
     final String? userID = firebaseAuth.currentUser?.uid;
 
-    userActivities.add(SCO2activity(
-        activityID: 0,
-        userID: '$userID',
-        activityType: ActivityType.food,
-        activityCO2Impact: 0,
-        activityName: 'Repas du midi',
-        activityTimestamp: DateTime(2004)));
-    userActivities.add(SCO2activity(
-        activityID: 0,
-        userID: '$userID',
-        activityType: ActivityType.food,
-        activityCO2Impact: 0,
-        activityName: 'Repas du soir',
-        activityTimestamp: DateTime(2004)));
+    print('get');
     userActivities.add(SCO2activity(
         activityID: 0,
         userID: '$userID',
@@ -36,6 +39,7 @@ class UserActivitiesProvider extends ChangeNotifier {
         activityName: 'Repas de la nuit',
         activityTimestamp: DateTime(2004)));
 
+    isLoading = false;
     return userActivities;
 
     /* 

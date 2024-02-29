@@ -11,36 +11,27 @@ class ScoreQuickOverview extends StatefulWidget {
 }
 
 class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
-  /* @override
-  void initState() {
-    super.initState();
-    final userActivitiesProvider =
-        Provider.of<UserActivitiesProvider>(context, listen: false);
-    userActivitiesProvider.getCurrentUserActivities(0);
-  } */
-
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) {
-        IndexProvider();
-        UserActivitiesProvider();
-      },
-      builder: (context, child) {
-        return FutureBuilder(
-          future: Provider.of<UserActivitiesProvider>(context, listen: false)
-              .getCurrentUserActivities(0),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              for (var i = 0; i < snapshot.data!.length; i++) {
-                
-              }
-            } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
-            }
-          },
-        );
-      },
+    return Column(
+      children: [
+        Text(Provider.of<UserActivitiesProvider>(context, listen: false)
+            .userActivities[0]
+            .activityName),
+        Text(Provider.of<UserActivitiesProvider>(context, listen: false)
+            .userActivities[1]
+            .activityName),
+        Text(Provider.of<IndexProvider>(context, listen: false)
+            .selectedIndex
+            .toString()),
+        Text(Provider.of<UserActivitiesProvider>(context, listen: false)
+            .userActivities
+            .length
+            .toString()),
+        Text(Provider.of<UserActivitiesProvider>(context, listen: false)
+            .userActivities[0]
+            .activityName)
+      ],
     );
   }
 }

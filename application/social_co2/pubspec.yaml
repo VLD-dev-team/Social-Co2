@@ -41,6 +41,7 @@ dependencies:
   google_sign_in: ^6.1.6
   google_fonts: ^4.0.4
   provider: ^6.1.1
+  http: ^0.13.6
 
 dev_dependencies:
   flutter_test:

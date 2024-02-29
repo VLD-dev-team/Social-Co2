@@ -4,7 +4,7 @@ enum ActivityType { route, food }
 
 class SCO2activity {
   late final int activityID;
-  late final int userID;
+  late final String userID;
   late ActivityType activityType;
   late int activityCO2Impact;
   late String activityName;

@@ -16,7 +16,7 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
     super.initState();
     final userActivitiesProvider =
         Provider.of<UserActivitiesProvider>(context, listen: false);
-    userActivitiesProvider.getUserActivities();
+    userActivitiesProvider.getCurrentUserActivities(0);
   } */
 
   @override
@@ -24,9 +24,22 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
     return ChangeNotifierProvider(
       create: (context) {
         IndexProvider();
+        UserActivitiesProvider();
       },
       builder: (context, child) {
-        return const Text("data");
+        return FutureBuilder(
+          future: Provider.of<UserActivitiesProvider>(context, listen: false)
+              .getCurrentUserActivities(0),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              for (var i = 0; i < snapshot.data!.length; i++) {
+                
+              }
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
+          },
+        );
       },
     );
   }

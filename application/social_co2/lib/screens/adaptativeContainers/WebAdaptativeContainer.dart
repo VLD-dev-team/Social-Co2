@@ -1,10 +1,13 @@
 // Importation des packages requis pour flutter
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/screens/homeScreen/HomeScreen.dart';
 
 // Importation des styles et des providers pour le menu/drawer
 import 'package:social_co2/styles/webDrawersStyle.dart';
+
+// Importation des providers
 import 'package:social_co2/providers/IndexProvider.dart';
 import 'package:social_co2/utils/responsiveHandler.dart';
 
@@ -14,6 +17,15 @@ class WebAdaptativeContainer extends StatefulWidget {
 }
 
 class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Obtention des informations necessaire au lancement de l'écran d'accueil depuis le serveur
+    Provider.of<UserActivitiesProvider>(context, listen: false)
+        .getCurrentUserActivities(0);
+  }
+
   @override
   Widget build(BuildContext context) {
     ResponsiveFormats responsive_format = whichResponsiveFormat(context);

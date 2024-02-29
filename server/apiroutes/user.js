@@ -13,7 +13,12 @@ router.route('/')
             const userID = req.headers.id;
 
             if (typeof userID !== 'string') {
-                return res.status(400).send('Invalid user ID');
+                const error = {
+                    error : true,
+                    error_message : 'Invalid user ID',
+                    error_code : 400
+                }
+                return res.status(400).json(error);
             }
 
             // Récupérétation des informations d'authentification de l'utilisateur
@@ -38,7 +43,12 @@ router.route('/')
 
                 return res.status(200).json(userData);
             } else {
-                return res.status(404).send('User not found in SQL database');
+                const error = {
+                    error : true,
+                    error_message : 'User not found in SQL database',
+                    error_code : 400
+                }
+                return res.status(400).json(error);
             }
         } catch (error) {
             console.error('Error retrieving user data:', error);

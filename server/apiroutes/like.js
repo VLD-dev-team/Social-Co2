@@ -14,7 +14,12 @@ router.route('/like')
             const postID = req.body.postID;
 
             if (typeof userID !== 'string' || isNaN(postID)) {
-                return res.status(400).send('Invalid user ID or post ID');
+                let error = {
+                    error : true,
+                    error_message : 'Invalid user ID or post ID',
+                    error_code : 400
+                }
+                return res.status(400).json(error);
             }
 
             // Vérification de si l'utilisateur a déjà liké ce post
@@ -22,7 +27,12 @@ router.route('/like')
             const checkLikeResult = await executeQuery(checkLikeQuery, [userID, postID]);
 
             if (checkLikeResult.length > 0) {
-                return res.status(400).send('User has already liked this post');
+                let error = {
+                    error : true,
+                    error_message : 'User has already liked this post',
+                    error_code : 400
+                }
+                return res.status(400).json(error);
             }
 
             // Insertion du like dans la table likes
@@ -62,8 +72,12 @@ router.route('/like')
                         return res.status(200).send('Like added successfully');
                     }
                 }
-
-                return res.status(500).send('Failed to get liker name');
+                let error = {
+                    error : true,
+                    error_message : 'Failed to get liker name',
+                    error_code : 400
+                }
+                return res.status(500).json(error);
             } else {
                 return res.status(500).send('Failed to add like');
             }

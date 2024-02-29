@@ -91,10 +91,12 @@ const handleNewMessage = async (io, messageData) => {
 
     // On émet le message à l'utilisateur concerné via Socket.io
     io.to(convID).emit('newMessage', { messageSenderID, messageTextContent });
+    const updateNotificationQuery = `UPDATE messages SET messageStatus = 'send' WHERE convID = ? AND messageSenderID = ?`;
+    await executeQuery(updateNotificationQuery, [convID, messageSenderID]);
 };
 
 const watchMessages = async (io) => {
-    const messageWatcherQuery = `SELECT * FROM messages WHERE messageStatus = 'unread'`;
+    const messageWatcherQuery = `SELECT * FROM messages WHERE messageStatus = 'unsent'`;
 
     const watcher = executeQuery(messageWatcherQuery);
 

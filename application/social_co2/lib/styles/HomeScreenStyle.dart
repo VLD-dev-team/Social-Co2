@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Fond d'écran de l'accueil (HomeScreen)
 const BoxDecoration homeScreenBackground = BoxDecoration(
     gradient: LinearGradient(
         begin: Alignment.centerLeft,

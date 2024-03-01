@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:social_co2/classes/activity/activity.dart';
-import 'package:http/http.dart' as http;
 import 'package:social_co2/main.dart';
 
 class UserActivitiesProvider extends ChangeNotifier {

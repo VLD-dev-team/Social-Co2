@@ -26,35 +26,42 @@ class HomeScreen extends StatelessWidget {
     int drawerWidth = getDrawerWidth(context);
 
     return Container(
+        height: double.infinity,
         width: MediaQuery.of(context).size.width -
             drawerWidth, // On défini la largeur du conteneur pour qu'il prenne tout l'espace à droite du drawer sur le web
         decoration: homeScreenBackground,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
                 width: (responsiveFormat == ResponsiveFormats.large)
                     ? (MediaQuery.of(context).size.width - drawerWidth) / 3 * 2
                     : (MediaQuery.of(context).size.width -
                         drawerWidth), // On définie notre colonne de gauche comme faisait soit deux tiers de l'écran quand il est large ou comme 100% de l'espace d'écran si jamais il est plus petits
-                child: Column(children: [
-                  ScoreQuickOverview(),
-                  // On intégre les widgets de droite en dessous du recap du score sur les plus petits écrans
-                  (responsiveFormat == ResponsiveFormats.mid ||
-                          responsiveFormat == ResponsiveFormats.small)
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            LeaderBoard(),
-                            ReccurentActivities()
-                          ],
-                        )
-                      : const SizedBox(
-                          width: 0,
-                          height: 0,
-                        ),
-                  const CallToPost(),
-                  const Feed()
-                ])),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: SingleChildScrollView(
+                    child: Column(children: [
+                      ScoreQuickOverview(),
+                      // On intégre les widgets de droite en dessous du recap du score sur les plus petits écrans
+                      (responsiveFormat == ResponsiveFormats.mid ||
+                              responsiveFormat == ResponsiveFormats.small)
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                LeaderBoard(),
+                                ReccurentActivities()
+                              ],
+                            )
+                          : const SizedBox(
+                              width: 0,
+                              height: 0,
+                            ),
+                      const CallToPost(),
+                      const Feed()
+                    ]),
+                  ),
+                )),
             if (responsiveFormat ==
                 ResponsiveFormats
                     .large) // On insére les widgets de la colonne de droite si l'écran est large

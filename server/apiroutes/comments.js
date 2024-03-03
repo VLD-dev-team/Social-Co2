@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
-const admin = require('firebase-admin');
+const notificationHandler = require('../utils/notificationHandler.js'); // Importez le gestionnaire de notifications
+const socketManager = require('../utils/socketManager.js'); // Importez le gestionnaire de sockets pour accéder à `io`
 
 router.route('/*')
     .all((req, res, next) => verifyAuthToken(req, res, next));
@@ -24,39 +25,36 @@ router.route('/')
 
             if (insertCommentResult.affectedRows > 0) {
                 // Mise à jour du nombre de commentaires dans la table posts
-                const updatePostCommentsQuery = `UPDATE posts SET postCommentsNumber = postCommentsNumber + 1 WHERE postID = ?`;
-                await executeQuery(updatePostCommentsQuery, [postID]);
+                await executeQuery(`UPDATE posts SET postCommentsNumber = postCommentsNumber + 1 WHERE postID = ?`, [postID]);
 
                 // Récupération du propriétaire du post
-                const getPostOwnerQuery = `SELECT userID FROM posts WHERE postID = ?`;
-                const postOwnerResult = await executeQuery(getPostOwnerQuery, [postID]);
+                const [postOwner] = await executeQuery(`SELECT userID FROM posts WHERE postID = ?`, [postID]);
 
-                if (postOwnerResult.length > 0) {
-                    const postOwnerID = postOwnerResult[0].userID;
+                if (postOwner) {
+                    const { userID: postOwnerID } = postOwner;
 
                     // Récupération du nom de l'utilisateur qui a commenté
-                    const getCommenterNameQuery = `SELECT userName FROM users WHERE userID = ?`;
-                    const commenterNameResult = await executeQuery(getCommenterNameQuery, [userID]);
+                    const [commenterInfo] = await executeQuery(`SELECT userName FROM users WHERE userID = ?`, [userID]);
 
-                    if (commenterNameResult.length > 0) {
-                        const commenterName = commenterNameResult[0].userName;
+                    if (commenterInfo) {
+                        const { userName: commenterName } = commenterInfo;
 
                         // Insertion de la notification dans la table notifications
                         const notificationContent = `${commenterName} a commenté votre publication.`;
                         const notificationTitle = 'Nouveau commentaire';
                         const notificationStatus = 'unread';
 
-                        const insertNotificationQuery = `
-                            INSERT INTO notifications (userID, notificationContent, notificationTitle, notificationStatus)
-                            VALUES (?, ?, ?, ?)
-                        `;
-                        await executeQuery(insertNotificationQuery, [postOwnerID, notificationContent, notificationTitle, notificationStatus]);
+                        await executeQuery(`INSERT INTO notifications (userID, notificationContent, notificationTitle, notificationStatus) VALUES (?, ?, ?, ?)`, [postOwnerID, notificationContent, notificationTitle, notificationStatus]);
+
+                        // Émission de la notification via Socket.io
+                        const io = socketManager.getIO();
+                        notificationHandler.handleNewNotification(io, { userID: postOwnerID, notificationContent });
 
                         return res.status(200).send('Comment added successfully');
                     }
                 }
 
-                return res.status(500).send('Failed to get commenter name');
+                return res.status(500).send('Failed to process comment');
             } else {
                 return res.status(500).send('Failed to add comment');
             }

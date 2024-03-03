@@ -54,8 +54,8 @@ const sendMessage = async (senderID, receiverID, messageTextContent) => {
         const convID = convIDResult[0].convID;
 
         const insertMessageQuery = `
-            INSERT INTO messages (convID, messageSenderID, messageTextContent, messageCreatedAt)
-            VALUES (?, ?, ?, CURRENT_TIMESTAMP)
+            INSERT INTO messages (convID, messageSenderID, messageTextContent, messageCreatedAt, messageStatus)
+            VALUES (?, ?, ?, CURRENT_TIMESTAMP, 'unread')
         `;
         const insertMessageResult = await executeQuery(insertMessageQuery, [convID, senderID, messageTextContent]);
 
@@ -79,40 +79,30 @@ const sendMessage = async (senderID, receiverID, messageTextContent) => {
             throw error;
         }
 
-        return 'Message add successfully';
+        // Compter le nombre de messages non lus pour l'utilisateur dans cette conversation
+        const unreadCountQuery = `
+            SELECT COUNT(*) AS unreadCount
+            FROM messages
+            WHERE convID = ? AND messageStatus = 'unread' AND messageSenderID != ?
+        `;
+        const unreadCountResult = await executeQuery(unreadCountQuery, [convID, receiverID]);
+        const unreadCount = unreadCountResult[0].unreadCount;
+
+        return {
+            convID: convID,
+            lastMessage: {
+                messageSenderID: senderID,
+                messageTextContent: messageTextContent,
+                messageCreatedAt: new Date().toISOString()
+            },
+            unreadCount: unreadCount
+        };
     } catch (error) {
         console.error('Error sending message:', error);
         throw error.status ? error : new Error('Internal Server Error');
     }
 };
 
-const handleNewMessage = async (io, messageData) => {
-    const { convID, messageSenderID, messageTextContent } = messageData;
-
-    // On émet le message à l'utilisateur concerné via Socket.io
-    io.to(convID).emit('newMessage', { messageSenderID, messageTextContent });
-    const updateNotificationQuery = `UPDATE messages SET messageStatus = 'send' WHERE convID = ? AND messageSenderID = ?`;
-    await executeQuery(updateNotificationQuery, [convID, messageSenderID]);
-};
-
-const watchMessages = async (io) => {
-    const messageWatcherQuery = `SELECT * FROM messages WHERE messageStatus = 'unsent'`;
-
-    const watcher = executeQuery(messageWatcherQuery);
-
-    watcher.on('result', async (result) => {
-        // À chaque fois qu'il y a un nouveau message non lu, on gère le message
-        const messageData = {
-            convID: result.convID,
-            messageSenderID: result.messageSenderID,
-            messageTextContent: result.messageTextContent
-        };
-        handleNewMessage(io, messageData);
-    });
-};
-
 module.exports = {
     sendMessage,
-    handleNewMessage,
-    watchMessages
 };

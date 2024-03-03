@@ -1,8 +1,8 @@
 const express = require('express');
 const socketManager = require('../utils/socketManager.js');
-const { executeQuery } = require('../utils/database.js');
+const { verifyAuthToken } = require('./utils/requireAuth.js');
 const notificationHandler = require('../utils/notificationHandler.js');
-const messageHandler = require('../utils/messageHandler.js');
+const { sendMessage } = require('../utils/messageHandler.js');
 
 const router = express.Router();
 
@@ -15,29 +15,38 @@ router.use('/', (req, res, next) => {
     next();
 });
 
-router.route('/send')
-    .post(async (req, res) => {
+io.on('connection', (socket) => {
+    // Gestion de l'événement 'sendMessage'
+    socket.on('sendMessage', async (data) => {
         try {
-            const senderID = req.headers.id;
-            const receiverID = req.body.receiverID;
-            const messageTextContent = req.body.messageTextContent;
+            // Vérification de l'authentification de l'utilisateur
+            const userID = await verifyAuthToken(data.token);
 
-            if (typeof senderID !== 'string' || typeof receiverID !== 'string' || typeof messageTextContent !== 'string') {
-                return res.status(400).send('Invalid parameters');
-            }
+            // Appel de la fonction sendMessage avec les données appropriées
+            const result = await sendMessage(userID, data.receiver, data.message);
+            
+            // Émission d'événements au client une fois le message traité
+            io.to(result.convID).emit('updateConv', {
+                convID: result.convID,
+                lastMessage: result.lastMessage,
+                unreadCount: result.unreadCount
+            });
+            io.to(result.convID).emit('newMessage', {
+                convID: result.convID,
+                lastMessage: result.lastMessage,
+                unreadCount: result.unreadCount
+            });
 
-            const result = await messageHandler.sendMessage(io, senderID, receiverID, messageTextContent);
-            return res.status(200).send(result);
+            console.log(result);  // Vous pouvez supprimer cette ligne si vous n'avez pas besoin de l'afficher côté serveur
         } catch (error) {
-            console.error('Error in /send route:', error);
-            return res.status(error.status || 500).send('Internal Server Error');
+            console.error('Error sending message:', error);
+            // Gérer les erreurs ici et émettre un événement d'erreur au client si nécessaire
+            socket.emit('sendMessageError', { error: 'Failed to send message' });
         }
     });
+});
 
 // On surveille les modifications de la table notifications
 notificationHandler.watchNotifications(io);
-
-// On surveille les modifications de la table messages
-messageHandler.watchMessages(io);
 
 module.exports = router;

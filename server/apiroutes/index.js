@@ -44,8 +44,13 @@ const notFoundRoute = require('./notFoundRoute.js');
 // définition des routes
 
 router.get('/',(req,res)=>{
-    res.json({status : 200, ping : 'ok'});
-  })
+    const response = {
+        ping : 'Is check',
+        status : 200,
+        type : 'response'
+    }
+    return res.status(200).json(response);
+})
   
 
 /// Pages principale de l'espace de travail

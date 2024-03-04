@@ -26,10 +26,24 @@ router.route('/')
 
             const friends = await executeQuery(getFriendsQuery, [userID, userID, userID]);
 
-            return res.status(200).json(friends);
+            const response = {
+                friends : friends,
+                status : 200,
+                type : 'response'
+            }
+            return res.status(200).json(response);
         } catch (error) {
             console.error('Error retrieving friends:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     });
 
@@ -53,13 +67,35 @@ router.route('/search')
             const friend = await executeQuery(searchFriendQuery, [userID, friendshipID]);
 
             if (friend.length === 0) {
-                return res.status(404).json({ message: 'Friend not found' });
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Friend not found',
+                        error_code : 404
+                    },
+                    status : 404,
+                    type : 'error'
+                }
+                return res.status(404).json(response);
             }
-
-            return res.status(200).json(friend[0]);
+            const response = {
+                friend : friend[0],
+                status : 200,
+                type : 'response'
+            }
+            return res.status(200).json(response);
         } catch (error) {
             console.error('Error searching friend:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     });
 
@@ -86,7 +122,12 @@ router.route('/status')
                 `;
                 await executeQuery(updateFriendshipQuery, [friendshipStatus, existingFriendship[0].friendshipID]);
 
-                return res.status(200).json({ message: 'Friendship status updated successfully' });
+                const response = {
+                    message : 'Friendship status updated successfully',
+                    status : 200,
+                    type : 'response'
+                }
+                return res.status(200).json(response);
             } else {
                 // Ajouter une nouvelle amitié
                 const addFriendshipQuery = `
@@ -95,11 +136,25 @@ router.route('/status')
                 `;
                 await executeQuery(addFriendshipQuery, [userID, friendID, friendshipStatus]);
 
-                return res.status(201).json({ message: 'Friend added successfully' });
+                const response = {
+                    message : 'Friendship added successfully',
+                    status : 201,
+                    type : 'response'
+                }
+                return res.status(201).json(response);
             }
         } catch (error) {
             console.error('Error updating friendship status:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     })
     .delete(async (req, res) => {
@@ -115,13 +170,36 @@ router.route('/status')
             const deleteResult = await executeQuery(deleteFriendshipQuery, [userID, friendID, friendID, userID]);
 
             if (deleteResult.affectedRows > 0) {
-                return res.status(200).json({ message: 'Friendship deleted successfully' });
+                const response = {
+                    message : 'Friendship deleted successfully',
+                    status : 200,
+                    type : 'response'
+                }
+                return res.status(200).json(response);
             } else {
-                return res.status(404).json({ message: 'Friendship not found' });
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Friendship not found',
+                        error_code : 404
+                    },
+                    status : 404,
+                    type : 'error'
+                }
+                return res.status(404).json(response);
             }
         } catch (error) {
             console.error('Error deleting friendship:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     });
 

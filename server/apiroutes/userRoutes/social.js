@@ -32,10 +32,25 @@ router.route('/feed')
                 ORDER BY postCreatedAt DESC`;
             const feedResult = await executeQuery(getFeedQuery, [friendIDs]);
 
-            return res.status(200).json({ feed: feedResult });
+
+            const response = {
+                feed : feedResult,
+                status : 200,
+                type : 'response'
+            }
+            return res.status(200).json(response);
         } catch (error) {
             console.error('Error retrieving feed:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     });
 
@@ -48,11 +63,24 @@ router.route('/conversations')
                 SELECT * FROM conversations WHERE (userID1 = ? OR userID2 = ?) AND convLastMessage IS NOT NULL ORDER BY convCreatedAt DESC`;
             const conversationsResult = await executeQuery(getConversationsQuery, [userID, userID]);
 
-            return res.status(200).json({ conversations: conversationsResult });
+            const response = {
+                conversations : conversationsResult,
+                status : 200,
+                type : 'response'
+            }
+            return res.status(200).json(response);
         } catch (error) {
             console.error('Error retrieving conversations:', error);
-            return res.status(500).send('Internal Server Error');
-        }
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);        }
     })
     .post(async (req, res) => {
         try {
@@ -67,7 +95,16 @@ router.route('/conversations')
             const checkFriendshipResult = await executeQuery(checkFriendshipQuery, [userID, friendID, friendID, userID]);
             // Si c'est 22 c'est ok :)
             if (checkFriendshipResult.length === 0 || checkFriendshipResult[0].friendshipStatus !== '22') {
-                return res.status(400).send('Users are not friends or friendship status is not accepted. Conversation cannot be created.');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Users are not friends or friendship status is not accepted. Conversation cannot be created.',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
+                }
+                return res.status(400).json(response);
             }
 
             // Vérifie si une conversation existe déjà entre les deux utilisateurs, sinon on va pas s'embêter
@@ -78,7 +115,16 @@ router.route('/conversations')
             const checkConversationResult = await executeQuery(checkConversationQuery, [userID, friendID, friendID, userID]);
 
             if (checkConversationResult.length > 0) {
-                return res.status(400).send('Conversation already exists.');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Conversation already exists.',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
+                }
+                return res.status(400).json(response);
             }
 
             // Créer la nouvelle conversation
@@ -89,13 +135,37 @@ router.route('/conversations')
             const createConversationResult = await executeQuery(createConversationQuery, [userID, friendID]);
 
             if (createConversationResult.affectedRows === 0) {
-                return res.status(500).send('Failed to create conversation.');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Failed to create conversation.',
+                        error_code : 500
+                    },
+                    status : 500,
+                    type : 'error'
+                }
+                return res.status(500).json(response);
             }
 
-            return res.status(201).send('Conversation created successfully.');
+
+            const response = {
+                message : 'Conversation created successfully.',
+                status : 201,
+                type : 'response'
+            }
+            return res.status(201).json(response);
         } catch (error) {
             console.error('Error creating conversation:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     });
 
@@ -116,7 +186,16 @@ router.route('/messages')
             const conversationResult = await executeQuery(checkConversationQuery, [userID, userID, convID]);
 
             if (conversationResult.length === 0) {
-                return res.status(403).send('You are not part of this conversation.');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'You are not part of this conversation.',
+                        error_code : 403
+                    },
+                    status : 403,
+                    type : 'error'
+                }
+                return res.status(403).json(response);
             }
 
             // Charge les 40 derniers messages à partir de l'index spécifié :)
@@ -128,10 +207,25 @@ router.route('/messages')
                 LIMIT ?, 40`;
             const messagesResult = await executeQuery(loadMessagesQuery, [convID, startIndex]);
 
-            return res.status(200).json({ messages: messagesResult });
+            const response = {
+                messages : messagesResult,
+                status : 200,
+                type : 'response'
+            }
+            return res.status(200).json(response);
+
         } catch (error) {
             console.error('Error loading messages:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     });
 

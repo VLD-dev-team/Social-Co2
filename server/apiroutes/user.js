@@ -13,12 +13,16 @@ router.route('/')
             const userID = req.headers.id;
 
             if (typeof userID !== 'string') {
-                const error = {
-                    error : true,
-                    error_message : 'Invalid user ID',
-                    error_code : 400
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Invalid user ID',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
                 }
-                return res.status(400).json(error);
+                return res.status(400).json(response);
             }
 
             // Récupérétation des informations d'authentification de l'utilisateur
@@ -30,29 +34,47 @@ router.route('/')
 
             if (sqlResult.length > 0) {
                 // Création d'un objet avec les données d'authentification et le score
-                const userData = {
-                    authInfo: {
-                        userId : userID,
-                        uid: authUser.uid,
-                        email: authUser.email,
-                        dateCreation: authUser.metadata.creationTime,
-                        derniereConnexion: authUser.metadata.lastSignInTime
+                const response = {
+                    userData : {
+                        authInfo: {
+                            userId : userID,
+                            uid: authUser.uid,
+                            email: authUser.email,
+                            dateCreation: authUser.metadata.creationTime,
+                            derniereConnexion: authUser.metadata.lastSignInTime
+                        },
+                        score: sqlResult[0].score,
                     },
-                    score: sqlResult[0].score,
-                };
-
-                return res.status(200).json(userData);
-            } else {
-                const error = {
-                    error : true,
-                    error_message : 'User not found in SQL database',
-                    error_code : 400
+                    message : 'User is defined',
+                    status : 200,
+                    type : 'response'
                 }
-                return res.status(400).json(error);
+                return res.status(200).json(response);
+
+            } else {
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'User not found in SQL database',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
+                }
+                return res.status(400).json(response);
             }
         } catch (error) {
             console.error('Error retrieving user data:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     });
 

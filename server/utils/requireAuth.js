@@ -6,7 +6,16 @@ const verifyAuthToken = (req, res, next) => {
   const authToken = req.headers.authorization;
 
   if (!authToken) {
-    return res.status(401).json({ error: 'Token non fourni' });
+    const response = {
+      errorJSON : {
+          error : true,
+          error_message : 'Token not supplied',
+          error_code : 401
+      },
+      status : 401,
+      type : 'error'
+    }
+    return res.status(401).json(response);
   }
 
   // On vérifie le token avec firebase-admin
@@ -19,7 +28,16 @@ const verifyAuthToken = (req, res, next) => {
 
       // Comparer les userID
       if (userIDFromToken !== userIDFromHeader) {
-        return res.status(401).json({ error: 'Token invalide pour cet utilisateur' });
+        const response = {
+          errorJSON : {
+              error : true,
+              error_message : 'Invalid Token',
+              error_code : 401
+          },
+          status : 401,
+          type : 'error'
+        }
+        return res.status(401).json(response);
       }
 
       // Si les userID correspondent, ajoutez l'utilisateur à la demande
@@ -28,7 +46,16 @@ const verifyAuthToken = (req, res, next) => {
     })
     .catch(error => {
       console.error('Erreur de vérification du token Firebase:', error);
-      return res.status(401).json({ error: 'Token invalide' });
+      const response = {
+        errorJSON : {
+            error : true,
+            error_message : 'Invalid Token',
+            error_code : 401
+        },
+        status : 401,
+        type : 'error'
+      }
+      return res.status(401).json(response);
     });
 };
 

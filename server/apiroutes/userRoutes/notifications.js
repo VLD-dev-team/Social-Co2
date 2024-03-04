@@ -20,10 +20,24 @@ router.route('/')
 
             const notifications = await executeQuery(getNotificationsQuery, [userID]);
 
-            return res.status(200).json(notifications);
+            const response = {
+                notifications : notifications,
+                status : 200,
+                type : 'response'
+            }
+            return res.status(200).json(response);
         } catch (error) {
             console.error('Error retrieving notifications:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     });
 

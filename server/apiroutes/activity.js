@@ -14,32 +14,71 @@ router.route('/:activityId')
             const activityId = req.body.activityId;
 
             if (typeof userID !== 'string') {
-                return res.status(400).send('Invalid user ID');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Invalid user ID',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
+                }
+                return res.status(400).json(response);
             }
             if (isNaN(activityId)) {
-                return res.status(400).send('Invalid activity ID');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Invalid activity ID',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
+                }
+                return res.status(400).json(response);
             }
             const sqlQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ?`;
             const sqlResult = await executeQuery(sqlQuery, [userID, activityId]);
 
             if (sqlResult.length > 0){
-                const activityData = {
-                    activityID : sqlResult[0].activityID,
-                    userID : sqlResult[0].userID,
-                    activityType : sqlResult[0].activityType,
-                    activityCO2Impact : sqlResult[0].activityCO2Impact,
-                    activityPollutionImpact : sqlResult[0].activityPollutionImpact,
-                    activityName : sqlResult[0].activityName,
-                    activityTimestamp : sqlResult[0].activityTimestamp
+                const response = {
+                    activityData : {
+                        activityID : sqlResult[0].activityID,
+                        userID : sqlResult[0].userID,
+                        activityType : sqlResult[0].activityType,
+                        activityCO2Impact : sqlResult[0].activityCO2Impact,
+                        activityPollutionImpact : sqlResult[0].activityPollutionImpact,
+                        activityName : sqlResult[0].activityName,
+                        activityTimestamp : sqlResult[0].activityTimestamp
+                    },
+                    status : 200,
+                    type : 'response'
                 }
-
-                return req.status(200).json(activityData)
+                return req.status(200).json(response)
             }else {
-                return res.status(404).send('Activity or User not found in SQL database');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Activity or User not found in SQL database',
+                        error_code : 404
+                    },
+                    status : 404,
+                    type : 'error'
+                }
+                return res.status(404).json(response);
             }
         } catch (error) {
             console.error('Error retrieving activity data:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     })
     .post(async (req, res) => {
@@ -52,19 +91,64 @@ router.route('/:activityId')
             const activityTimestamp = req.body.activityTimestamp;
 
             if (typeof userID !== 'string') {
-                return res.status(400).send('Invalid user ID');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Invalid user ID',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
+                }
+                return res.status(400).json(response);
             }
             if (typeof activityType !== 'string') {
-                return res.status(400).send('Invalid activityType');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Invalid activityType',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
+                }
+                return res.status(400).json(response);
             }
             if (isNaN(activityCO2Impact)) {
-                return res.status(400).send('Invalid activityCO2Impact');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Invalid activityCO2Impact',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
+                }
+                return res.status(400).json(response);
             }
             if (isNaN(activityPollutionImpact)) {
-                return res.status(400).send('Invalid activityPollutionImpact');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Invalid activityPollutionImpact',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
+                }
+                return res.status(400).json(response);
             }
             if (typeof activityName !== 'string') {
-                return res.status(400).send('Invalid activityName');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Invalid activityName',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
+                }
+                return res.status(400).json(response);
             }
 
             const insertQuery = `
@@ -75,24 +159,44 @@ router.route('/:activityId')
 
             if (insertResult.affectedRows > 0) {
                 const activityID = insertResult.insertId;
-
-                const activityData = {
-                    activityID,
-                    userID,
-                    activityType,
-                    activityCO2Impact,
-                    activityPollutionImpact,
-                    activityName,
-                    activityTimestamp
-                };
-
-                return res.status(200).json(activityData);
+                const response = {
+                    activityData : {
+                        activityID : activityID,
+                        userID : userID,
+                        activityType : activityType,
+                        activityCO2Impact : activityCO2Impact,
+                        activityPollutionImpact : activityPollutionImpact,
+                        activityName : activityName,
+                        activityTimestamp : activityTimestamp
+                    },
+                    status : 200,
+                    type : 'response'
+                }
+                return res.status(200).json(response);
             } else {
-                return res.status(500).send('Failed to insert activity');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Failed to insert activity',
+                        error_code : 500
+                    },
+                    status : 500,
+                    type : 'error'
+                }
+                return res.status(500).json(response);
             }
         } catch (error) {
             console.error('Error creating activity:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     })
     .put(async (req, res) => {
@@ -106,14 +210,32 @@ router.route('/:activityId')
             const activityTimestamp = req.body.activityTimestamp;
 
             if (typeof userID !== 'string' || isNaN(activityId)) {
-                return res.status(400).send('Invalid user ID or activity ID');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Invalid user ID or activity ID',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
+                }
+                return res.status(400).json(response);
             }
 
             const permissionQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ?`;
             const permissionResult = await executeQuery(permissionQuery, [userID, activityId]);
 
             if (permissionResult.length === 0) {
-                return res.status(403).send('Permission denied: User does not own this activity');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Permission denied: User does not own this activity',
+                        error_code : 403
+                    },
+                    status : 403,
+                    type : 'error'
+                }
+                return res.status(403).json(response);
             }
 
             const updateQuery = `
@@ -125,23 +247,44 @@ router.route('/:activityId')
             const updateResult = await executeQuery(updateQuery, [activityType, activityCO2Impact, activityPollutionImpact, activityName, activityTimestamp, userID, activityId]);
 
             if (updateResult.affectedRows > 0) {
-                const activityData = {
-                    activityID: activityId,
-                    userID,
-                    activityType,
-                    activityCO2Impact,
-                    activityPollutionImpact,
-                    activityName,
-                    activityTimestamp
-                };
-
-                return res.status(200).json(activityData);
+                const response = {
+                    activityData : {
+                        activityID: activityId,
+                        userID : userID,
+                        activityType : activityType,
+                        activityCO2Impact : activityCO2Impact,
+                        activityPollutionImpact : activityPollutionImpact,
+                        activityName : activityName,
+                        activityTimestamp : activityTimestamp
+                    },
+                    status : 200,
+                    type : 'response'
+                }
+                return res.status(200).json(response);
             } else {
-                return res.status(500).send('Failed to update activity');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Failed to update activity',
+                        error_code : 500
+                    },
+                    status : 500,
+                    type : 'error'
+                }
+                return res.status(500).json(response);
             }
         } catch (error) {
             console.error('Error updating activity:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     })
     .delete(async (req, res) => {
@@ -150,27 +293,68 @@ router.route('/:activityId')
             const activityId = req.params.activityId;
 
             if (typeof userID !== 'string' || isNaN(activityId)) {
-                return res.status(400).send('Invalid user ID or activity ID');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Invalid user ID or activity ID',
+                        error_code : 400
+                    },
+                    status : 400,
+                    type : 'error'
+                }
+                return res.status(400).json(response);
             }
 
             const permissionQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ?`;
             const permissionResult = await executeQuery(permissionQuery, [userID, activityId]);
 
             if (permissionResult.length === 0) {
-                return res.status(403).send('Permission denied: User does not own this activity');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Permission denied: User does not own this activity',
+                        error_code : 403
+                    },
+                    status : 403,
+                    type : 'error'
+                }
+                return res.status(403).json(response);
             }
 
             const deleteQuery = `DELETE FROM activities WHERE userID = ? AND activityID = ?`;
             const deleteResult = await executeQuery(deleteQuery, [userID, activityId]);
 
             if (deleteResult.affectedRows > 0) {
-                return res.status(200).send('Activity deleted successfully');
+                const response = {
+                    message : 'Activity deleted successfully',
+                    status : 200,
+                    type : 'response'
+                }
+                return res.status(200).json(response);
             } else {
-                return res.status(500).send('Failed to delete activity');
+                const response = {
+                    errorJSON : {
+                        error : true,
+                        error_message : 'Failed to delete activity',
+                        error_code : 500
+                    },
+                    status : 500,
+                    type : 'error'
+                }
+                return res.status(500).json(response);
             }
         } catch (error) {
             console.error('Error deleting activity:', error);
-            return res.status(500).send('Internal Server Error');
+            const response = {
+                errorJSON : {
+                    error : true,
+                    error_message : 'Internal Server Error',
+                    error_code : 500
+                },
+                status : 500,
+                type : 'error'
+            }
+            return res.status(500).json(response);
         }
     });
 

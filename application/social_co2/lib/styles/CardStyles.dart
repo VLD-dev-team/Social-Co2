@@ -33,3 +33,18 @@ const BoxDecoration secondaryCardInnerShadow = BoxDecoration(
           offset: Offset(0, 4)),
     ],
     borderRadius: BorderRadius.all(Radius.circular(5.0)));
+
+const BoxDecoration tertiaryCard = BoxDecoration(
+  color: tertiaryCardColor,
+  /* boxShadow: [
+    BoxShadow(
+      color: shadowColor,
+    ),
+    BoxShadow(
+        color: secondaryCardColor,
+        //blurRadius: 4,
+        spreadRadius: 0,
+        offset: Offset(0, 4)),
+  ], */
+  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+);

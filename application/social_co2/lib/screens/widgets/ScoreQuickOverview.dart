@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/providers/IndexProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
+import 'package:social_co2/styles/ScoreColors.dart';
 
 class ScoreQuickOverview extends StatefulWidget {
   @override
@@ -9,6 +10,17 @@ class ScoreQuickOverview extends StatefulWidget {
 }
 
 class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
+  Widget arrowScaleIndicator = Container(
+    margin: const EdgeInsets.only(bottom: 10),
+    width: 40,
+    decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(15))),
+    child: const Center(
+      child: Icon(Icons.expand_more_outlined),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -89,12 +101,13 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
                     decoration: secondaryCardInnerShadow,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
                           decoration: primaryCard,
                           child: Padding(
-                            padding: const EdgeInsets.all(20),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
                             child: Column(
                               children: [
                                 const Card(
@@ -122,40 +135,172 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
                             ),
                           ),
                         ),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: primaryCard,
-                          height: 150,
-                          child: GridView.count(
-                            crossAxisCount: 6,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: const [Text("data")],
+                            decoration: tertiaryCard,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      //Visibility(child: arrowScaleIndicator, visible: Provider.of<(context),),
+                                      Container(
+                                        height: 100,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            color: scoreColorA,
+                                            borderRadius: const BorderRadius
+                                                    .only(
+                                                bottomLeft: Radius.circular(15),
+                                                bottomRight: Radius.zero,
+                                                topLeft: Radius.circular(15),
+                                                topRight: Radius.circular(15))),
+                                        child: const Center(
+                                            child: Text(
+                                          '1',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        )),
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        height: 85,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            color: scoreColorB,
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    bottomLeft: Radius.zero,
+                                                    bottomRight: Radius.zero,
+                                                    topLeft: Radius.zero,
+                                                    topRight:
+                                                        Radius.circular(15))),
+                                        child: const Center(
+                                            child: Text(
+                                          '2',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        )),
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        height: 70,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            color: scoreColorC,
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    bottomLeft: Radius.zero,
+                                                    bottomRight: Radius.zero,
+                                                    topLeft: Radius.zero,
+                                                    topRight:
+                                                        Radius.circular(15))),
+                                        child: const Center(
+                                            child: Text(
+                                          '3',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        )),
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        height: 55,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            color: scoreColorD,
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    bottomLeft: Radius.zero,
+                                                    bottomRight: Radius.zero,
+                                                    topLeft: Radius.zero,
+                                                    topRight:
+                                                        Radius.circular(15))),
+                                        child: const Center(
+                                            child: Text(
+                                          '4',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        )),
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            color: scoreColorE,
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    bottomLeft: Radius.zero,
+                                                    bottomRight: Radius.zero,
+                                                    topLeft: Radius.zero,
+                                                    topRight:
+                                                        Radius.circular(15))),
+                                        child: const Center(
+                                            child: Text(
+                                          '5',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        )),
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        height: 25,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            color: scoreColorF,
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    bottomLeft: Radius.zero,
+                                                    bottomRight:
+                                                        Radius.circular(15),
+                                                    topLeft: Radius.zero,
+                                                    topRight:
+                                                        Radius.circular(15))),
+                                        child: const Center(
+                                            child: Text(
+                                          '6',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        )),
+                                      )
+                                    ],
+                                  ),
+                                ],
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: const [Text("data")],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: const [Text("data")],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: const [Text("data")],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: const [Text("data")],
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: const [Text("data")],
-                              ),
-                            ],
-                          ),
-                        )
+                            ))
                       ],
                     ),
                   ),

@@ -39,6 +39,7 @@ class UserActivitiesProvider extends ChangeNotifier {
         activityTimestamp: DateTime(2004)));
 
     isLoading = false;
+    notifyListeners();
     return userActivities;
   }
 }

@@ -1,14 +1,15 @@
 const express = require('express');
-const socketManager = require('../utils/socketManager.js');
-const { verifyAuthToken } = require('./utils/requireAuth.js');
+const initializeSocket = require('../utils/socketManager.js');
+const { verifyAuthToken } = require('../utils/requireAuth.js');
 const notificationHandler = require('../utils/notificationHandler.js');
 const { sendMessage } = require('../utils/messageHandler.js');
+const { createServer } = require("http");
 
 const router = express.Router();
 
 // Initialisation du serveur Socket.io
-const server = socketManager.createServer();
-const io = socketManager.initializeSocket(server);
+const server = createServer();
+const io = initializeSocket(server);
 
 router.use('/', (req, res, next) => {
     req.io = io;
@@ -47,6 +48,6 @@ io.on('connection', (socket) => {
 });
 
 // On surveille les modifications de la table notifications
-notificationHandler.watchNotifications(io);
+//notificationHandler.watchNotifications(io);
 
 module.exports = router;

@@ -31,8 +31,8 @@ app.use('/api', apiroutes);
 
 // Utiliser un port différent que socket.io -> port 3006
 // lancement du serveur
-const server = app.listen(process.env.BDDport || 3006, () => {
-  console.log(`Server listening on port ${process.env.BDDport || 3006}`);
+const server = app.listen(process.env.ServerPort || 3000, () => {
+  console.log(`Server listening on port ${process.env.ServerPort || 3000}`);
 });
 
 // Utilisation du routeur WebSocket sur /api/websocket

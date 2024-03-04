@@ -43,6 +43,11 @@ const notFoundRoute = require('./notFoundRoute.js');
 
 // définition des routes
 
+router.get('/',(req,res)=>{
+    res.json({status : 200, ping : 'ok'});
+  })
+  
+
 /// Pages principale de l'espace de travail
 router.use('/websocket', websocket);
 router.use('/user', user);

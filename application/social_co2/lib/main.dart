@@ -15,6 +15,7 @@ import 'package:social_co2/firebase_options.dart';
 // Importation des providers
 import 'package:social_co2/providers/IndexProvider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
+import 'package:social_co2/providers/UserSCO2DataProvider.dart';
 
 // Importation du screen de page d'accueil et de l'écran de connexion/création de compte
 import 'package:social_co2/screens/authScreen.dart';
@@ -103,6 +104,9 @@ class HomeScreen extends StatelessWidget {
         ListenableProvider<UserActivitiesProvider>(
             create: (_) =>
                 UserActivitiesProvider()), // Provider des activitiés de l'utilisateur courant
+        ListenableProvider<UserSCO2DataProvider>(
+            create: (_) =>
+                UserSCO2DataProvider()), // Provider du score et des infos SCO2 de l'utilisateur courant
       ],
       builder: (context, child) {
         if (kIsWeb) {

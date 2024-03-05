@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
+import 'package:social_co2/providers/UserSCO2DataProvider.dart';
 import 'package:social_co2/screens/homeScreen/HomeScreen.dart';
 
 // Importation des styles et des providers pour le menu/drawer
@@ -24,6 +25,7 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
     // Obtention des informations necessaire au lancement de l'écran d'accueil depuis le serveur
     Provider.of<UserActivitiesProvider>(context, listen: false)
         .getCurrentUserActivities(0);
+    Provider.of<UserSCO2DataProvider>(context, listen: false).getUserScore();
   }
 
   @override

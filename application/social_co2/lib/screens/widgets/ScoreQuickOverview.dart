@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/providers/IndexProvider.dart';
+import 'package:social_co2/providers/UserActivitiesProvider.dart';
+import 'package:social_co2/providers/UserSCO2DataProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 import 'package:social_co2/styles/ScoreColors.dart';
 
@@ -34,29 +36,39 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
               children: [
                 Container(
                   decoration: secondaryCardInnerShadow,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Card(
-                            margin: EdgeInsets.all(10.0),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              child: Text(
-                                "Aujourdhui",
-                                style: TextStyle(fontSize: 25),
-                              ),
-                            )),
-                        Card(
-                          margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                          color: primaryCardColor,
-                          child: Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Text(
-                                "Lorem IPSUjejzfzefnjzfnjdfkjdfnkjdfgnkjdfgnkdjfgnkjdfgkdjfngkjdfngkjdfngkjdfngkdfjngkdfjgnkdfjgnkdjfgnkdfjgkdfjgkdjfgnkdfsjgksdjfgnkdfjgndfjkgndkjfs"),
-                          ),
-                        ),
-                      ]),
+                  child:
+                      (!Provider.of<UserActivitiesProvider>(context).isLoading)
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                  Card(
+                                      margin: EdgeInsets.all(10.0),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 10),
+                                        child: Text(
+                                          "Aujourdhui",
+                                          style: TextStyle(fontSize: 25),
+                                        ),
+                                      )),
+                                  Card(
+                                    margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                    color: primaryCardColor,
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Text(
+                                          "Lorem IPSUjejzfzefnjzfnjdfkjdfnkjdfgnkjdfgnkdjfgnkjdfgkdjfngkjdfngkjdfngkjdfngkdfjngkdfjgnkdfjgnkdjfgnkdfjgkdfjgkdjfgnkdfsjgksdjfgnkdfjgndfjkgndkjfs"),
+                                    ),
+                                  ),
+                                ])
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: const [Padding(
+                                padding: EdgeInsets.all(20),
+                                child: CircularProgressIndicator(),
+                              )],
+                            ),
                 ),
                 const SizedBox(
                   height: 15,
@@ -126,7 +138,7 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 5, horizontal: 10),
                                     child: Text(
-                                      '- ${Provider.of<IndexProvider>(listen: false, context).selectedIndex.toString()} SCO -',
+                                      '- ${Provider.of<UserSCO2DataProvider>(listen: false, context).CurrentUserScore.toString()} SCO -',
                                       style: const TextStyle(fontSize: 25),
                                     ),
                                   ),
@@ -136,12 +148,12 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
                           ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Container(
                             decoration: tertiaryCard,
                             child: Padding(
-                              padding: const EdgeInsets.all(20),
+                              padding: const EdgeInsets.all(15),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -150,10 +162,17 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      //Visibility(child: arrowScaleIndicator, visible: Provider.of<(context),),
+                                      Visibility(
+                                        visible:
+                                            Provider.of<UserSCO2DataProvider>(
+                                                        listen: false, context)
+                                                    .CurrentUserScoreScale ==
+                                                1,
+                                        child: arrowScaleIndicator,
+                                      ),
                                       Container(
                                         height: 100,
-                                        width: 40,
+                                        width: 50,
                                         decoration: BoxDecoration(
                                             color: scoreColorA,
                                             borderRadius: const BorderRadius
@@ -175,9 +194,17 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
+                                      Visibility(
+                                        visible:
+                                            Provider.of<UserSCO2DataProvider>(
+                                                        listen: false, context)
+                                                    .CurrentUserScoreScale ==
+                                                2,
+                                        child: arrowScaleIndicator,
+                                      ),
                                       Container(
                                         height: 85,
-                                        width: 40,
+                                        width: 50,
                                         decoration: BoxDecoration(
                                             color: scoreColorB,
                                             borderRadius:
@@ -200,9 +227,17 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
+                                      Visibility(
+                                        visible:
+                                            Provider.of<UserSCO2DataProvider>(
+                                                        listen: false, context)
+                                                    .CurrentUserScoreScale ==
+                                                3,
+                                        child: arrowScaleIndicator,
+                                      ),
                                       Container(
                                         height: 70,
-                                        width: 40,
+                                        width: 50,
                                         decoration: BoxDecoration(
                                             color: scoreColorC,
                                             borderRadius:
@@ -225,9 +260,17 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
+                                      Visibility(
+                                        visible:
+                                            Provider.of<UserSCO2DataProvider>(
+                                                        listen: false, context)
+                                                    .CurrentUserScoreScale ==
+                                                4,
+                                        child: arrowScaleIndicator,
+                                      ),
                                       Container(
                                         height: 55,
-                                        width: 40,
+                                        width: 50,
                                         decoration: BoxDecoration(
                                             color: scoreColorD,
                                             borderRadius:
@@ -250,36 +293,19 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
+                                      Visibility(
+                                        visible:
+                                            Provider.of<UserSCO2DataProvider>(
+                                                        listen: false, context)
+                                                    .CurrentUserScoreScale ==
+                                                5,
+                                        child: arrowScaleIndicator,
+                                      ),
                                       Container(
                                         height: 40,
-                                        width: 40,
+                                        width: 50,
                                         decoration: BoxDecoration(
                                             color: scoreColorE,
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                                    bottomLeft: Radius.zero,
-                                                    bottomRight: Radius.zero,
-                                                    topLeft: Radius.zero,
-                                                    topRight:
-                                                        Radius.circular(15))),
-                                        child: const Center(
-                                            child: Text(
-                                          '5',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20),
-                                        )),
-                                      )
-                                    ],
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        height: 25,
-                                        width: 40,
-                                        decoration: BoxDecoration(
-                                            color: scoreColorF,
                                             borderRadius:
                                                 const BorderRadius.only(
                                                     bottomLeft: Radius.zero,
@@ -290,7 +316,7 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
                                                         Radius.circular(15))),
                                         child: const Center(
                                             child: Text(
-                                          '6',
+                                          '5',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 20),

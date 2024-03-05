@@ -38,7 +38,7 @@ class UserActivitiesProvider extends ChangeNotifier {
         activityName: 'Repas de la nuit',
         activityTimestamp: DateTime(2004)));
 
-    isLoading = false;
+    isLoading = true;
     notifyListeners();
     return userActivities;
   }

@@ -40,6 +40,7 @@ const friends = require('./userRoutes/friends.js')
 const notifications = require('./userRoutes/notifications.js')
 const social = require('./userRoutes/social.js')
 const notFoundRoute = require('./notFoundRoute.js');
+const init = require('./init.js')
 
 // définition des routes
 
@@ -63,6 +64,7 @@ router.use('/user/activities', activities);
 router.use('/user/friends', friends);
 router.use('/user/notifications', notifications);
 router.use('/user/social', social);
+router.use('/initialisation', init);
 router.use(notFoundRoute);
 
 module.exports = router;

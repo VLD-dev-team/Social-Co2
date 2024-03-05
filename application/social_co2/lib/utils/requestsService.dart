@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 
 class requestService {
   // URL du serveur
-  static const serverApiURL = 'https://social-co2.vld-group.com';
+  static const String serverApiURL = 'https://social-co2.vld-group.com/api/';
+  static const Map<String, String> additionnalHeaders = {};
 
   // REQUETTE GET
   Future<Map<String, dynamic>> get(
@@ -11,11 +12,13 @@ class requestService {
     Map<String, dynamic> data = {};
 
     try {
-      final response =
-          await http.get(Uri.parse(serverApiURL + endpoint), headers: headers);
+      final url = Uri.parse(serverApiURL + endpoint);
+      headers.addAll(additionnalHeaders);
+
+      final response = await http.get(url, headers: headers);
       data = json.decode(response.body);
     } catch (err) {
-      data = {"error": "true", "error_message": err.toString()};
+      data = {"error": true, "error_message": err.toString()};
     }
     return data;
   }
@@ -26,8 +29,10 @@ class requestService {
     Map<String, dynamic> data = {};
 
     try {
-      final response = await http.post(Uri.parse(serverApiURL + endpoint),
-          headers: headers, body: body);
+      final url = Uri.parse(serverApiURL + endpoint);
+      headers.addAll(additionnalHeaders);
+
+      final response = await http.post(url, headers: headers, body: body);
       data = json.decode(response.body);
     } catch (err) {
       data = {"error": true, "error_message": err.toString()};
@@ -41,8 +46,10 @@ class requestService {
     Map<String, dynamic> data = {};
 
     try {
-      final response = await http.put(Uri.parse(serverApiURL + endpoint),
-          headers: headers, body: body);
+      final url = Uri.parse(serverApiURL + endpoint);
+      headers.addAll(additionnalHeaders);
+
+      final response = await http.put(url, headers: headers, body: body);
       data = json.decode(response.body);
     } catch (err) {
       data = {"error": true, "error_message": err.toString()};
@@ -56,8 +63,10 @@ class requestService {
     Map<String, dynamic> data = {};
 
     try {
-      final response = await http.delete(Uri.parse(serverApiURL + endpoint),
-          headers: headers, body: body);
+      final url = Uri.parse(serverApiURL + endpoint);
+      headers.addAll(additionnalHeaders);
+
+      final response = await http.delete(url, headers: headers, body: body);
       data = json.decode(response.body);
     } catch (err) {
       data = {"error": true, "error_message": err.toString()};

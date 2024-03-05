@@ -31,14 +31,17 @@ class UserSCO2DataProvider extends ChangeNotifier {
 
     // On récupère le token de connexion
     final authToken = await firebaseAuth.currentUser!.getIdToken();
+    final userID = await firebaseAuth.currentUser!.uid;
 
     // On fait la requette au server
-    final data = await requestService().get("/user/", {"token": '$authToken'});
-    print(data);
+    final data = await requestService().get("user/", {
+      "authorization": '$authToken',
+      'userid': '$userID',
+    });
 
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
-    if (data["error"] == "true") {
+    if (data["error"] == true) {
       try {
         error = 'error: ${data["error_message"].toString()}';
       } catch (e) {

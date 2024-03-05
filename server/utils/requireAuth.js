@@ -7,13 +7,9 @@ const verifyAuthToken = (req, res, next) => {
 
   if (!authToken) {
     const response = {
-      errorJSON : {
-          error : true,
-          error_message : 'Token not supplied',
-          error_code : 401
-      },
-      status : 401,
-      type : 'error'
+      error: true,
+      error_message: 'Token not supplied',
+      error_code: 401 // TODO: Mettre le bon code @Kez0X
     }
     return res.status(401).json(response);
   }
@@ -29,13 +25,9 @@ const verifyAuthToken = (req, res, next) => {
       // Comparer les userID
       if (userIDFromToken !== userIDFromHeader) {
         const response = {
-          errorJSON : {
-              error : true,
-              error_message : 'Invalid Token',
-              error_code : 401
-          },
-          status : 401,
-          type : 'error'
+          error: true,
+          error_message: 'Invalid Token',
+          error_code: 401 // TODO: Mettre le bon code @Kez0X
         }
         return res.status(401).json(response);
       }
@@ -47,13 +39,9 @@ const verifyAuthToken = (req, res, next) => {
     .catch(error => {
       console.error('Erreur de vérification du token Firebase:', error);
       const response = {
-        errorJSON : {
-            error : true,
-            error_message : 'Invalid Token',
-            error_code : 401
-        },
-        status : 401,
-        type : 'error'
+        error: true,
+        error_message: 'Invalid Token',
+        error_code: 401 // TODO: Mettre le bon code @Kez0X
       }
       return res.status(401).json(response);
     });

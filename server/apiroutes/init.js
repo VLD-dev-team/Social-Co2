@@ -5,7 +5,7 @@ const { executeQuery } = require('../utils/database.js');
 router.route('/')
     .post(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
 
             if (typeof userID !== 'string') {
                 const response = {

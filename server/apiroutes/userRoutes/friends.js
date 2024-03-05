@@ -9,7 +9,7 @@ router.route('/*')
 router.route('/')
     .get(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
 
             // Requête pour obtenir les amis et leurs statuts
             const getFriendsQuery = `
@@ -45,7 +45,7 @@ router.route('/')
 router.route('/search')
     .get(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
             const friendshipID = req.query.friendshipId;
 
             // Requête pour rechercher une personne par son friendshipID
@@ -88,7 +88,7 @@ router.route('/search')
 router.route('/status')
     .post(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
             const friendID = req.body.friendID;
             const friendshipStatus = req.body.friendshipStatus;
 
@@ -139,7 +139,7 @@ router.route('/status')
     })
     .delete(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
             const friendID = req.body.friendID;
 
             // Supprimer l'amitié

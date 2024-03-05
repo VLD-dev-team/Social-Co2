@@ -9,7 +9,7 @@ router.route('/*')
 router.route('/feed')
     .get(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
 
             const getFriendsQuery = `
                 SELECT userID1, userID2
@@ -49,7 +49,7 @@ router.route('/feed')
 router.route('/conversations')
     .get(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
 
             const getConversationsQuery = `
                 SELECT * FROM conversations WHERE (userID1 = ? OR userID2 = ?) AND convLastMessage IS NOT NULL ORDER BY convCreatedAt DESC`;
@@ -71,7 +71,7 @@ router.route('/conversations')
     })
     .post(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
             const friendID = req.body.friendID;
 
             // Vérifie le statut de l'amitié entre l'utilisateur et son ami
@@ -143,7 +143,7 @@ router.route('/conversations')
 router.route('/messages')
     .get(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
             const convID = req.query.convID;
             const startIndex = parseInt(req.query.startIndex) || 0;
 

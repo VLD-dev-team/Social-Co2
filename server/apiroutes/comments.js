@@ -11,7 +11,7 @@ router.route('/*')
 router.route('/')
     .post(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
             const postID = req.body.postID;
             const commentTextContent = req.body.commentTextContent;
 

@@ -9,7 +9,7 @@ router.route('/*')
 router.route('/')
     .get(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
             const startIndex = parseInt(req.query.index) || 0; // Index de départ, par défaut 0
 
             // Requête pour obtenir les 20 dernières activités de l'utilisateur à partir de l'index spécifié

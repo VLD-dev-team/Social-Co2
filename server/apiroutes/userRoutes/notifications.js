@@ -9,7 +9,7 @@ router.route('/*')
 router.route('/')
     .get(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
 
             // Requête pour obtenir les 10 dernières notifications de l'utilisateur
             const getNotificationsQuery = `

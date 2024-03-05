@@ -24,11 +24,11 @@ const verifyAuthToken = (req, res, next) => {
 
       // Comparer les userID
       if (userIDFromToken !== userIDFromHeader) {
-        const response = {
-          error: true,
-          error_message: 'Invalid Token',
-          error_code: 401 // TODO: Mettre le bon code @Kez0X
-        }
+          const response = {
+            error: true,
+            error_message: 'Invalid Token',
+            error_code: 401
+          }
         return res.status(401).json(response);
       }
 

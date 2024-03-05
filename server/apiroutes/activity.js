@@ -10,7 +10,7 @@ router.route('/*')
 router.route('/:activityId')
     .get(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
             const activityId = req.body.activityId;
 
             if (typeof userID !== 'string') {
@@ -67,7 +67,7 @@ router.route('/:activityId')
     })
     .post(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
             const activityType = req.body.activityType;
             const activityCO2Impact = req.body.activityCO2Impact;
             const activityPollutionImpact = req.body.activityPollutionImpact;
@@ -153,7 +153,7 @@ router.route('/:activityId')
     })
     .put(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
             const activityId = req.params.activityId;
             const activityType = req.body.activityType;
             const activityCO2Impact = req.body.activityCO2Impact;
@@ -221,7 +221,7 @@ router.route('/:activityId')
     })
     .delete(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
             const activityId = req.params.activityId;
 
             if (typeof userID !== 'string' || isNaN(activityId)) {

@@ -11,7 +11,7 @@ router.route('/*')
 router.route('/like')
     .post(async (req, res) => {
         try {
-            const userID = req.headers.id;
+            const userID = req.headers.userid;
             const postID = req.body.postID;
 
             if (typeof userID !== 'string' || isNaN(postID)) {

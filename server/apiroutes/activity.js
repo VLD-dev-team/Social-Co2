@@ -15,25 +15,17 @@ router.route('/:activityId')
 
             if (typeof userID !== 'string') {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Invalid user ID',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 1
                 }
                 return res.status(400).json(response);
             }
             if (isNaN(activityId)) {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Invalid activity ID',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 13
                 }
                 return res.status(400).json(response);
             }
@@ -57,26 +49,18 @@ router.route('/:activityId')
                 return req.status(200).json(response)
             }else {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Activity or User not found in SQL database',
-                        error_code : 404
-                    },
-                    status : 404,
-                    type : 'error'
+                        error_code : 14
                 }
                 return res.status(404).json(response);
             }
         } catch (error) {
             console.error('Error retrieving activity data:', error);
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 2
             }
             return res.status(500).json(response);
         }
@@ -92,61 +76,41 @@ router.route('/:activityId')
 
             if (typeof userID !== 'string') {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Invalid user ID',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 1
                 }
                 return res.status(400).json(response);
             }
             if (typeof activityType !== 'string') {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Invalid activityType',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 15
                 }
                 return res.status(400).json(response);
             }
             if (isNaN(activityCO2Impact)) {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Invalid activityCO2Impact',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 16
                 }
                 return res.status(400).json(response);
             }
             if (isNaN(activityPollutionImpact)) {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Invalid activityPollutionImpact',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 17
                 }
                 return res.status(400).json(response);
             }
             if (typeof activityName !== 'string') {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Invalid activityName',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 18
                 }
                 return res.status(400).json(response);
             }
@@ -160,7 +124,6 @@ router.route('/:activityId')
             if (insertResult.affectedRows > 0) {
                 const activityID = insertResult.insertId;
                 const response = {
-                    activityData : {
                         activityID : activityID,
                         userID : userID,
                         activityType : activityType,
@@ -168,33 +131,22 @@ router.route('/:activityId')
                         activityPollutionImpact : activityPollutionImpact,
                         activityName : activityName,
                         activityTimestamp : activityTimestamp
-                    },
-                    status : 200,
-                    type : 'response'
                 }
                 return res.status(200).json(response);
             } else {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Failed to insert activity',
-                        error_code : 500
-                    },
-                    status : 500,
-                    type : 'error'
+                        error_code : 19
                 }
                 return res.status(500).json(response);
             }
         } catch (error) {
             console.error('Error creating activity:', error);
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 2
             }
             return res.status(500).json(response);
         }
@@ -211,13 +163,9 @@ router.route('/:activityId')
 
             if (typeof userID !== 'string' || isNaN(activityId)) {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Invalid user ID or activity ID',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 3
                 }
                 return res.status(400).json(response);
             }
@@ -227,13 +175,9 @@ router.route('/:activityId')
 
             if (permissionResult.length === 0) {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Permission denied: User does not own this activity',
-                        error_code : 403
-                    },
-                    status : 403,
-                    type : 'error'
+                        error_code : 20
                 }
                 return res.status(403).json(response);
             }
@@ -248,7 +192,6 @@ router.route('/:activityId')
 
             if (updateResult.affectedRows > 0) {
                 const response = {
-                    activityData : {
                         activityID: activityId,
                         userID : userID,
                         activityType : activityType,
@@ -256,33 +199,22 @@ router.route('/:activityId')
                         activityPollutionImpact : activityPollutionImpact,
                         activityName : activityName,
                         activityTimestamp : activityTimestamp
-                    },
-                    status : 200,
-                    type : 'response'
                 }
                 return res.status(200).json(response);
             } else {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Failed to update activity',
-                        error_code : 500
-                    },
-                    status : 500,
-                    type : 'error'
+                        error_code : 21
                 }
                 return res.status(500).json(response);
             }
         } catch (error) {
             console.error('Error updating activity:', error);
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 2
             }
             return res.status(500).json(response);
         }
@@ -294,13 +226,9 @@ router.route('/:activityId')
 
             if (typeof userID !== 'string' || isNaN(activityId)) {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Invalid user ID or activity ID',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 4
                 }
                 return res.status(400).json(response);
             }
@@ -310,13 +238,9 @@ router.route('/:activityId')
 
             if (permissionResult.length === 0) {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Permission denied: User does not own this activity',
-                        error_code : 403
-                    },
-                    status : 403,
-                    type : 'error'
+                        error_code : 20
                 }
                 return res.status(403).json(response);
             }
@@ -328,31 +252,22 @@ router.route('/:activityId')
                 const response = {
                     message : 'Activity deleted successfully',
                     status : 200,
-                    type : 'response'
                 }
                 return res.status(200).json(response);
             } else {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Failed to delete activity',
-                        error_code : 500
-                    },
-                    status : 500,
-                    type : 'error'
+                        error_code : 22
                 }
                 return res.status(500).json(response);
             }
         } catch (error) {
             console.error('Error deleting activity:', error);
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 2
             }
             return res.status(500).json(response);
         }

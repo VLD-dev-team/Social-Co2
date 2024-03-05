@@ -9,13 +9,9 @@ router.route('/')
 
             if (typeof userID !== 'string') {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Invalid user ID',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 1
                 }
                 return res.status(400).json(response);
             }
@@ -31,38 +27,26 @@ router.route('/')
 
                 // Création d'un objet avec les données d'authentification et le score
                 const response = {
-                    userData : {
-                        userId : userID,
-                        score: 5000,
-                    },
+                    userId : userID,
+                    score: 5000,
                     message : 'User is defined',
-                    status : 200,
-                    type : 'response'
                 }
                 return res.status(200).json(response);
 
             } else {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'User is already in database',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 7
                 }
                 return res.status(400).json(response);
             }
         } catch (error) {
             console.error('Error retrieving user data:', error);
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 2
             }
             return res.status(500).json(response);
         }

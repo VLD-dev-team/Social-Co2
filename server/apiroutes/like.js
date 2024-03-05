@@ -16,13 +16,9 @@ router.route('/like')
 
             if (typeof userID !== 'string' || isNaN(postID)) {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Invalid user ID or post ID',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 4
                 }
                 return res.status(400).json(response);
             }
@@ -33,13 +29,9 @@ router.route('/like')
 
             if (checkLikeResult.length > 0) {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'User has already liked this post',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 5
                 }
                 return res.status(400).json(response);
             }
@@ -74,39 +66,27 @@ router.route('/like')
                     notificationHandler.handleNewNotification(io, { userID: postOwnerID, notificationContent });
 
                     const response = {
-                        notification : {
                             userID : postOwnerID,
                             notificationContent : notificationContent,
                             notificationTitle : notificationTitle,
                             notificationStatus : notificationStatus
-                        },
-                        status : 200,
-                        type : 'response'
                     }
                     return res.status(200).json(response);
                 }
             }
 
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Failed to process like',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 6
             }
             return res.status(500).json(response);
         } catch (error) {
             console.error('Error adding like:', error);
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 2
             }
             return res.status(500).json(response);
         }

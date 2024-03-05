@@ -26,19 +26,14 @@ router.route('/')
             const response = {
                 activities : activities,
                 status : 200,
-                type : 'response'
             }
             return res.status(200).json(response);
         } catch (error) {
             console.error('Error retrieving activities:', error);
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 2
             }
             return res.status(500).json(response);
         }

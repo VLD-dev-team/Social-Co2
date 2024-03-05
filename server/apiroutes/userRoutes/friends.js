@@ -29,19 +29,14 @@ router.route('/')
             const response = {
                 friends : friends,
                 status : 200,
-                type : 'response'
             }
             return res.status(200).json(response);
         } catch (error) {
             console.error('Error retrieving friends:', error);
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 2
             }
             return res.status(500).json(response);
         }
@@ -68,32 +63,23 @@ router.route('/search')
 
             if (friend.length === 0) {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Friend not found',
-                        error_code : 404
-                    },
-                    status : 404,
-                    type : 'error'
+                        error_code : 23
                 }
                 return res.status(404).json(response);
             }
             const response = {
                 friend : friend[0],
                 status : 200,
-                type : 'response'
             }
             return res.status(200).json(response);
         } catch (error) {
             console.error('Error searching friend:', error);
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 2
             }
             return res.status(500).json(response);
         }
@@ -125,7 +111,6 @@ router.route('/status')
                 const response = {
                     message : 'Friendship status updated successfully',
                     status : 200,
-                    type : 'response'
                 }
                 return res.status(200).json(response);
             } else {
@@ -139,20 +124,15 @@ router.route('/status')
                 const response = {
                     message : 'Friendship added successfully',
                     status : 201,
-                    type : 'response'
                 }
                 return res.status(201).json(response);
             }
         } catch (error) {
             console.error('Error updating friendship status:', error);
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 2
             }
             return res.status(500).json(response);
         }
@@ -173,31 +153,22 @@ router.route('/status')
                 const response = {
                     message : 'Friendship deleted successfully',
                     status : 200,
-                    type : 'response'
                 }
                 return res.status(200).json(response);
             } else {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Friendship not found',
-                        error_code : 404
-                    },
-                    status : 404,
-                    type : 'error'
+                        error_code : 25
                 }
                 return res.status(404).json(response);
             }
         } catch (error) {
             console.error('Error deleting friendship:', error);
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 2
             }
             return res.status(500).json(response);
         }

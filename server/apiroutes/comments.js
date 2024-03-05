@@ -17,13 +17,9 @@ router.route('/')
 
             if (typeof userID !== 'string' || isNaN(postID) || typeof commentTextContent !== 'string') {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Invalid user ID, post ID, or comment content',
-                        error_code : 400
-                    },
-                    status : 400,
-                    type : 'error'
+                        error_code : 8
                 }
                 return res.status(400).json(response);
             }
@@ -60,50 +56,34 @@ router.route('/')
                         notificationHandler.handleNewNotification(io, { userID: postOwnerID, notificationContent });
 
                         const response = {
-                            notification : {
                                 userID : postOwnerID,
                                 notificationContent : notificationContent,
                                 notificationTitle : notificationTitle,
                                 notificationStatus : notificationStatus
-                            },
-                            status : 200,
-                            type : 'response'
                         }
                         return res.status(200).json(response);
                     }
                 }
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Failed to process comment',
-                        error_code : 500
-                    },
-                    status : 500,
-                    type : 'error'
+                        error_code : 10
                 }
                 return res.status(500).json(response);
             } else {
                 const response = {
-                    errorJSON : {
                         error : true,
                         error_message : 'Failed to add comment',
-                        error_code : 500
-                    },
-                    status : 500,
-                    type : 'error'
+                        error_code : 11
                 }
                 return res.status(500).json(response);
             }
         } catch (error) {
             console.error('Error adding comment:', error);
             const response = {
-                errorJSON : {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
-                },
-                status : 500,
-                type : 'error'
+                    error_code : 2
             }
             return res.status(500).json(response);
         }

@@ -41,7 +41,7 @@ const verifyAuthToken = (req, res, next) => {
       const response = {
         error: true,
         error_message: 'Invalid Token',
-        error_code: 401 // TODO: Mettre le bon code @Kez0X
+        error_code: 30
       }
       return res.status(401).json(response);
     });

@@ -38,8 +38,12 @@ class UserSCO2DataProvider extends ChangeNotifier {
 
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
-    if (data["error"] == true) {
-      error = data["error_message"];
+    if (data["error"] == "true") {
+      try {
+        error = 'error: ${data["error_message"].toString()}';
+      } catch (e) {
+        error = "error: unknown error";
+      }
       CurrentUserScoreScale = 0;
       isLoading = false;
 
@@ -48,6 +52,7 @@ class UserSCO2DataProvider extends ChangeNotifier {
     }
 
     // Si pas d'erreur on met à jour le score pour toute l'appli et on met à jour le provider
+    error = "";
     CurrentUserScore = int.parse(data["score"]);
     CurrentUserScoreScale = calcUserScoreScale();
     isLoading = false;

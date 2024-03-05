@@ -6,14 +6,16 @@ import 'package:social_co2/main.dart';
 
 class UserActivitiesProvider extends ChangeNotifier {
   List<SCO2activity> userActivities = [];
+
   bool isLoading = false;
+  String error = "";
 
   Future<List<SCO2activity>> getCurrentUserActivities(int index) async {
     isLoading = true;
     final String? token = await firebaseAuth.currentUser?.getIdToken();
     final String? userID = firebaseAuth.currentUser?.uid;
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 3));
 
     print('Activités obtenues');
     userActivities.add(SCO2activity(
@@ -38,7 +40,8 @@ class UserActivitiesProvider extends ChangeNotifier {
         activityName: 'Repas de la nuit',
         activityTimestamp: DateTime(2004)));
 
-    isLoading = true;
+    isLoading = false;
+    error = "User does not exist";
     notifyListeners();
     return userActivities;
   }

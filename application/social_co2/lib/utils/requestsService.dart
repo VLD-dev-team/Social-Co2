@@ -15,7 +15,7 @@ class requestService {
           await http.get(Uri.parse(serverApiURL + endpoint), headers: headers);
       data = json.decode(response.body);
     } catch (err) {
-      data = {"error": true, "error_message": err.toString()};
+      data = {"error": "true", "error_message": err.toString()};
     }
     return data;
   }

@@ -1,4 +1,7 @@
 const socketIo = require('socket.io');
+const { verifyAuthToken } = require('./requireAuth.js');
+const notificationHandler = require('./notificationHandler.js');
+const { sendMessage } = require('./messageHandler.js');
 
 // Fonction pour initialiser Socket.io avec le serveur Express
 const initializeSocket = (server) => {
@@ -13,16 +16,33 @@ const initializeSocket = (server) => {
             console.log('User disconnected:', socket.id);
         });
 
-        // // Écoute des événements liés aux notifications
-        // socket.on('notification', (notificationData) => {
-        //     const { userID, notificationContent } = notificationData;
-        //     io.to(userID).emit('newNotification', { notificationContent });
-        // });
-        // // Écoute des événements liés aux messages
-        // socket.on('message', (messageData) => {
-        //     const { convID, messageSenderID, messageTextContent } = messageData;
-        //     io.to(convID).emit('newMessage', { messageSenderID, messageTextContent });
-        // });
+        socket.on('sendMessage', async (data) => {
+            try {
+                // Vérification de l'authentification de l'utilisateur
+                const userID = await verifyAuthToken(data.token);
+    
+                // Appel de la fonction sendMessage avec les données appropriées
+                const result = await sendMessage(userID, data.receiver, data.message);
+                
+                // Émission d'événements au client une fois le message traité
+                io.to(result.convID).emit('updateConv', {
+                    convID: result.convID,
+                    lastMessage: result.lastMessage,
+                    unreadCount: result.unreadCount
+                });
+                io.to(result.convID).emit('newMessage', {
+                    convID: result.convID,
+                    lastMessage: result.lastMessage,
+                    unreadCount: result.unreadCount
+                });
+    
+                console.log(result);
+            } catch (error) {
+                console.error('Error sending message:', error);
+                // Gérer les erreurs ici et émettre un événement d'erreur au client si nécessaire
+                socket.emit('sendMessageError', { error: 'Failed to send message' });
+            }
+        });
     });
 
     // Middleware pour ajouter le socket à la demande Express

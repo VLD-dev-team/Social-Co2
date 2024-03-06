@@ -57,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                               width: 0,
                               height: 0,
                             ),
-                      const CallToPost(),
+                      CallToPost(),
                       const Feed()
                     ]),
                   ),

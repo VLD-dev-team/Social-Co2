@@ -41,7 +41,6 @@ class UserActivitiesProvider extends ChangeNotifier {
         activityTimestamp: DateTime(2004)));
 
     isLoading = false;
-    error = "User does not exist";
     notifyListeners();
     return userActivities;
   }

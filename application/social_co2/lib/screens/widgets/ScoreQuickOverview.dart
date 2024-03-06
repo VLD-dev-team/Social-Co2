@@ -7,6 +7,8 @@ import 'package:social_co2/styles/CardStyles.dart';
 import 'package:social_co2/styles/ScoreColors.dart';
 
 class ScoreQuickOverview extends StatefulWidget {
+  const ScoreQuickOverview({super.key});
+
   @override
   State<ScoreQuickOverview> createState() => _ScoreQuickOverviewState();
 }
@@ -438,7 +440,7 @@ class _ScoreQuickOverviewState extends State<ScoreQuickOverview> {
                                       )
                                     : Center(
                                         child: Padding(
-                                          padding: EdgeInsets.all(20.0),
+                                          padding: const EdgeInsets.all(20.0),
                                           child: Text(
                                             'Une erreur est survenue\n${Provider.of<UserSCO2DataProvider>(context).error}',
                                             style: const TextStyle(

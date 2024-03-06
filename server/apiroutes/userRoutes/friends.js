@@ -65,7 +65,7 @@ router.route('/search')
                 const response = {
                         error : true,
                         error_message : 'Friend not found',
-                        error_code : 23
+                        error_code : 27
                 }
                 return res.status(404).json(response);
             }
@@ -159,7 +159,7 @@ router.route('/status')
                 const response = {
                         error : true,
                         error_message : 'Friendship not found',
-                        error_code : 25
+                        error_code : 28
                 }
                 return res.status(404).json(response);
             }

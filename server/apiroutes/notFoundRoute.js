@@ -7,7 +7,7 @@ router.route('/*')
         const response = {
                 error : true,
                 error_message : 'Page not found',
-                error_code : 3
+                error_code : 4
         }
         return res.status(404).json(response);
     });

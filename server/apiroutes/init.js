@@ -40,7 +40,7 @@ router.route('/')
                 const response = {
                         error : true,
                         error_message : 'User is already in database',
-                        error_code : 7
+                        error_code : 8
                 }
                 return res.status(400).json(response);
             }

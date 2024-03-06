@@ -19,7 +19,7 @@ router.route('/')
                 const response = {
                         error : true,
                         error_message : 'Invalid user ID, post ID, or comment content',
-                        error_code : 8
+                        error_code : 9
                 }
                 return res.status(400).json(response);
             }

@@ -65,7 +65,7 @@ router.route('/conversations')
             const response = {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
+                    error_code : 2
             }
             return res.status(500).json(response);        }
     })
@@ -85,7 +85,7 @@ router.route('/conversations')
                 const response = {
                         error : true,
                         error_message : 'Users are not friends or friendship status is not accepted. Conversation cannot be created.',
-                        error_code : 400
+                        error_code : 23
                 }
                 return res.status(400).json(response);
             }
@@ -101,7 +101,7 @@ router.route('/conversations')
                 const response = {
                         error : true,
                         error_message : 'Conversation already exists.',
-                        error_code : 400
+                        error_code : 24
                 }
                 return res.status(400).json(response);
             }
@@ -117,7 +117,7 @@ router.route('/conversations')
                 const response = {
                         error : true,
                         error_message : 'Failed to create conversation.',
-                        error_code : 30
+                        error_code : 25
                 }
                 return res.status(500).json(response);
             }
@@ -159,7 +159,7 @@ router.route('/messages')
                 const response = {
                         error : true,
                         error_message : 'You are not part of this conversation.',
-                        error_code : 31
+                        error_code : 26
                 }
                 return res.status(403).json(response);
             }

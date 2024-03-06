@@ -25,7 +25,7 @@ router.route('/:activityId')
                 const response = {
                         error : true,
                         error_message : 'Invalid activity ID',
-                        error_code : 13
+                        error_code : 12
                 }
                 return res.status(400).json(response);
             }
@@ -51,7 +51,7 @@ router.route('/:activityId')
                 const response = {
                         error : true,
                         error_message : 'Activity or User not found in SQL database',
-                        error_code : 14
+                        error_code : 13
                 }
                 return res.status(404).json(response);
             }
@@ -86,7 +86,7 @@ router.route('/:activityId')
                 const response = {
                         error : true,
                         error_message : 'Invalid activityType',
-                        error_code : 15
+                        error_code : 14
                 }
                 return res.status(400).json(response);
             }
@@ -94,7 +94,7 @@ router.route('/:activityId')
                 const response = {
                         error : true,
                         error_message : 'Invalid activityCO2Impact',
-                        error_code : 16
+                        error_code : 15
                 }
                 return res.status(400).json(response);
             }
@@ -102,7 +102,7 @@ router.route('/:activityId')
                 const response = {
                         error : true,
                         error_message : 'Invalid activityPollutionImpact',
-                        error_code : 17
+                        error_code : 16
                 }
                 return res.status(400).json(response);
             }
@@ -110,7 +110,7 @@ router.route('/:activityId')
                 const response = {
                         error : true,
                         error_message : 'Invalid activityName',
-                        error_code : 18
+                        error_code : 17
                 }
                 return res.status(400).json(response);
             }
@@ -137,7 +137,7 @@ router.route('/:activityId')
                 const response = {
                         error : true,
                         error_message : 'Failed to insert activity',
-                        error_code : 19
+                        error_code : 18
                 }
                 return res.status(500).json(response);
             }
@@ -165,7 +165,7 @@ router.route('/:activityId')
                 const response = {
                         error : true,
                         error_message : 'Invalid user ID or activity ID',
-                        error_code : 3
+                        error_code : 19
                 }
                 return res.status(400).json(response);
             }
@@ -228,7 +228,7 @@ router.route('/:activityId')
                 const response = {
                         error : true,
                         error_message : 'Invalid user ID or activity ID',
-                        error_code : 4
+                        error_code : 19
                 }
                 return res.status(400).json(response);
             }
@@ -258,7 +258,7 @@ router.route('/:activityId')
                 const response = {
                         error : true,
                         error_message : 'Failed to delete activity',
-                        error_code : 22
+                        error_code : 21
                 }
                 return res.status(500).json(response);
             }

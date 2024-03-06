@@ -13,16 +13,16 @@ const initializeSocket = (server) => {
             console.log('User disconnected:', socket.id);
         });
 
-        // Écoute des événements liés aux notifications
-        socket.on('notification', (notificationData) => {
-            const { userID, notificationContent } = notificationData;
-            io.to(userID).emit('newNotification', { notificationContent });
-        });
-        // Écoute des événements liés aux messages
-        socket.on('message', (messageData) => {
-            const { convID, messageSenderID, messageTextContent } = messageData;
-            io.to(convID).emit('newMessage', { messageSenderID, messageTextContent });
-        });
+        // // Écoute des événements liés aux notifications
+        // socket.on('notification', (notificationData) => {
+        //     const { userID, notificationContent } = notificationData;
+        //     io.to(userID).emit('newNotification', { notificationContent });
+        // });
+        // // Écoute des événements liés aux messages
+        // socket.on('message', (messageData) => {
+        //     const { convID, messageSenderID, messageTextContent } = messageData;
+        //     io.to(convID).emit('newMessage', { messageSenderID, messageTextContent });
+        // });
     });
 
     // Middleware pour ajouter le socket à la demande Express

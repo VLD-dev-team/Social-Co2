@@ -1,31 +1,6 @@
 // Gestionnaire de routes
 
-/* Plan des routes
-
-- * (get) 404
-- / (get) Application React
-- /api (get)
-    - /websocket (socket.io)
-        - score
-        - messages
-        - notifications
-        - conversations
-    - /user (get)
-        - /activities (get)
-        - /friends (get)
-            - /search (get)
-            - /status (post)
-        - /notifications (get)
-        - /social (get)
-            - /feed (get)
-            - /conversations (get) & (post)
-                - /messages (get)
-    - /activity (get) & (post) & (put) & (delete)
-    - /like (post)
-    - /comments (post)
-*/
-
-// importation des modules
+/// importation des modules
 const express = require('express');
 const router = express.Router();
 
@@ -42,7 +17,7 @@ const social = require('./userRoutes/social.js')
 const notFoundRoute = require('./notFoundRoute.js');
 const init = require('./init.js')
 
-// définition des routes
+/// définition des routes
 
 router.get('/',(req,res)=>{
     const response = {

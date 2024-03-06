@@ -46,7 +46,7 @@ router.route('/')
                 const response = {
                         error : true,
                         error_message : 'User not found in SQL database',
-                        error_code : 2
+                        error_code : 3
                 }
                 return res.status(400).json(response);
             }

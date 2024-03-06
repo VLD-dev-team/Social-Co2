@@ -30,7 +30,7 @@ router.route('/')
             const response = {
                     error : true,
                     error_message : 'Internal Server Error',
-                    error_code : 500
+                    error_code : 2
             }
             return res.status(500).json(response);
         }

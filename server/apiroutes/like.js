@@ -18,7 +18,7 @@ router.route('/like')
                 const response = {
                         error : true,
                         error_message : 'Invalid user ID or post ID',
-                        error_code : 4
+                        error_code : 5
                 }
                 return res.status(400).json(response);
             }
@@ -31,7 +31,7 @@ router.route('/like')
                 const response = {
                         error : true,
                         error_message : 'User has already liked this post',
-                        error_code : 5
+                        error_code : 6
                 }
                 return res.status(400).json(response);
             }
@@ -78,7 +78,7 @@ router.route('/like')
             const response = {
                     error : true,
                     error_message : 'Failed to process like',
-                    error_code : 6
+                    error_code : 7
             }
             return res.status(500).json(response);
         } catch (error) {

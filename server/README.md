@@ -14,6 +14,7 @@
   * Le système de messagerie
     * Socket.io
     * Pourquoi avoir utiliser ce procédé ?
+* Documentation de l'API
 
 
 
@@ -565,3 +566,64 @@ module.exports = initializeSocket;
 #### Pourquoi avoir utiliser ce procédé ?
 
 Nous avons utilisé ce procédé afin de pouvoir avoir des interactions en temps réel sans avoir besoin de recharger la page web. Le principe d'un chat en quelque sorte. C'est important pour nous que les utilisateurs puissent communiqués entre eux de manière fiable et rapide.
+
+## Documentation de l'API
+
+### Gestion des activités
+
+-- Utilisation de la route /activity --
+
+* GET :  Donne les informations d'une activité -- require activityId
+* POST : Creer une activité dans la table activité -- require activityId et userid
+* PUT : Met à jour une activité -- require activityId et userid
+* DELETE : Supprime une activité -- require activityId et userid
+
+Utilisation d'un fichier JSON pour les activités : 
+
+```js
+activite = {
+  emission_chauffage : {
+    "pellet":6, 
+    "electrique":8,
+    "poele a bois":9,
+    "gaz":39,
+    "fioul":57
+    },
+  emission_vehicule={
+    "voiture_electrique":20,
+    "moto":165,
+    "bus":110,
+    "avion":250,
+    "ter":22,
+    "rer":10,
+    "tgv":2.3,
+    "a_pied":0,
+    "velo":0,
+    "velo ou trotinnette electrique":2,
+    "metro":4.2,
+    "tram":4.3,
+    "covoiturage":55,
+  },
+  emission_article={
+    "vetement":10,
+    "electromenager":300,
+    "ordinateur":150,
+    "telephone":40
+  },
+  emission_aliment={
+    "vegetarien":0.5,
+    "poisson gras":1,
+    "poisson blanc":2,
+    "poulet":1.6,
+    "boeuf":7,
+    "autre viande":2
+    }
+  emission_mobilier={
+    "chaise":19,
+    "table":80,
+    "canape":180,
+    "lit":450,
+    "armoire":900
+  }
+}
+```

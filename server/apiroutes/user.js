@@ -43,12 +43,16 @@ router.route('/')
                 return res.status(200).json(response);
 
             } else {
+                const sqlQuery = `INSERT INTO users (userID, score) VALUES ( ? , ? ) ;`;
+                const sqlResult = await executeQuery(sqlQuery, [userID, 5000]);
+
+                // Création d'un objet avec les données d'authentification et le score
                 const response = {
-                        error : true,
-                        error_message : 'User not found in SQL database',
-                        error_code : 3
+                    userId : userID,
+                    score: 5000,
+                    message : 'User is defined',
                 }
-                return res.status(400).json(response);
+                return res.status(200).json(response);
             }
         } catch (error) {
             console.error('Error retrieving user data:', error);

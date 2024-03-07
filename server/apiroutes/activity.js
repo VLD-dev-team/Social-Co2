@@ -66,6 +66,9 @@ router.route('/:activityId')
         }
     })
     .post(async (req, res) => {
+
+        //TODO : Mettre le calcul du score ici
+
         try {
             const userID = req.headers.userid;
             const activityType = req.body.activityType;

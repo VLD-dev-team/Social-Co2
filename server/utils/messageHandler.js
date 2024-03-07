@@ -6,7 +6,7 @@ const sendMessage = async (senderID, receiverID, messageTextContent) => {
     try {
         const checkFriendshipQuery = `
             SELECT friendshipStatus FROM friends
-            WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?)
+            WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;
         `;
         const checkFriendshipResult = await executeQuery(checkFriendshipQuery, [senderID, receiverID, receiverID, senderID]);
 
@@ -19,14 +19,14 @@ const sendMessage = async (senderID, receiverID, messageTextContent) => {
 
         const checkConversationQuery = `
             SELECT convID FROM conversations
-            WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?)
+            WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;
         `;
         const checkConversationResult = await executeQuery(checkConversationQuery, [senderID, receiverID, receiverID, senderID]);
 
         if (checkConversationResult.length === 0) {
             const createConversationQuery = `
                 INSERT INTO conversations (userID1, userID2, convCreatedAt)
-                VALUES (?, ?, CURRENT_TIMESTAMP)
+                VALUES (?, ?, CURRENT_TIMESTAMP) ;
             `;
             const createConversationResult = await executeQuery(createConversationQuery, [senderID, receiverID]);
 
@@ -40,7 +40,7 @@ const sendMessage = async (senderID, receiverID, messageTextContent) => {
 
         const convIDQuery = `
             SELECT convID FROM conversations
-            WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?)
+            WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;
         `;
         const convIDResult = await executeQuery(convIDQuery, [senderID, receiverID, receiverID, senderID]);
 
@@ -55,7 +55,7 @@ const sendMessage = async (senderID, receiverID, messageTextContent) => {
 
         const insertMessageQuery = `
             INSERT INTO messages (convID, messageSenderID, messageTextContent, messageCreatedAt, messageStatus)
-            VALUES (?, ?, ?, CURRENT_TIMESTAMP, 'unread')
+            VALUES (?, ?, ?, CURRENT_TIMESTAMP, 'unread') ;
         `;
         const insertMessageResult = await executeQuery(insertMessageQuery, [convID, senderID, messageTextContent]);
 
@@ -68,7 +68,7 @@ const sendMessage = async (senderID, receiverID, messageTextContent) => {
 
         const createNotificationQuery = `
             INSERT INTO notifications (userID, notificationContent, notificationTitle, notificationStatus, notificationCreatedAt)
-            VALUES (?, ?, ?, 'unread', CURRENT_TIMESTAMP)
+            VALUES (?, ?, ?, 'unread', CURRENT_TIMESTAMP) ;
         `;
         const createNotificationResult = await executeQuery(createNotificationQuery, [receiverID, 'New message received', 'New Message']);
 
@@ -83,7 +83,7 @@ const sendMessage = async (senderID, receiverID, messageTextContent) => {
         const unreadCountQuery = `
             SELECT COUNT(*) AS unreadCount
             FROM messages
-            WHERE convID = ? AND messageStatus = 'unread' AND messageSenderID != ?
+            WHERE convID = ? AND messageStatus = 'unread' AND messageSenderID != ? ;
         `;
         const unreadCountResult = await executeQuery(unreadCountQuery, [convID, receiverID]);
         const unreadCount = unreadCountResult[0].unreadCount;

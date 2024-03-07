@@ -16,7 +16,7 @@ router.route('/')
                 SELECT * FROM notifications
                 WHERE userID = ?
                 ORDER BY notificationID DESC
-                LIMIT 10`;
+                LIMIT 10 ;`;
 
             const notifications = await executeQuery(getNotificationsQuery, [userID]);
 

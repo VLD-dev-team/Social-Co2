@@ -20,7 +20,7 @@ router.route('/')
                     f.friendshipStatus
                 FROM friends f
                 JOIN users u ON (f.userID1 = u.userID OR f.userID2 = u.userID) AND u.userID != ?
-                WHERE f.userID1 = ? OR f.userID2 = ?`;
+                WHERE f.userID1 = ? OR f.userID2 = ? ;`;
 
                 // Test d'un nouveau type de requête :)
 
@@ -57,7 +57,7 @@ router.route('/search')
                     f.friendshipStatus
                 FROM friends f
                 JOIN users u ON (f.userID1 = u.userID OR f.userID2 = u.userID) AND u.userID != ?
-                WHERE f.friendshipID = ? `;
+                WHERE f.friendshipID = ? ;`;
 
             const friend = await executeQuery(searchFriendQuery, [userID, friendshipID]);
 
@@ -95,7 +95,7 @@ router.route('/status')
             // Vérifie si l'amitié existe déjà
             const checkFriendshipQuery = `
                 SELECT friendshipID FROM friends
-                WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?)
+                WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;
             `;
             const existingFriendship = await executeQuery(checkFriendshipQuery, [userID, friendID, friendID, userID]);
 
@@ -117,7 +117,7 @@ router.route('/status')
                 // Ajouter une nouvelle amitié
                 const addFriendshipQuery = `
                     INSERT INTO friends (userID1, userID2, friendshipStatus)
-                    VALUES (?, ?, ?)
+                    VALUES (?, ?, ?) ;
                 `;
                 await executeQuery(addFriendshipQuery, [userID, friendID, friendshipStatus]);
 
@@ -145,7 +145,7 @@ router.route('/status')
             // Supprimer l'amitié
             const deleteFriendshipQuery = `
                 DELETE FROM friends
-                WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?)
+                WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;
             `;
             const deleteResult = await executeQuery(deleteFriendshipQuery, [userID, friendID, friendID, userID]);
 

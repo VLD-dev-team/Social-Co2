@@ -7,7 +7,7 @@ const handleNewNotification = async (io, notificationData) => {
     io.to(userID).emit('newNotification', { notificationContent });
 
     // Mettre à jour le statut de la notification dans la base de données
-    const updateNotificationQuery = `UPDATE notifications SET notificationStatus = 'send' WHERE userID = ? AND notificationContent = ?`;
+    const updateNotificationQuery = `UPDATE notifications SET notificationStatus = 'send' WHERE userID = ? AND notificationContent = ? ;`;
     await executeQuery(updateNotificationQuery, [userID, notificationContent]);
 };
 

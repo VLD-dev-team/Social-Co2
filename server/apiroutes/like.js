@@ -24,7 +24,7 @@ router.route('/like')
             }
 
             // Vérification de si l'utilisateur a déjà liké ce post
-            const checkLikeQuery = `SELECT * FROM likes WHERE userID = ? AND postID = ?`;
+            const checkLikeQuery = `SELECT * FROM likes WHERE userID = ? AND postID = ? ;`;
             const checkLikeResult = await executeQuery(checkLikeQuery, [userID, postID]);
 
             if (checkLikeResult.length > 0) {
@@ -37,19 +37,19 @@ router.route('/like')
             }
 
             // Insertion du like dans la table likes
-            await executeQuery(`INSERT INTO likes (userID, postID) VALUES (?, ?)`, [userID, postID]);
+            await executeQuery(`INSERT INTO likes (userID, postID) VALUES (?, ?);`, [userID, postID]);
 
             // Mise à jour du nombre de likes dans la table posts
-            await executeQuery(`UPDATE posts SET postLikesNumber = postLikesNumber + 1 WHERE postID = ?`, [postID]);
+            await executeQuery(`UPDATE posts SET postLikesNumber = postLikesNumber + 1 WHERE postID = ? ;`, [postID]);
 
             // Récupération du propriétaire du post
-            const [postOwner] = await executeQuery(`SELECT userID FROM posts WHERE postID = ?`, [postID]);
+            const [postOwner] = await executeQuery(`SELECT userID FROM posts WHERE postID = ? ;`, [postID]);
 
             if (postOwner) {
                 const { userID: postOwnerID } = postOwner;
 
                 // Récupération du nom de l'utilisateur qui a liké
-                const [likerInfo] = await executeQuery(`SELECT userName FROM users WHERE userID = ?`, [userID]);
+                const [likerInfo] = await executeQuery(`SELECT userName FROM users WHERE userID = ? ;`, [userID]);
 
                 if (likerInfo) {
                     const { userName: likerName } = likerInfo;
@@ -59,7 +59,7 @@ router.route('/like')
                     const notificationTitle = 'Nouveau like';
                     const notificationStatus = 'unread';
 
-                    await executeQuery(`INSERT INTO notifications (userID, notificationContent, notificationTitle, notificationStatus) VALUES (?, ?, ?, ?)`, [postOwnerID, notificationContent, notificationTitle, notificationStatus]);
+                    await executeQuery(`INSERT INTO notifications (userID, notificationContent, notificationTitle, notificationStatus) VALUES (?, ?, ?, ?) ;`, [postOwnerID, notificationContent, notificationTitle, notificationStatus]);
 
                     // Émission de la notification via Socket.io
                     const io = socketManager.getIO();

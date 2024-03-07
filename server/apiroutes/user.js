@@ -25,7 +25,7 @@ router.route('/')
             const authUser = await admin.auth().getUser(userID);
 
             // On récupère le score depuis la base de données SQL
-            const sqlQuery = `SELECT score FROM users WHERE userID = ?`;
+            const sqlQuery = `SELECT score FROM users WHERE userID = ? ;`;
             const sqlResult = await executeQuery(sqlQuery, [userID]);
 
             if (sqlResult.length > 0) {

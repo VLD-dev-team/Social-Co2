@@ -14,7 +14,7 @@ router.route('/feed')
             const getFriendsQuery = `
                 SELECT userID1, userID2
                 FROM friends
-                WHERE (userID1 = ? OR userID2 = ?) AND friendshipStatus = '22'
+                WHERE (userID1 = ? OR userID2 = ?) AND friendshipStatus = '22' ;
             `;
             const friendsResult = await executeQuery(getFriendsQuery, [userID, userID]);
 
@@ -29,7 +29,7 @@ router.route('/feed')
                 SELECT *
                 FROM posts
                 WHERE userID IN (?)
-                ORDER BY postCreatedAt DESC`;
+                ORDER BY postCreatedAt DESC ;`;
             const feedResult = await executeQuery(getFeedQuery, [friendIDs]);
 
 
@@ -52,7 +52,7 @@ router.route('/conversations')
             const userID = req.headers.userid;
 
             const getConversationsQuery = `
-                SELECT * FROM conversations WHERE (userID1 = ? OR userID2 = ?) AND convLastMessage IS NOT NULL ORDER BY convCreatedAt DESC`;
+                SELECT * FROM conversations WHERE (userID1 = ? OR userID2 = ?) AND convLastMessage IS NOT NULL ORDER BY convCreatedAt DESC ;`;
             const conversationsResult = await executeQuery(getConversationsQuery, [userID, userID]);
 
             const response = {
@@ -77,7 +77,7 @@ router.route('/conversations')
             // Vérifie le statut de l'amitié entre l'utilisateur et son ami
             const checkFriendshipQuery = `
                 SELECT friendshipStatus FROM friends
-                WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?)
+                WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;
             `;
             const checkFriendshipResult = await executeQuery(checkFriendshipQuery, [userID, friendID, friendID, userID]);
             // Si c'est 22 c'est ok :)
@@ -93,7 +93,7 @@ router.route('/conversations')
             // Vérifie si une conversation existe déjà entre les deux utilisateurs, sinon on va pas s'embêter
             const checkConversationQuery = `
                 SELECT convID FROM conversations
-                WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?)
+                WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;
             `;
             const checkConversationResult = await executeQuery(checkConversationQuery, [userID, friendID, friendID, userID]);
 
@@ -109,7 +109,7 @@ router.route('/conversations')
             // Créer la nouvelle conversation
             const createConversationQuery = `
                 INSERT INTO conversations (userID1, userID2, convCreatedAt)
-                VALUES (?, ?, CURRENT_TIMESTAMP)
+                VALUES (?, ?, CURRENT_TIMESTAMP) ;
             `;
             const createConversationResult = await executeQuery(createConversationQuery, [userID, friendID]);
 
@@ -151,7 +151,7 @@ router.route('/messages')
             const checkConversationQuery = `
                 SELECT *
                 FROM conversations
-                WHERE (userID1 = ? OR userID2 = ?) AND convID = ?
+                WHERE (userID1 = ? OR userID2 = ?) AND convID = ? ;
             `;
             const conversationResult = await executeQuery(checkConversationQuery, [userID, userID, convID]);
 
@@ -170,7 +170,7 @@ router.route('/messages')
                 FROM messages
                 WHERE convID = ?
                 ORDER BY messageCreatedAt DESC
-                LIMIT ?, 40`;
+                LIMIT ?, 40 ;`;
             const messagesResult = await executeQuery(loadMessagesQuery, [convID, startIndex]);
 
             const response = {

@@ -1,4 +1,3 @@
-require('dotenv').config();
 const mysql = require('mysql2');
 
 const pool = mysql.createPool({
@@ -11,16 +10,16 @@ const pool = mysql.createPool({
     multipleStatements: false
 });
 
-executeQuery = function (userQuery, query, callback) {
-    pool.query(query, userQuery, function (error, results, fields) {
-        if (error) {
-            callback(error, results = null);
-            return;
-        }
-    
-        callback(false, results = results, fields = fields);       
-        return;
+const executeQuery = function (query, parameters) {
+    return new Promise((resolve, reject) => {
+        pool.query(query, parameters, (error, results, fields) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
     });
 };
 
-module.exports = { executeQuery }
+module.exports = { executeQuery };

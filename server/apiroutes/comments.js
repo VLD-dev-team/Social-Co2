@@ -25,21 +25,21 @@ router.route('/')
             }
 
             // Insertion du commentaire dans la table comments
-            const insertCommentQuery = `INSERT INTO comments (userID, postID, commentTextContent, commentCreatedAt) VALUES (?, ?, ?, CURRENT_TIMESTAMP)`;
+            const insertCommentQuery = `INSERT INTO comments (userID, postID, commentTextContent, commentCreatedAt) VALUES (?, ?, ?, CURRENT_TIMESTAMP) ;`;
             const insertCommentResult = await executeQuery(insertCommentQuery, [userID, postID, commentTextContent]);
 
             if (insertCommentResult.affectedRows > 0) {
                 // Mise à jour du nombre de commentaires dans la table posts
-                await executeQuery(`UPDATE posts SET postCommentsNumber = postCommentsNumber + 1 WHERE postID = ?`, [postID]);
+                await executeQuery(`UPDATE posts SET postCommentsNumber = postCommentsNumber + 1 WHERE postID = ? ;`, [postID]);
 
                 // Récupération du propriétaire du post
-                const [postOwner] = await executeQuery(`SELECT userID FROM posts WHERE postID = ?`, [postID]);
+                const [postOwner] = await executeQuery(`SELECT userID FROM posts WHERE postID = ? ;`, [postID]);
 
                 if (postOwner) {
                     const { userID: postOwnerID } = postOwner;
 
                     // Récupération du nom de l'utilisateur qui a commenté
-                    const [commenterInfo] = await executeQuery(`SELECT userName FROM users WHERE userID = ?`, [userID]);
+                    const [commenterInfo] = await executeQuery(`SELECT userName FROM users WHERE userID = ? ;`, [userID]);
 
                     if (commenterInfo) {
                         const { userName: commenterName } = commenterInfo;
@@ -49,7 +49,7 @@ router.route('/')
                         const notificationTitle = 'Nouveau commentaire';
                         const notificationStatus = 'unread';
 
-                        await executeQuery(`INSERT INTO notifications (userID, notificationContent, notificationTitle, notificationStatus) VALUES (?, ?, ?, ?)`, [postOwnerID, notificationContent, notificationTitle, notificationStatus]);
+                        await executeQuery(`INSERT INTO notifications (userID, notificationContent, notificationTitle, notificationStatus) VALUES (?, ?, ?, ?) ;`, [postOwnerID, notificationContent, notificationTitle, notificationStatus]);
 
                         // Émission de la notification via Socket.io
                         const io = socketManager.getIO();

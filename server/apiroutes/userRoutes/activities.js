@@ -18,7 +18,7 @@ router.route('/')
                 WHERE userID = ?
                 ORDER BY activityTimestamp DESC
                 LIMIT 20
-                OFFSET ?`;
+                OFFSET ? ;`;
                 // OFFSET pour spécifier l'index auquel on part, trop bien !
 
             const activities = await executeQuery(getActivitiesQuery, [userID, startIndex]);

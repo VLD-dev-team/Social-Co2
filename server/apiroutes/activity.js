@@ -29,7 +29,7 @@ router.route('/:activityId')
                 }
                 return res.status(400).json(response);
             }
-            const sqlQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ?`;
+            const sqlQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ? ;`;
             const sqlResult = await executeQuery(sqlQuery, [userID, activityId]);
 
             if (sqlResult.length > 0){
@@ -117,8 +117,7 @@ router.route('/:activityId')
 
             const insertQuery = `
                 INSERT INTO activities (userID, activityType, activityCO2Impact, activityPollutionImpact, activityName, activityTimestamp)
-                VALUES (?, ?, ?, ?, ?, ?)
-            `;
+                VALUES (?, ?, ?, ?, ?, ?) ;`;
             const insertResult = await executeQuery(insertQuery, [userID, activityType, activityCO2Impact, activityPollutionImpact, activityName, activityTimestamp]);
 
             if (insertResult.affectedRows > 0) {
@@ -170,7 +169,7 @@ router.route('/:activityId')
                 return res.status(400).json(response);
             }
 
-            const permissionQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ?`;
+            const permissionQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ? ;`;
             const permissionResult = await executeQuery(permissionQuery, [userID, activityId]);
 
             if (permissionResult.length === 0) {
@@ -186,7 +185,7 @@ router.route('/:activityId')
                 UPDATE activities
                 SET activityType = ?, activityCO2Impact = ?, activityPollutionImpact = ?,
                     activityName = ?, activityTimestamp = ?
-                WHERE userID = ? AND activityID = ?
+                WHERE userID = ? AND activityID = ? ;
             `;
             const updateResult = await executeQuery(updateQuery, [activityType, activityCO2Impact, activityPollutionImpact, activityName, activityTimestamp, userID, activityId]);
 
@@ -233,7 +232,7 @@ router.route('/:activityId')
                 return res.status(400).json(response);
             }
 
-            const permissionQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ?`;
+            const permissionQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ? ;`;
             const permissionResult = await executeQuery(permissionQuery, [userID, activityId]);
 
             if (permissionResult.length === 0) {
@@ -245,7 +244,7 @@ router.route('/:activityId')
                 return res.status(403).json(response);
             }
 
-            const deleteQuery = `DELETE FROM activities WHERE userID = ? AND activityID = ?`;
+            const deleteQuery = `DELETE FROM activities WHERE userID = ? AND activityID = ? ;`;
             const deleteResult = await executeQuery(deleteQuery, [userID, activityId]);
 
             if (deleteResult.affectedRows > 0) {

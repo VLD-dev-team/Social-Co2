@@ -46,6 +46,43 @@ activite = {
     }
   }
 
+
+  function scorePassif(multiplicateur, score) {
+  if (multiplicateur > 1) {
+      return score + 100 * Math.log(multiplicateur);
+  } else if (multiplicateur < 1) {
+      return score - 100 * Math.log(Math.abs(multiplicateur));
+  }
+  return score; // On retourne le score inchangé si multiplicateur = 1
+}
+
+function emission_chauffage(recycl, nb_habitants, surface, potager, multiplicateur){
+  if (recycl==true){
+    multiplicateur+=261*nb_habitants
+    if (potager==true){
+      multiplicateur+=50*nb_habitants
+    } else if(potager == false){
+      multiplicateur-=50*nb_habitants
+    }else{
+      const response = {
+        error: true,
+        error_message: 'Donnée manquante',
+        error_code: 32
+      }
+      return res.status(400).json(response);
+    }
+  } else if(recycl== false){
+      multiplicateur-=261*nb_habitants
+  } else {
+    const response = {
+      error: true,
+      error_message: 'Donnée manquante',
+      error_code: 32
+    }
+    return res.status(400).json(response);
+  }
+  multiplicateur+=(30-emission_chauffage[chauffage])*surface
+}
 const ActivityCalculator = (req,res)=>{
     const ActivityType = req.body.activityType;
     const element = req.body.activityElement;
@@ -56,17 +93,8 @@ const ActivityCalculator = (req,res)=>{
         const surface = req.body.surface // int
         const patager = req.body.potager // bool
         let multiplicateur=1
-        if (recycl==true){
-            multiplicateur+=261*nb_habitants
-        } else if(recycl== false){
-            multiplicateur-=261*nb_habitants
-        }
-    if potager==1:
-        multiplicateur+=50*nb_habitants
-    elif potager==0:
-        multiplicateur-=50*nb_habitants
-    multiplicateur+=(30-emission_chauffage[chauffage])*surface
-    return multiplicateur
-    }
+        
+        
+    } else if ()
     
 }

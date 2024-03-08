@@ -11,21 +11,6 @@ const handleNewNotification = async (io, notificationData) => {
     await executeQuery(updateNotificationQuery, [userID, notificationContent]);
 };
 
-// const watchNotifications = async (io) => {
-//     const notificationWatcherQuery = `SELECT * FROM notifications WHERE notificationStatus = 'unread'`;
-
-//     const watcher = await executeQuery(notificationWatcherQuery);
-
-//     watcher.on('result', async (result) => {
-//         // Chaque fois qu'il y a une nouvelle notification non lue, on gère la notification
-//         const notificationData = {
-//             userID: result.userID,
-//             notificationContent: result.notificationContent
-//         };
-//         handleNewNotification(io, notificationData);
-//     });
-// };
-
 module.exports = {
     handleNewNotification,
     // watchNotifications

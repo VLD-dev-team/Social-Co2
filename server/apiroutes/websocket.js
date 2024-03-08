@@ -1,8 +1,5 @@
 const express = require('express');
 const initializeSocket = require('../utils/socketManager.js');
-const { verifyAuthToken } = require('../utils/requireAuth.js');
-const notificationHandler = require('../utils/notificationHandler.js');
-const { sendMessage } = require('../utils/messageHandler.js');
 const { createServer } = require("http");
 
 const router = express.Router();
@@ -16,7 +13,5 @@ router.use('/', (req, res, next) => {
     next();
 });
 
-// On surveille les modifications de la table notifications
-//notificationHandler.watchNotifications(io);
 
 module.exports = router;

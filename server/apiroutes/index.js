@@ -19,6 +19,8 @@ const init = require('./init.js')
 
 /// définition des routes
 
+// Test pour le serveur à retirer lors de la mise en prod
+
 router.get('/',(req,res)=>{
     const response = {
         ping : 'Is check',

@@ -47,16 +47,16 @@ activite = {
   }
 
 
-  function scorePassif(multiplicateur, score) {
+function scorePassif(multiplicateur, score) {
   if (multiplicateur > 1) {
       return score + 100 * Math.log(multiplicateur);
   } else if (multiplicateur < 1) {
       return score - 100 * Math.log(Math.abs(multiplicateur));
   }
-  return score; // On retourne le score inchangé si multiplicateur = 1
+  return score; // On retourne le score inchangé si le multiplicateur = 1
 }
 
-function emission_chauffage(recycl, nb_habitants, surface, potager, multiplicateur){
+function multiplicateur(recycl, nb_habitants, surface, potager, multiplicateur){
   if (recycl==true){
     multiplicateur+=261*nb_habitants
     if (potager==true){
@@ -82,19 +82,50 @@ function emission_chauffage(recycl, nb_habitants, surface, potager, multiplicate
     return res.status(400).json(response);
   }
   multiplicateur+=(30-emission_chauffage[chauffage])*surface
+  return multiplicateur
 }
-const ActivityCalculator = (req,res)=>{
-    const ActivityType = req.body.activityType;
-    const element = req.body.activityElement;
 
-    if (ActivityType == "emission_chauffage"){
-        const recycl = req.body.recycl // bool
-        const nb_habitants = req.body.nb_habitants // int
-        const surface = req.body.surface // int
-        const patager = req.body.potager // bool
-        let multiplicateur=1
-        
-        
-    } else if ()
-    
+function nouv_trajet(vehicule,distance){
+  ajout_score=(60-emission_vehicule[vehicule])*math.log(distance)*1/10
+  return ajout_score
 }
+    
+function nouv_achat(article,etat){
+  if (etat== true ){//neuf
+    ajout_score=emission_article[article]*-1
+  }else if (etat==false){//seconde main
+    ajout_score=emission_article[article]
+  }else{
+    const response = {
+      error: true,
+      error_message: 'Donnée manquante',
+      error_code: 32
+    }
+    return res.status(400).json(response);
+  }
+  return ajout_score
+}
+   
+function nouv_repas(aliment){
+  return (1-emission_aliment[aliment])*10
+}
+
+function renovation(meuble){
+  return emission_mobilier[meuble]
+}
+
+
+function boite_mail(mail_test){ //a faire tester par l'utilisateur toutes les semaines
+  if (mail_test==true){  //l'utilisateur a vidé sa boite mail
+    return 5
+  }else if (mail_test==false){ //l'utilisateur n'a pas vidé sa boite mail
+    return -5
+  }else{
+    const response = {
+      error: true,
+      error_message: 'Donnée manquante',
+      error_code: 32
+    }
+    return res.status(400).json(response);
+  }
+}      

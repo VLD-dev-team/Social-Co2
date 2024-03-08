@@ -1,6 +1,5 @@
 const socketIo = require('socket.io');
 const { verifyAuthToken } = require('./requireAuth.js');
-const notificationHandler = require('./notificationHandler.js');
 const { sendMessage } = require('./messageHandler.js');
 
 // Fonction pour initialiser Socket.io avec le serveur Express

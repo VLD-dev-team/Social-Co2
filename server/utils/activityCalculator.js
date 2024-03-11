@@ -129,3 +129,13 @@ function boite_mail(mail_test){ //a faire tester par l'utilisateur toutes les se
     return res.status(400).json(response);
   }
 }      
+
+module.exports() = {
+  boite_mail,
+  renovation,
+  nouv_repas,
+  nouv_achat,
+  nouv_trajet,
+  multiplicateur,
+  scorePassif
+}

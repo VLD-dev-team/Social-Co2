@@ -3,6 +3,7 @@ const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
 const admin = require('firebase-admin');
+const Activity = require('../lib/activity.js')
 
 router.route('/*')
     .all((req, res, next) => verifyAuthToken(req, res, next));
@@ -66,16 +67,14 @@ router.route('/:activityId')
         }
     })
     .post(async (req, res) => {
-
-        //TODO : Mettre le calcul du score ici
-
         try {
             const userID = req.headers.userid;
             const activityType = req.body.activityType;
-            const activityCO2Impact = req.body.activityCO2Impact;
-            const activityPollutionImpact = req.body.activityPollutionImpact;
             const activityName = req.body.activityName;
             const activityTimestamp = req.body.activityTimestamp;
+            
+            let activity = new Activity(userID, activityType, activityName, activityTimestamp)
+            activity.activityCO2Impact = activity.CalculCO2Impact()
 
             if (typeof userID !== 'string') {
                 const response = {
@@ -93,7 +92,7 @@ router.route('/:activityId')
                 }
                 return res.status(400).json(response);
             }
-            if (isNaN(activityCO2Impact)) {
+            if (isNaN(activity.activityCO2Impact)) {
                 const response = {
                         error : true,
                         error_message : 'Invalid activityCO2Impact',
@@ -119,9 +118,9 @@ router.route('/:activityId')
             }
 
             const insertQuery = `
-                INSERT INTO activities (userID, activityType, activityCO2Impact, activityPollutionImpact, activityName, activityTimestamp)
+                INSERT INTO activities (userID, activityType, activityCO2Impact, activityName, activityTimestamp)
                 VALUES (?, ?, ?, ?, ?, ?) ;`;
-            const insertResult = await executeQuery(insertQuery, [userID, activityType, activityCO2Impact, activityPollutionImpact, activityName, activityTimestamp]);
+            const insertResult = await executeQuery(insertQuery, [userID, activityType, activity.activityCO2Impact, activityName, activityTimestamp]);
 
             if (insertResult.affectedRows > 0) {
                 const activityID = insertResult.insertId;
@@ -129,8 +128,7 @@ router.route('/:activityId')
                         activityID : activityID,
                         userID : userID,
                         activityType : activityType,
-                        activityCO2Impact : activityCO2Impact,
-                        activityPollutionImpact : activityPollutionImpact,
+                        activityCO2Impact : activity.activityCO2Impact,
                         activityName : activityName,
                         activityTimestamp : activityTimestamp
                 }
@@ -159,7 +157,6 @@ router.route('/:activityId')
             const activityId = req.params.activityId;
             const activityType = req.body.activityType;
             const activityCO2Impact = req.body.activityCO2Impact;
-            const activityPollutionImpact = req.body.activityPollutionImpact;
             const activityName = req.body.activityName;
             const activityTimestamp = req.body.activityTimestamp;
 
@@ -186,11 +183,11 @@ router.route('/:activityId')
 
             const updateQuery = `
                 UPDATE activities
-                SET activityType = ?, activityCO2Impact = ?, activityPollutionImpact = ?,
+                SET activityType = ?, activityCO2Impact = ?,
                     activityName = ?, activityTimestamp = ?
                 WHERE userID = ? AND activityID = ? ;
             `;
-            const updateResult = await executeQuery(updateQuery, [activityType, activityCO2Impact, activityPollutionImpact, activityName, activityTimestamp, userID, activityId]);
+            const updateResult = await executeQuery(updateQuery, [activityType, activityCO2Impact, activityName, activityTimestamp, userID, activityId]);
 
             if (updateResult.affectedRows > 0) {
                 const response = {
@@ -198,7 +195,6 @@ router.route('/:activityId')
                         userID : userID,
                         activityType : activityType,
                         activityCO2Impact : activityCO2Impact,
-                        activityPollutionImpact : activityPollutionImpact,
                         activityName : activityName,
                         activityTimestamp : activityTimestamp
                 }

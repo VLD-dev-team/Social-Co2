@@ -65,4 +65,8 @@ router.route('/')
         }
     });
 
+
+    //TODO : PUT & DELETE : mettre dans la BDD les param passifs des activités
+
+
 module.exports = router;

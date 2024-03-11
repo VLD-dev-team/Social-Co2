@@ -23,8 +23,7 @@ class UserSCO2DataProvider extends ChangeNotifier {
     } else if (CurrentUserScore >= 8000) {
       scale = 1;
     }
-    return scale;    error = "User does not exist";
-
+    return scale;
   }
 
   Future<int> getUserScore() async {

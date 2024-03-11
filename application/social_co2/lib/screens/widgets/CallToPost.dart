@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:social_co2/screens/dialogs/dialogModel.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
 class CallToPost extends StatelessWidget {
@@ -66,9 +67,30 @@ class CallToPost extends StatelessWidget {
                 ),
               ),
             ),
-            const Card(
+            Card(
               color: secondaryCardColor,
-              child: Text("data"),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Wrap(
+                  spacing: 10,
+                  children: [
+                    FilledButton.icon(
+                        onPressed: () {
+                          showMoodDialog(context);
+                        },
+                        icon: const Icon(Icons.mood),
+                        label: const Text("Ton humeur")),
+                    FilledButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(Icons.energy_savings_leaf_outlined),
+                        label: const Text("Poste tes activités")),
+                    FilledButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(Icons.upload),
+                        label: const Text("Ton rapport")),
+                  ],
+                ),
+              ),
             )
           ],
         ),

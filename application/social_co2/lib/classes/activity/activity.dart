@@ -12,7 +12,7 @@ class SCO2activity {
 
   SCO2activity({
     required this.activityID,
-    required this.userID,
+    required this.userID, 
     required this.activityType,
     required this.activityCO2Impact,
     required this.activityName,

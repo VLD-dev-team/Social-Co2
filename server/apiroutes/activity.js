@@ -123,7 +123,13 @@ router.route('/:activityId')
             const insertResult = await executeQuery(insertQuery, [userID, activityType, activity.activityCO2Impact, activityName, activityTimestamp]);
 
             if (insertResult.affectedRows > 0) {
-                const activityID = insertResult.insertId;
+                
+
+
+            const updateQuery = `UPDATE TABLE user SET score = score + ? WHERE userID = ? ;`;
+            const updateResult = await executeQuery(updateQuery, [activity.activityCO2Impact , userID]);
+                
+            const activityID = insertResult.insertId;
                 const response = {
                         activityID : activityID,
                         userID : userID,
@@ -132,7 +138,8 @@ router.route('/:activityId')
                         activityName : activityName,
                         activityTimestamp : activityTimestamp
                 }
-                return res.status(200).json(response);
+
+            return res.status(200).json(response);
             } else {
                 const response = {
                         error : true,

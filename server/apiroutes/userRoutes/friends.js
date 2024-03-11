@@ -172,42 +172,7 @@ router.route('/status')
             }
             return res.status(500).json(response);
         }
-    })
-    .put(async (req, res) => {
-        try {
-            const userID = req.headers.userid;
-            const friendID = req.body.friendID;
-
-            // On bloque la personne à jamais
-            const deleteFriendshipQuery = `
-                UPDATE TABLE friends SET friendshipStatus = "11"
-                WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;`;
-            const deleteResult = await executeQuery(deleteFriendshipQuery, [userID, friendID, friendID, userID]);
-
-            if (deleteResult.affectedRows > 0) {
-                const response = {
-                    message : 'Friendship deleted successfully',
-                    status : 200,
-                }
-                return res.status(200).json(response);
-            } else {
-                const response = {
-                        error : true,
-                        error_message : 'Friendship not found',
-                        error_code : 28
-                }
-                return res.status(404).json(response);
-            }
-        } catch (error) {
-            console.error('Error deleting friendship:', error);
-            const response = {
-                    error : true,
-                    error_message : 'Internal Server Error',
-                    error_code : 2
-            }
-            return res.status(500).json(response);
-        }
-    })
+    });
     
 
 

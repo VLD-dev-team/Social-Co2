@@ -76,7 +76,7 @@ class CallToPost extends StatelessWidget {
                   children: [
                     FilledButton.icon(
                         onPressed: () {
-                          showMoodDialog(context);
+                          //showMoodDialog(context);
                         },
                         icon: const Icon(Icons.mood),
                         label: const Text("Ton humeur")),

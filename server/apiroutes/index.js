@@ -8,18 +8,31 @@ const router = express.Router();
 const websocket = require('./websocket.js')
 const user = require('./user.js')
 const activity = require('./activity.js')
-const like = require('./like.js')
-const comments = require('./comments.js')
-const activities = require('./userRoutes/activities.js')
-const friends = require('./userRoutes/friends.js')
-const notifications = require('./userRoutes/notifications.js')
-const social = require('./userRoutes/social.js')
-const notFoundRoute = require('./notFoundRoute.js');
-const init = require('./init.js')
+const activities = require('./activities.js')
+const score = require('./score.js')
+const leaderboard = require('./leaderboard.js')
+const social= require('./social.js')
+const friends= require('./friends.js')
+const rapport= require('./rapport.js')
+const conversations = require('./conversations.js')
+const messages = require('./messages.js')  
+
+/// Pages principale de l'espace de travail
+router.use('/websocket', websocket);
+router.use('/user', user);
+router.use('/activity', activity);
+router.use('/activities', activities);
+router.use('/leaderboard', leaderboard);
+router.use('/score', score);
+router.use('/social', social);
+router.use('/friends', friends);
+router.use('/rapport', rapport);
+router.use('/conversations', conversations);
+router.use('/messages', messages);
 
 /// définition des routes
 
-// Test pour le serveur à retirer lors de la mise en prod
+// Route de l'api pour voir si la connection fonctionne bel et bien
 
 router.get('/',(req,res)=>{
     const response = {
@@ -29,19 +42,6 @@ router.get('/',(req,res)=>{
     }
     return res.status(200).json(response);
 })
-  
 
-/// Pages principale de l'espace de travail
-router.use('/websocket', websocket);
-router.use('/user', user);
-router.use('/activity', activity);
-router.use('/like', like);
-router.use('/comments', comments);
-router.use('/user/activities', activities);
-router.use('/user/friends', friends);
-router.use('/user/notifications', notifications);
-router.use('/user/social', social);
-router.use('/initialisation', init);
-router.use(notFoundRoute);
 
 module.exports = router;

@@ -1,41 +1,41 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-enum ActivityType { route, food }
-
 class SCO2activity {
-  late final int activityID;
-  late final String userID;
-  late ActivityType activityType;
-  late int activityCO2Impact;
-  late String activityName;
-  late DateTime activityTimestamp;
+  final int? activityID;
+  final String userID;
+  String activityType;
+  int? activityCO2Impact;
+  String activityName;
+  DateTime activityTimestamp;
 
   SCO2activity({
-    required this.activityID,
-    required this.userID, 
+    required this.userID,
     required this.activityType,
-    required this.activityCO2Impact,
     required this.activityName,
     required this.activityTimestamp,
+    this.activityID,
+    this.activityCO2Impact,
   });
 
-  SCO2activity.fromJSON(Map<String, dynamic> json) {
-    activityID = json['activityID'];
-    userID = json['userID'];
-    activityType = json['activityType'];
-    activityCO2Impact = json['activityCO2Impact'];
-    activityName = json['activityName'];
-    activityTimestamp = json['activityTimestamp'];
+  factory SCO2activity.fromJSON(Map<String, dynamic> json) {
+    return SCO2activity(
+      activityID: json['activityID'],
+      userID: json['userID'],
+      activityType: json['activityType'],
+      activityCO2Impact: json['activityCO2Impact'],
+      activityName: json['activityName'],
+      activityTimestamp: DateTime.parse(json['activityTimestamp']),
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['activityID'] = activityID;
-    data['userID'] = userID;
-    data['activityType'] = activityType;
-    data['activityCO2Impact'] = activityCO2Impact;
-    data['activityName'] = activityName;
-    data['activityTimestamp'] = activityTimestamp;
-    return data;
+    return {
+      'activityID': activityID,
+      'userID': userID,
+      'activityType': activityType,
+      'activityName': activityName,
+      'activityTimestamp': activityTimestamp.toIso8601String(),
+      if (activityCO2Impact != null) 'activityCO2Impact': activityCO2Impact,
+    };
   }
 }

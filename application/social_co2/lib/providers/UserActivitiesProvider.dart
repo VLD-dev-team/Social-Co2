@@ -17,29 +17,6 @@ class UserActivitiesProvider extends ChangeNotifier {
 
     await Future.delayed(const Duration(seconds: 3));
 
-    print('Activités obtenues');
-    userActivities.add(SCO2activity(
-        activityID: 0,
-        userID: '$userID',
-        activityType: ActivityType.food,
-        activityCO2Impact: 0,
-        activityName: 'Repas du matin',
-        activityTimestamp: DateTime(2004)));
-    userActivities.add(SCO2activity(
-        activityID: 1,
-        userID: '$userID',
-        activityType: ActivityType.food,
-        activityCO2Impact: 0,
-        activityName: 'Repas du midi',
-        activityTimestamp: DateTime(2004)));
-    userActivities.add(SCO2activity(
-        activityID: 2,
-        userID: '$userID',
-        activityType: ActivityType.food,
-        activityCO2Impact: 0,
-        activityName: 'Repas de la nuit',
-        activityTimestamp: DateTime(2004)));
-
     isLoading = false;
     notifyListeners();
     return userActivities;

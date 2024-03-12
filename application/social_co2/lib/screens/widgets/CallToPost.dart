@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:social_co2/screens/dialogs/dialogModel.dart';
+import 'package:social_co2/screens/dialogs/dialogMood.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
 class CallToPost extends StatelessWidget {

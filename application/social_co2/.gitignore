@@ -45,3 +45,6 @@ app.*.map.json
 
 # Visual Studio
 .vscode/
+
+#idea
+.idea/

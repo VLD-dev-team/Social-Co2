@@ -9,11 +9,12 @@ import 'package:google_fonts/google_fonts.dart';
 // Importation des préférences firebase pour l'authentification ainsi que des packages firebase
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
 import 'package:social_co2/firebase_options.dart';
 
 // Importation des providers
+import 'package:provider/provider.dart';
 import 'package:social_co2/providers/IndexProvider.dart';
+import 'package:social_co2/providers/LeaderboardProvider.dart';
 import 'package:social_co2/providers/MakePostProvider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/providers/UserSCO2DataProvider.dart';
@@ -111,6 +112,9 @@ class HomeScreen extends StatelessWidget {
         ListenableProvider<MakePostProvider>(
             create: (_) =>
                 MakePostProvider()), // Provider qui permet de poster des données
+        ListenableProvider<LeaderBoardProvider>(
+            create: (_) => 
+                LeaderBoardProvider()), //  Provider qui permet d'obtenir les leaderboards
       ],
       builder: (context, child) {
         if (kIsWeb) {

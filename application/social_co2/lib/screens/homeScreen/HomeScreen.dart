@@ -46,13 +46,16 @@ class HomeScreen extends StatelessWidget {
                       // On intégre les widgets de droite en dessous du recap du score sur les plus petits écrans
                       (responsiveFormat == ResponsiveFormats.mid ||
                               responsiveFormat == ResponsiveFormats.small)
-                          ? const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                LeaderBoardWidget(),
-                                ReccurentActivities()
-                              ],
-                            )
+                          ? const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  LeaderBoardWidget(),
+                                  ReccurentActivities()
+                                ],
+                              ),
+                          )
                           : const SizedBox(
                               width: 0,
                               height: 0,
@@ -67,13 +70,15 @@ class HomeScreen extends StatelessWidget {
                     .large) // On insére les widgets de la colonne de droite si l'écran est large
               SizedBox(
                   width: (MediaQuery.of(context).size.width - drawerWidth) / 3,
-                  child: SingleChildScrollView(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: const [
-                        LeaderBoardWidget(),
-                        ReccurentActivities(),
-                      ]))),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10, right: 10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: const [
+                      LeaderBoardWidget(),
+                      ReccurentActivities(),
+                    ]),
+                  )),
           ],
         ));
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/providers/UserSCO2DataProvider.dart';
+import 'package:social_co2/screens/homeScreen/ActivitiesScreen.dart';
 import 'package:social_co2/screens/homeScreen/HomeScreen.dart';
 
 // Importation des styles et des providers pour le menu/drawer
@@ -123,6 +124,8 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
               // On affiche l'écran correspondant
               case 1:
                 return const HomeScreen(); // ACCUEIL
+              case 3:
+                return const ActivityScreen();
               default:
                 return const HomeScreen(); // ACCUEIL
             }

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:social_co2/providers/IndexProvider.dart';
 
 // Importation des styles et du module responsive
-import 'package:social_co2/styles/HomeScreenStyle.dart';
+import 'package:social_co2/styles/MainScreenStyle.dart';
 import 'package:social_co2/utils/responsiveHandler.dart';
 
 // Importation des widgets

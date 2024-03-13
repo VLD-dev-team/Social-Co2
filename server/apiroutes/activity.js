@@ -409,7 +409,7 @@ router.route('/favorite')
                 return res.status(400).json(response);
             }
         }
-    })
+    });
 
 module.exports = router;
 

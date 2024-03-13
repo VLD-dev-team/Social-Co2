@@ -9,13 +9,12 @@ const websocket = require('./websocket.js')
 const user = require('./user.js')
 const activity = require('./activity.js')
 const activities = require('./activities.js')
-const score = require('./score.js')
 const leaderboard = require('./leaderboard.js')
 const social= require('./social.js')
 const friends= require('./friends.js')
 const rapport= require('./rapport.js')
 const conversations = require('./conversations.js')
-const messages = require('./messages.js')  
+const messages = require('./messages.js')
 
 /// Pages principale de l'espace de travail
 router.use('/websocket', websocket);
@@ -23,7 +22,6 @@ router.use('/user', user);
 router.use('/activity', activity);
 router.use('/activities', activities);
 router.use('/leaderboard', leaderboard);
-router.use('/score', score);
 router.use('/social', social);
 router.use('/friends', friends);
 router.use('/rapport', rapport);
@@ -42,6 +40,5 @@ router.get('/',(req,res)=>{
     }
     return res.status(200).json(response);
 })
-
 
 module.exports = router;

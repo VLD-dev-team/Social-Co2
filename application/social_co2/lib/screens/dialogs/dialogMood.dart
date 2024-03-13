@@ -87,11 +87,11 @@ class MoodGridView extends StatelessWidget {
     return GridView.builder(
         itemCount: moodCollection.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 10.0,
-          crossAxisSpacing: 10.0,
-          childAspectRatio: 1 / 0.2,
-        ),
+            crossAxisCount: 2,
+            mainAxisSpacing: 10.0,
+            crossAxisSpacing: 10.0,
+            childAspectRatio: 1,
+            mainAxisExtent: 80),
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {

@@ -341,6 +341,8 @@ Pour traiter les erreurs, nous avons identifiés chacunes des erreurs par un cod
 * Code d'erreur n°29 : Token not supplied - Statut 401
 * Code d'erreur n°30 : Invalid Token - Statut 401
 * Code d'erreur n°31 : Donnée manquante - Statut 400
+* Code d'erreur n°32 : User doesnt have this activity in favorite - Statut 400
+
 
 
 ### Le système de messagerie

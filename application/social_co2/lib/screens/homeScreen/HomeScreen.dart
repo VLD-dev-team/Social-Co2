@@ -11,7 +11,7 @@ import 'package:social_co2/utils/responsiveHandler.dart';
 
 // Importation des widgets
 import 'package:social_co2/screens/widgets/Feed.dart';
-import 'package:social_co2/screens/widgets/LeaderBoard.dart';
+import 'package:social_co2/screens/widgets/LeaderBoardWidget.dart';
 import 'package:social_co2/screens/widgets/ReccurentActivities.dart';
 import 'package:social_co2/screens/widgets/ScoreQuickOverview.dart';
 import 'package:social_co2/screens/widgets/CallToPost.dart';
@@ -46,10 +46,10 @@ class HomeScreen extends StatelessWidget {
                       // On intégre les widgets de droite en dessous du recap du score sur les plus petits écrans
                       (responsiveFormat == ResponsiveFormats.mid ||
                               responsiveFormat == ResponsiveFormats.small)
-                          ? Row(
+                          ? const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                LeaderBoard(),
+                              children: [
+                                LeaderBoardWidget(),
                                 ReccurentActivities()
                               ],
                             )
@@ -71,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: const [
-                        LeaderBoard(),
+                        LeaderBoardWidget(),
                         ReccurentActivities(),
                       ]))),
           ],

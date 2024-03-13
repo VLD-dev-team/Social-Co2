@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
-class LeaderBoard extends StatelessWidget {
-  const LeaderBoard({super.key});
+class LeaderBoardWidget extends StatelessWidget {
+  const LeaderBoardWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

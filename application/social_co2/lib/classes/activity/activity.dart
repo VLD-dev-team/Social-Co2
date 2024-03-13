@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 class SCO2activity {
   final int? activityID;
   final String userID;

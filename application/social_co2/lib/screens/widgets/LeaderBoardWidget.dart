@@ -9,6 +9,7 @@ class LeaderBoardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.maxFinite,
       height: 300,
       decoration: primaryCard,
       child: Column(
@@ -26,43 +27,38 @@ class LeaderBoardWidget extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: Consumer<LeaderBoardProvider>(builder: ((context, value, child) {
-              if (value.isLoading) {
-                return  const SizedBox(
-                  height: 40,
-                  child: LinearProgressIndicator(),
-                );
-              } else {
-                if (value.error == "") {
-                  return SizedBox(
-                    height: 200,
-                    child: ListView.builder(
+          Consumer<LeaderBoardProvider>(
+              builder: ((context, value, child) {
+            if (value.isLoading) {
+              return const SizedBox(
+                height: 40,
+                child: LinearProgressIndicator(),
+              );
+            } else {
+              if (value.error == "") {
+                return SizedBox(
+                  height: 200,
+                  child: ListView.builder(
                       itemCount: 10,
                       itemBuilder: ((context, index) {
-                      return Container(
-                        decoration: secondaryCardInnerShadow,
-                        child: ListTile(
-                          leading: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
-                                child: Text('${index+1}e'),
-                              )
-                            ],
+                        return Container(
+                          decoration: secondaryCardInnerShadow,
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: Text('${index + 1}e'),
+                            ),
                           ),
-                        ),
-                      );
-                    })),
-                  );
-                } else {
-                  return SizedBox(
-                    child: Text(value.error),
-                  );
-                }
+                        );
+                      })),
+                );
+              } else {
+                return SizedBox(
+                  child: Text(value.error),
+                );
               }
-            })),
-          ),
+            }
+          })),
         ],
       ),
     );

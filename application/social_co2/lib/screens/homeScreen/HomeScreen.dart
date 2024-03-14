@@ -46,16 +46,16 @@ class HomeScreen extends StatelessWidget {
                       // On intégre les widgets de droite en dessous du recap du score sur les plus petits écrans
                       (responsiveFormat == ResponsiveFormats.mid ||
                               responsiveFormat == ResponsiveFormats.small)
-                          ? const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Row(
+                          ? Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  LeaderBoardWidget(),
-                                  ReccurentActivities()
+                                children: const [
+                                  Expanded(child: LeaderBoardWidget()),
+                                  Expanded(child: ReccurentActivities())
                                 ],
                               ),
-                          )
+                            )
                           : const SizedBox(
                               width: 0,
                               height: 0,
@@ -75,9 +75,9 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: const [
-                      LeaderBoardWidget(),
-                      ReccurentActivities(),
-                    ]),
+                          LeaderBoardWidget(),
+                          ReccurentActivities(),
+                        ]),
                   )),
           ],
         ));

@@ -34,7 +34,7 @@ class _ActivityScreen extends State<ActivityScreen> {
         width: MediaQuery.of(context).size.width -
             drawerWidth, // On défini la largeur du conteneur pour qu'il prenne tout l'espace à droite du drawer sur le web
         decoration: homeScreenBackground,
-        child: (responsiveFormat == ResponsiveFormats.large)
+        child: (responsiveFormat != ResponsiveFormats.large)
             ? DefaultTabController(
                 initialIndex: 0,
                 length: 2,
@@ -68,7 +68,10 @@ class _ActivityScreen extends State<ActivityScreen> {
                   ],
                 ))
             : Row(
-                children: const [CardActivitiesList(), CardMoreInformations()],
+                children: const [
+                  Expanded(child: CardActivitiesList()),
+                  Expanded(child: CardMoreInformations())
+                ],
               ));
   }
 }

@@ -42,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: SingleChildScrollView(
                     child: Column(children: [
-                      ScoreQuickOverview(),
+                      const ScoreQuickOverview(),
                       // On intégre les widgets de droite en dessous du recap du score sur les plus petits écrans
                       (responsiveFormat == ResponsiveFormats.mid ||
                               responsiveFormat == ResponsiveFormats.small)

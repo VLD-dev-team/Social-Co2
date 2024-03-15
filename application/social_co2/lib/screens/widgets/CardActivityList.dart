@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +15,9 @@ class CardActivitiesList extends StatefulWidget {
 }
 
 class _CardActivityList extends State<CardActivitiesList> {
-  DateTime _selectedDate = DateTime.now();
+  // controller de la date courante
+  DateTime _selectedDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +56,9 @@ class _CardActivityList extends State<CardActivitiesList> {
                     if (value != null) {
                       setState(() {
                         _selectedDate = value;
+                        Provider.of<UserActivitiesProvider>(context,
+                                listen: false)
+                            .getCurrentUserActivitiesByDate(_selectedDate);
                       });
                     }
                   });
@@ -79,16 +86,41 @@ class _CardActivityList extends State<CardActivitiesList> {
                   ),
                 ),
               ),
+              Consumer<UserActivitiesProvider>(
+                  builder: (context, value, child) {
+                if (value.isLoading) {
+                  return Container(
+                      margin: const EdgeInsets.all(10.0),
+                      width: 20,
+                      height: 20,
+                      child:
+                          const CircularProgressIndicator(color: Colors.black));
+                } else {
+                  return const SizedBox(
+                    width: 0,
+                    height: 0,
+                  );
+                }
+              })
             ],
           ),
           Expanded(
             child: Container(
               width: double.maxFinite,
+              padding: const EdgeInsets.only(top: 10),
               margin: const EdgeInsets.only(
                   top: 5, bottom: 15, left: 10, right: 10),
               decoration: secondaryCardInnerShadow,
               child: ActivitiesList(
                 multiSelection: false,
+                activities: (Provider.of<UserActivitiesProvider>(context,
+                                listen: true)
+                            .userActivitiesPerDays[_selectedDate] ==
+                        null)
+                    ? [] // Aucune activité à afficher
+                    : Provider.of<UserActivitiesProvider>(context, listen: true)
+                            .userActivitiesPerDays[
+                        _selectedDate]!, // Activités à afficher pour le jour selectionné
               ),
             ),
           )

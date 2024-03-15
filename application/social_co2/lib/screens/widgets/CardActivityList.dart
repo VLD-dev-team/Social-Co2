@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
+import 'package:social_co2/screens/widgets/ActivitiesList.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
 class CardActivitiesList extends StatefulWidget {
@@ -81,11 +82,16 @@ class _CardActivityList extends State<CardActivitiesList> {
             ],
           ),
           Expanded(
-              child: ListView.builder(
-                  itemCount: Provider.of<UserActivitiesProvider>(context, listen: true)
-                      .userActivities
-                      .length,
-                  itemBuilder: (context, index) {}))
+            child: Container(
+              width: double.maxFinite,
+              margin: const EdgeInsets.only(
+                  top: 5, bottom: 15, left: 10, right: 10),
+              decoration: secondaryCardInnerShadow,
+              child: ActivitiesList(
+                multiSelection: false,
+              ),
+            ),
+          )
         ],
       ),
     );

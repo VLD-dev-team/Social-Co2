@@ -1,4 +1,5 @@
 const { executeQuery } = require('./database.js');
+const socketManager = require('../utils/socketManager.js');
 
 const handleNewNotification = async (io, notificationData) => {
     const { userID, notificationContent } = notificationData;

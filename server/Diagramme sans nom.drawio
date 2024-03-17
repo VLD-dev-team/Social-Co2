@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-03-14T12:07:41.088Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="3zL7zfkUqZnrVze0ePkR" version="24.0.5" type="github">
+<mxfile host="app.diagrams.net" modified="2024-03-17T09:01:34.670Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="c11TbPyCcGCAmbpfQlI6" version="24.0.7" type="github">
   <diagram name="Page-1" id="jhAAQiRTMC3WOToZxg92">
-    <mxGraphModel dx="2501" dy="3097" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2650" dy="3283" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -153,19 +153,19 @@
         <mxCell id="wuqC6jIEuIp08qezgk6B-38" value="Insère dans la table activity une activité et calcul le score et le met à jour" style="html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="430" y="-990" width="110" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="wuqC6jIEuIp08qezgk6B-40" value="Attention : les modifications d&#39;une activité ne pourrons plus influer sur le score" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="wuqC6jIEuIp08qezgk6B-40" value="Attention : les modifications d&#39;une activité ne pourrons plus influer sur le score" style="html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
           <mxGeometry x="430" y="-905" width="240" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="wuqC6jIEuIp08qezgk6B-42" value="Attention : les modifications d&#39;une activité ne pourrons plus influer sur le score" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="wuqC6jIEuIp08qezgk6B-42" value="Attention : les modifications d&#39;une activité ne pourrons plus influer sur le score" style="html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
           <mxGeometry x="430" y="-835" width="240" height="50" as="geometry" />
         </mxCell>
         <mxCell id="wuqC6jIEuIp08qezgk6B-44" value="require activityid" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="290" y="-760" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="wuqC6jIEuIp08qezgk6B-45" value="Insertion de l&#39;activité dans la table reccurentActivities" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="wuqC6jIEuIp08qezgk6B-45" value="Insertion de l&#39;activité dans la table reccurentActivities" style="html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="560" y="-747.5" width="170" height="45" as="geometry" />
         </mxCell>
-        <mxCell id="wuqC6jIEuIp08qezgk6B-46" value="Suppression de l&#39;activité dans la table reccurentActivities" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="wuqC6jIEuIp08qezgk6B-46" value="Suppression de l&#39;activité dans la table reccurentActivities" style="html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="560" y="-667.5" width="170" height="45" as="geometry" />
         </mxCell>
         <mxCell id="wuqC6jIEuIp08qezgk6B-50" value="require userid" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
@@ -192,10 +192,10 @@
         <mxCell id="wuqC6jIEuIp08qezgk6B-59" value="/user" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="95" y="-335" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="wuqC6jIEuIp08qezgk6B-61" value="GET : Donne toutes les infos de l&#39;utilisateur" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="wuqC6jIEuIp08qezgk6B-61" value="GET : Donne toutes les infos de l&#39;utilisateur" style="html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="249" y="-220" width="110" height="65" as="geometry" />
         </mxCell>
-        <mxCell id="wuqC6jIEuIp08qezgk6B-63" value="DELETE : Supprime l&#39;utilisateur et tout ce qui lui est associé" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="wuqC6jIEuIp08qezgk6B-63" value="DELETE : Supprime l&#39;utilisateur et tout ce qui lui est associé" style="html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="247.5" y="-140" width="145" height="80" as="geometry" />
         </mxCell>
         <mxCell id="wuqC6jIEuIp08qezgk6B-72" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;" parent="1" source="wuqC6jIEuIp08qezgk6B-69" target="wuqC6jIEuIp08qezgk6B-70" edge="1">
@@ -402,7 +402,7 @@
         <mxCell id="wuqC6jIEuIp08qezgk6B-145" value="GET : rechercher un utilisateur qui commence par idSearch" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="319" y="1350" width="141" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="wuqC6jIEuIp08qezgk6B-148" value="PUT : Met à jour les infos de l&#39;utilisateur" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="wuqC6jIEuIp08qezgk6B-148" value="PUT : Met à jour les infos de l&#39;utilisateur" style="html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="359" y="-280" width="110" height="50" as="geometry" />
         </mxCell>
         <mxCell id="wuqC6jIEuIp08qezgk6B-154" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;dashPattern=8 8;" parent="1" source="wuqC6jIEuIp08qezgk6B-150" target="wuqC6jIEuIp08qezgk6B-151" edge="1">
@@ -453,7 +453,7 @@
         <mxCell id="wuqC6jIEuIp08qezgk6B-162" value="GET : Charger les 40 derniers messages partir d&#39;un index " style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="280" y="1775" width="141" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="wuqC6jIEuIp08qezgk6B-163" value="Démarrer la fonction d&#39;envoie de notification de mail" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="wuqC6jIEuIp08qezgk6B-163" value="Démarrer la fonction d&#39;envoie de notification de mail" style="html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="655.5" y="-230" width="170" height="45" as="geometry" />
         </mxCell>
         <mxCell id="wuqC6jIEuIp08qezgk6B-166" value="require activityType &amp;amp; some Informations" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
@@ -465,14 +465,8 @@
         <mxCell id="iu74Z957g5xioMOJV0q_-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;dashPattern=1 4;" parent="1" source="wuqC6jIEuIp08qezgk6B-169" target="wuqC6jIEuIp08qezgk6B-163" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="iu74Z957g5xioMOJV0q_-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;dashPattern=1 4;" parent="1" source="wuqC6jIEuIp08qezgk6B-169" target="wuqC6jIEuIp08qezgk6B-171" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="wuqC6jIEuIp08qezgk6B-169" value="POST : Création de l&#39;utilisateur" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="wuqC6jIEuIp08qezgk6B-169" value="POST : Création de l&#39;utilisateur" style="html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="574" y="-350" width="110" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="wuqC6jIEuIp08qezgk6B-171" value="Relier à la requête /score pour initialiser le multiplicateur" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
-          <mxGeometry x="655.5" y="-90" width="170" height="45" as="geometry" />
         </mxCell>
         <mxCell id="wuqC6jIEuIp08qezgk6B-190" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;dashPattern=8 8;" parent="1" source="wuqC6jIEuIp08qezgk6B-173" target="wuqC6jIEuIp08qezgk6B-174" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -600,14 +594,38 @@
         <mxCell id="iu74Z957g5xioMOJV0q_-33" value="require startIndex" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="290" y="-590" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="iu74Z957g5xioMOJV0q_-38" value="Mise à jour du score passif à l&#39;inscription" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="iu74Z957g5xioMOJV0q_-38" value="Mise à jour du score passif à l&#39;inscription" style="html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="655.5" y="-180" width="110" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="iu74Z957g5xioMOJV0q_-39" value="UPDATE user avec le nouveau score" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="iu74Z957g5xioMOJV0q_-39" value="UPDATE user avec le nouveau score" style="html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="655.5" y="-285" width="170" height="45" as="geometry" />
         </mxCell>
         <mxCell id="iu74Z957g5xioMOJV0q_-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.005;entryY=0.625;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;dashPattern=1 4;" parent="1" source="wuqC6jIEuIp08qezgk6B-169" target="iu74Z957g5xioMOJV0q_-38" edge="1">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OyTrl3YanEYAb8G0FhGF-1" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="50" y="-1380" width="60" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="OyTrl3YanEYAb8G0FhGF-2" value="Fait" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="109" y="-1390" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="OyTrl3YanEYAb8G0FhGF-3" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="51" y="-1354" width="60" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="OyTrl3YanEYAb8G0FhGF-4" value="Attention" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="121" y="-1363" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="OyTrl3YanEYAb8G0FhGF-5" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="52" y="-1330" width="60" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="OyTrl3YanEYAb8G0FhGF-6" value="Pas implémenté sur le figma" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="121" y="-1339" width="169" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="OyTrl3YanEYAb8G0FhGF-7" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="53" y="-1303" width="60" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="OyTrl3YanEYAb8G0FhGF-8" value="Pas encore implémenté" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="109" y="-1311" width="169" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

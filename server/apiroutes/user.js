@@ -242,6 +242,82 @@ router.route('/')
             };
         return res.status(500).json(response);
         }
-    })
+    });
+
+router.route('/activities')
+    .get(async(req,res)=> {
+        const userID = req.headers.userid;
+        const currentTimestamp = req.body.currentTimestamp;
+
+        if (typeof userID !== 'string') {
+            const response = {
+                    error : true,
+                    error_message : 'Invalid user ID',
+                    error_code : 1
+            }
+            return res.status(400).json(response);
+        }
+
+        const sqlQuery = `SELECT * FROM activities WHERE userID = ? AND activityTimestamp = ? ;`;
+        const sqlResult = await executeQuery(sqlQuery, [userID, currentTimestamp]);
+
+        if (sqlResult.length > 0 ){
+            currentPhrase = "Vous avez effectué les acitivités suivantes : "
+            for (activities in sqlResult){
+                currentPhrase = currentPhrase + sqlResult[activities].activityName.toString()
+            }
+            const response = {
+                activities : sqlResult,
+                phrase : currentPhrase,
+            }
+            return res.status(200).json(response)
+        } else {
+            const response = {
+                error : true,
+                error_message : 'Invalid activity ID',
+                error_code : 12
+        }
+        return res.status(400).json(response);
+        }
+    });
+
+router.route('/notifications')
+    .get(async (req, res) => {
+        const userID = req.headers.userid;
+
+        if (typeof userID !== 'string') {
+            const response = {
+                    error : true,
+                    error_message : 'Invalid user ID',
+                    error_code : 1
+            }
+            return res.status(400).json(response);
+        }
+
+        // Requête pour obtenir les 10 dernières notifications de l'utilisateur
+        const getNotificationsQuery = `
+            SELECT * FROM notifications
+            WHERE userID = ?
+            ORDER BY notificationID DESC
+            LIMIT 10 ;`;
+
+        const notifications = await executeQuery(getNotificationsQuery, [userID]);
+
+        if (notifications.length > 0){
+            const response = {
+                notifications : notifications,
+                status : 200,
+            }
+            return res.status(200).json(response);
+        } else {
+            const response = {
+                error : true,
+                error_message : 'Internal Server Error',
+                error_code : 2
+            }
+            return res.status(500).json(response);
+        }
+    });
+
 
 module.exports = router;

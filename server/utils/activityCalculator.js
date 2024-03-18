@@ -138,7 +138,7 @@ function boite_mail(mail_test){ //a faire tester par l'utilisateur toutes les se
   }
 }      
 
-module.exports() = {
+module.exports = {
   boite_mail,
   renovation,
   nouv_repas,

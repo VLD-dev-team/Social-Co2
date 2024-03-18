@@ -123,6 +123,23 @@ class _CardActivityList extends State<CardActivitiesList> {
                         _selectedDate]!, // Activités à afficher pour le jour selectionné
               ),
             ),
+          ),
+          FloatingActionButton.extended(
+            backgroundColor: Colors.white,
+            onPressed: () {
+              // TODO : Ajouter le dialobox d'ajout des activités
+            },
+            label: const Text(
+              "Ajouter une activité",
+              style: TextStyle(color: Colors.black),
+            ),
+            icon: const Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(
+            height: 15,
           )
         ],
       ),

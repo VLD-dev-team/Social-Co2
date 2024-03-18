@@ -53,11 +53,23 @@ class UserActivitiesProvider extends ChangeNotifier {
     final String? token = await firebaseAuth.currentUser?.getIdToken();
     final String? userID = firebaseAuth.currentUser?.uid;
 
-    userActivitiesPerDays[date]!.add(SCO2activity(
-        userID: '$userID',
-        activityType: "journey",
-        activityName: "Trajet",
-        activityTimestamp: date));
+    if (userActivitiesPerDays[date] == null) {
+      userActivitiesPerDays.addAll({
+        date: [
+          SCO2activity(
+              userID: '$userID',
+              activityType: "journey",
+              activityName: "Trajet",
+              activityTimestamp: date)
+        ]
+      });
+    } else {
+      userActivitiesPerDays[date]!.add(SCO2activity(
+          userID: '$userID',
+          activityType: "journey",
+          activityName: "Trajet",
+          activityTimestamp: date));
+    }
 
     await Future.delayed(const Duration(seconds: 3));
 

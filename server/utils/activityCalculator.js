@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
-math.import(functions)
 
 activite = {
     emission_chauffage : {
@@ -95,7 +94,7 @@ function multiplicateur(recycl, nb_habitants, surface, potager, multiplicateur){
 }
 
 function nouv_trajet(vehicule,distance){
-  ajout_score=(60-emission_vehicule[vehicule])*math.log(distance)*1/10
+  ajout_score=(60-emission_vehicule[vehicule])*Math.log(distance)*1/10
   return ajout_score
 }
     

@@ -77,7 +77,28 @@ router.route('/')
         let activityCO2Impact = 0;
         // On va calculer l'impact au score en fonction du type d'activité choisi
         if (activityType == "trajet"){
-            const vehicule = req.body.vehicule
+            let vehicule = req.body.vehicule
+            if (vehicule == 'voiture'){
+                const sqlQuery = 'SELECT voiture, hybride FROM users WHERE userID = ? '
+                const sqlResult = await executeQuery(sqlQuery, [userID])
+                if (sqlQuery.hybride){
+                    if (sqlQuery.voiture == 1){
+                        vehicule = 'Grosse voiture hybride'
+                    } else if (sqlQuery.voiture == 2){
+                        vehicule = 'Moyenne voiture hybride'
+                    } else {
+                        vehicule = 'Petite voiture hybride'
+                    }
+                } else {
+                    if (sqlQuery.voiture == 1){
+                        vehicule = 'Grosse voiture'
+                    } else if (sqlQuery.voiture == 2){
+                        vehicule = 'Moyenne voiture'
+                    } else {
+                        vehicule = 'Petite voiture'
+                    }
+                }
+            }
             const distance = req.body.distance
             activityCO2Impact = activityCalculator.nouv_trajet(vehicule,distance)
         } else if (activityType == "achat"){

@@ -12,6 +12,12 @@ activite = {
       "fioul":57
       },
     emission_vehicule : {
+      "Grosse voiture hybride" : 110,
+      "Moyenne voiture hybride" : 100,
+      "Petite voiture hybride" : 80,
+      "Grosse voiture" : 195,
+      "Moyenne voiture" : 180,
+      "Petite voiture" : 175,
       "voiture_electrique":20,
       "moto":165,
       "bus":110,

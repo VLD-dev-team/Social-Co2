@@ -43,7 +43,9 @@ router.route('/')
                     nb_habitants : sqlResult[0].nb_habitants,
                     surface : sqlResult[0].surface,
                     potager : sqlResult[0].potager,
-                    multiplicateur : sqlResult[0].multiplicateur
+                    multiplicateur : sqlResult[0].multiplicateur,
+                    voiture : sqlResult[0].voiture,
+                    hybride : sqlResult[0].hybride
                 }
             return res.status(200).json(response);
         } else {
@@ -75,9 +77,10 @@ router.route('/')
         const nb_habitants = req.body.nb_habitants
         const surface = req.body.surface
         const potager = req.body.potager
-        const multiplicateur = req.body.multiplicateur
+        const voiture = req.body.voiture
+        const hybride = req.body.hybride
 
-        if (typeof recycl !== 'boolean' || typeof nb_habitants !== 'number' || typeof surface !== 'number' || typeof potager !== 'boolean' || typeof multiplicateur !== 'number') {
+        if (typeof recycl !== 'boolean' || typeof nb_habitants !== 'number' || typeof surface !== 'number' || typeof potager !== 'boolean' || typeof voiture !== 'number' || typeof hybride !== 'boolean') {
             const response = {
                 error: true,
                 error_message: 'Invalid parameters',
@@ -102,10 +105,10 @@ router.route('/')
             // Requête de mise à jour de la table users
             const updateQuery2 = `
             UPDATE users 
-            SET recycl = ?, nb_habitants = ?, surface = ?, potager = ?, multiplicateur = ?
+            SET recycl = ?, nb_habitants = ?, surface = ?, potager = ?, multiplicateur = ?, voiture = ?
             WHERE userID = ?;
             `;
-            const updateResult2 = await executeQuery(updateQuery2, [recycl, nb_habitants, surface, potager, multiplicateur, userID]);
+            const updateResult2 = await executeQuery(updateQuery2, [recycl, nb_habitants, surface, potager, multiplicateur, voiture, userID]);
 
             if (updateResult2.affectedRows > 0) {
                 // Réponse avec les détails de la mise à jour
@@ -117,6 +120,8 @@ router.route('/')
                     surface,
                     potager,
                     multiplicateur,
+                    voiture,
+                    hybride,
                     message: 'User data has been updated',
                 };
                 return res.status(200).json(response);
@@ -207,8 +212,10 @@ router.route('/')
         const surface = req.body.surface
         const potager = req.body.potager
         const multiplicateur = req.body.multiplicateur
+        const voiture = req.body.voiture
+        const hybride = req.body.hybride
 
-        if (typeof recycl !== 'boolean' || typeof nb_habitants !== 'number' || typeof surface !== 'number' || typeof potager !== 'boolean' || typeof multiplicateur !== 'number') {
+        if (typeof recycl !== 'boolean' || typeof nb_habitants !== 'number' || typeof surface !== 'number' || typeof potager !== 'boolean' || typeof multiplicateur !== 'number' || typeof voiture !== 'number' || typeof hybride !== 'boolean') {
             const response = {
                 error: true,
                 error_message: 'Invalid parameters',
@@ -221,8 +228,8 @@ router.route('/')
         const newscore = activityCalculator.scorePassif(activityCalculator.multiplicateur(recycl, nb_habitants, surface, potager, multiplicateur),5000)
         // Maintenant, q'on a vérifié le typage, on peut creer notre utilisateur avec les différents paramètres associés
 
-        const sqlQuery = `INSERT INTO users (userID, score, recycl, nb_habitants, surface, potager, multiplicateur) VALUES ( ? , ? , ? , ? , ? , ? , ?) ;`;
-        const sqlResult = await executeQuery(sqlQuery, [userID, parseInt(newscore) , recycl, nb_habitants, surface, potager, multiplicateur]);
+        const sqlQuery = `INSERT INTO users (userID, score, recycl, nb_habitants, surface, potager, multiplicateur, voiture, hybride) VALUES ( ? , ? , ? , ? , ? , ? , ?, ?, ?) ;`;
+        const sqlResult = await executeQuery(sqlQuery, [userID, parseInt(newscore) , recycl, nb_habitants, surface, potager, multiplicateur, voiture, hybride]);
 
         if (sqlResult.affectedRows > 0){
             // On active la fonction d'envoie d'email toutes les 24 heures

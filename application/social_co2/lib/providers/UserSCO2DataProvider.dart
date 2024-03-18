@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:social_co2/collections/MoreInformationsData.dart';
 import 'package:social_co2/main.dart';
 import 'package:social_co2/utils/requestsService.dart';
 
 class UserSCO2DataProvider extends ChangeNotifier {
+  // Données sur le score
   int CurrentUserScore = 0;
   int CurrentUserScoreScale = 0;
 
+  // Données liées au multiplicateur
+  double homeSurface = 150; // Surface du domicile
+  HeatingModes heatMode = HeatingModes.electrique; // Type de chauffage
+  int heatersCount = 3; // Nombre de chauffage
+  int buildingDate = 1875; // Date de construction/rénovation du batiment
+  bool garden = true; // Possède un jardin ou non
+  bool recycling = true; // Recycle ou non
+
+  // Données du statut du provider sur les requettes
   bool isLoading = false;
   String error = "";
 

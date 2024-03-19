@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:social_co2/providers/LeaderboardProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
+
 class LeaderBoardWidget extends StatelessWidget {
   const LeaderBoardWidget({super.key});
 
@@ -57,20 +58,23 @@ class LeaderBoardWidget extends StatelessWidget {
                                       : index == 1 ? const Color.fromRGBO(217, 217, 217, 1) 
                                       : index ==2 ? const Color.fromRGBO(255, 107, 0, 1)
                                       : Colors.black),
-                                  
                                   ),     //affichage postion classement
                                 ),
                                 title: Row(
                                   children: [
-                                    CircleAvatar(
-                                      child: Text("icon"),          //affichage icone utilisateur
+                                    const CircleAvatar(
+                                      backgroundColor: Color.fromRGBO(157, 188, 150, 1),
+                                      child: Icon(
+                                        Icons.account_circle_outlined,
+                                        size: 40,
+                                        ),          //affichage icone utilisateur
                                     ),
-                                    Expanded(child: Center(child: Text(
+                                    const Expanded(child: Center(child: Text(
                                       "Username",
                                       style: TextStyle(fontSize:25 ),
                                       ))),  //affichage pseudo utilisateur                           //TODO : remplacer par vraies valeurs
                                     Text('${index + 5000 }',
-                                    style: TextStyle(fontSize:25 ),),  
+                                    style: const TextStyle(fontSize:25 ),),  
                                   ],
                                 ),
                               ),

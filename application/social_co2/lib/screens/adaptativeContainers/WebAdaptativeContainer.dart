@@ -5,6 +5,7 @@ import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/providers/UserSCO2DataProvider.dart';
 import 'package:social_co2/screens/homeScreen/ActivitiesScreen.dart';
 import 'package:social_co2/screens/homeScreen/HomeScreen.dart';
+import 'package:social_co2/screens/homeScreen/LeaderBoardScreen.dart';
 
 // Importation des styles et des providers pour le menu/drawer
 import 'package:social_co2/styles/webDrawersStyle.dart';
@@ -126,6 +127,8 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
                 return const HomeScreen(); // ACCUEIL
               case 3:
                 return const ActivityScreen();
+              case 4:
+                return const LeaderBoardScreeen();
               default:
                 return const HomeScreen(); // ACCUEIL
             }

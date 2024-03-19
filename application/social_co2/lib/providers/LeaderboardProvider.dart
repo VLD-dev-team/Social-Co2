@@ -20,7 +20,7 @@ class LeaderBoardProvider extends ChangeNotifier {
     // On fait la requete au serveur
     final endpoint = (leaderBoardType=="world") ? "leaderboard/world" : "leaderboard/friends";
     final data = await requestService().get(endpoint, {"authorization": '$token',
-          'userid': '$userID',});
+          'userid': userID,});
     
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_co2/collections/MoreInformationsData.dart';
 import 'package:social_co2/main.dart';
+import 'package:social_co2/utils/enumDataParser.dart';
 import 'package:social_co2/utils/requestsService.dart';
 
 class UserSCO2DataProvider extends ChangeNotifier {
@@ -15,6 +16,8 @@ class UserSCO2DataProvider extends ChangeNotifier {
   int buildingDate = 1875; // Date de construction/rénovation du batiment
   bool garden = true; // Possède un jardin ou non
   bool recycling = true; // Recycle ou non
+  CarSizes carSize = CarSizes.mid; // Taille de la voiture
+  bool isCarHybrid = false; // Motorisation hybride ou non de la voiture
 
   // Données du statut du provider sur les requettes
   bool isLoading = false;
@@ -37,8 +40,9 @@ class UserSCO2DataProvider extends ChangeNotifier {
     return scale;
   }
 
-  Future<int> getUserScore() async {
+  Future<int> getUserSCO2Data() async {
     isLoading = true;
+    notifyListeners();
 
     // On récupère le token de connexion
     final authToken = await firebaseAuth.currentUser!.getIdToken();
@@ -66,9 +70,23 @@ class UserSCO2DataProvider extends ChangeNotifier {
     }
 
     // Si pas d'erreur on met à jour le score pour toute l'appli et on met à jour le provider
-    error = "";
     CurrentUserScore = int.parse(data["score"]);
     CurrentUserScoreScale = calcUserScoreScale();
+
+    // On met à jour les variables liés au multiplicateur
+    homeSurface = data['surface']; // Surface du domicile
+    heatMode =
+        getHeatingModeFromString(data['heatingMode']); // Type de chauffage
+    heatersCount = data['heatingCount']; // Nombre de chauffage
+    buildingDate =
+        data['surface']; // Date de construction/rénovation du batiment
+    garden = data['potager']; // Possède un jardin ou non
+    recycling = data['recycl']; // Recycle ou non
+    carSize = getCarSizeFromString(data['carSize']); // Taille de la voiture
+    isCarHybrid = data['hybride'];
+
+    // On met à jour les données d'état du provider
+    error = "";
     isLoading = false;
 
     notifyListeners();

@@ -31,7 +31,36 @@ class _CardMoreInformations extends State<CardMoreInformations> {
   bool isCarHybrid = false; // Voiture hybride ou non
 
   @override
+  void initState() {
+    super.initState();
+
+    // Obtention des données depuis le provider UserSCO2DataProvider
+    surfaceFieldController.value = TextEditingValue(
+        text: Provider.of<UserSCO2DataProvider>(context, listen: false)
+            .homeSurface
+            .toString());
+    _selectedHeatingMode =
+        Provider.of<UserSCO2DataProvider>(context, listen: false).heatMode;
+    heatersCountController.value = TextEditingValue(
+        text: Provider.of<UserSCO2DataProvider>(context, listen: false)
+            .heatersCount
+            .toString());
+    buildingDateController.value = TextEditingValue(
+        text: Provider.of<UserSCO2DataProvider>(context, listen: false)
+            .buildingDate
+            .toString());
+    garden = Provider.of<UserSCO2DataProvider>(context, listen: false).garden;
+    recycling =
+        Provider.of<UserSCO2DataProvider>(context, listen: false).recycling;
+    _selectedCarSize =
+        Provider.of<UserSCO2DataProvider>(context, listen: false).carSize;
+    isCarHybrid =
+        Provider.of<UserSCO2DataProvider>(context, listen: false).isCarHybrid;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Puis on construit le widget
     return Container(
         margin: const EdgeInsets.all(20),
         decoration: primaryCard,
@@ -61,6 +90,37 @@ class _CardMoreInformations extends State<CardMoreInformations> {
               decoration: secondaryCardInnerShadow,
               child: ListView(
                 children: [
+                  Consumer<UserSCO2DataProvider>(
+                    builder: (context, value, child) {
+                      return Visibility(
+                          child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
+                        decoration: primaryCard,
+                        child: ListTile(
+                          iconColor: Colors.red,
+                          textColor: Colors.red,
+                          leading: const Icon(Icons.error),
+                          title: const Text(
+                              "Une erreur est survenue lors de l'obtention des données."),
+                          subtitle: Text(value.error.toString()),
+                          trailing: (value.isLoading)
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.red,
+                                  ))
+                              : IconButton(
+                                  onPressed: () {
+                                    Provider.of<UserSCO2DataProvider>(context,
+                                            listen: false)
+                                        .getUserSCO2Data();
+                                  },
+                                  icon: const Icon(Icons.refresh)),
+                        ),
+                      ));
+                    },
+                  ),
                   Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 10),

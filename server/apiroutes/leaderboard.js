@@ -7,8 +7,9 @@ const admin = require('firebase-admin');
 router.route('/*')
     .all((req, res, next) => verifyAuthToken(req, res, next));
 
-router.route('/friends')
+router.route('/world')
     .get((req,res)=> {
+        // Chargement du classement de tous les utilisateurs
         const userID = req.headers.userid
 
          // Vérification des types
@@ -21,12 +22,14 @@ router.route('/friends')
             return res.status(400).json(response);
         }
 
+        // On y récupère et dans l'ordre
         const getLeaderboard = `
                 SELECT *
                 FROM users
                 ORDER BY score DESC ;`;
             const leaderboardResult = executeQuery(getLeaderboard);
         
+        // Gestion d'erreur
         if (leaderboardResult.length > 0 ){
             const response = leaderboardResult;
             return res.status(200).json(response);
@@ -42,8 +45,9 @@ router.route('/friends')
     })
 
 
-router.route('/world')
+router.route('/friends')
     .get((req,res)=> {
+        // Classement des amis
         const userID = req.headers.userid
 
          // Vérification des types
@@ -70,6 +74,7 @@ router.route('/world')
 
         friendIDs.push(userID);
 
+        // On affiche et dans l'ordre
         const getLeaderboard = `
                 SELECT *
                 FROM users
@@ -77,6 +82,7 @@ router.route('/world')
                 ORDER BY score DESC ;`;
             const leaderboardResult = executeQuery(getLeaderboard, [friendIDs]);
         
+        // Gestion des erreurs
         if (leaderboardResult.length > 0 ){
             const response = leaderboardResult;
             return res.status(200).json(response);

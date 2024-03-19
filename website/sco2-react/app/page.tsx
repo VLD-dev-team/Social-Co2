@@ -12,6 +12,9 @@ export default function Home() {
           <div className='absolute top-1/3 right-0 pr-4'>
             <Logo></Logo>
           </div>
+            <Button>
+      
+            </Button>
         </div>
           
        

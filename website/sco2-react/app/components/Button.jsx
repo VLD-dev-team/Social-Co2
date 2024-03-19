@@ -1,8 +1,11 @@
-export default function Button(props){
-    return(Button = ({onClick, children}) =>{
-        <button onClick={onClick}>
-            {children}
-        </button>}
+export default function Button(){
+    return(
+        <button onClick={function Handleclick(){
+            alert('');
+        }}>
+        </button>
+
     )
-      
+
+
 };

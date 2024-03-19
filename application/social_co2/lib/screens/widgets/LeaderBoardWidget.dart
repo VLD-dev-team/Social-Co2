@@ -29,24 +29,51 @@ class LeaderBoardWidget extends StatelessWidget {
           ),
           Consumer<LeaderBoardProvider>(
               builder: ((context, value, child) {
-            if (value.isLoading) {
+            if (value.isLoading) {          //affichage du charment
               return const SizedBox(
                 height: 40,
                 child: LinearProgressIndicator(),
               );
             } else {
-              if (value.error == "") {
+              if (value.error == "") {        //gestion de l'erreur
                 return SizedBox(
                   height: 200,
                   child: ListView.builder(
                       itemCount: 10,
                       itemBuilder: ((context, index) {
                         return Container(
-                          decoration: secondaryCardInnerShadow,
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: Text('${index + 1}e'),
+                          decoration: primaryCard,
+                          child: Card(
+                            child: Container(
+                              decoration: secondaryCardInnerShadow,
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: Text('${index + 1}e',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: 
+                                      index == 0 ? const Color.fromRGBO(255, 170, 43, 1) 
+                                      : index == 1 ? const Color.fromRGBO(217, 217, 217, 1) 
+                                      : index ==2 ? const Color.fromRGBO(255, 107, 0, 1)
+                                      : Colors.black),
+                                  
+                                  ),     //affichage postion classement
+                                ),
+                                title: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      child: Text("icon"),          //affichage icone utilisateur
+                                    ),
+                                    Expanded(child: Center(child: Text(
+                                      "Username",
+                                      style: TextStyle(fontSize:25 ),
+                                      ))),  //affichage pseudo utilisateur                           //TODO : remplacer par vraies valeurs
+                                    Text('${index + 5000 }',
+                                    style: TextStyle(fontSize:25 ),),  
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         );

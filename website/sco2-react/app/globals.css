@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+  background: rgb(9,121,60);
+  background: linear-gradient(270deg, rgba(9,121,60,1) 0%, rgb(6, 112, 126) 100%);
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

@@ -13,7 +13,7 @@ export default function Home() {
             <Logo></Logo>
           </div>
             <Button>
-      
+              <p>Acceuil</p>
             </Button>
         </div>
           

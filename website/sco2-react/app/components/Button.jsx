@@ -1,4 +1,5 @@
-export default function Button(){
+'use client';
+export default function Button(props){
     return(
         <button onClick={function Handleclick(){
             alert('');
@@ -6,6 +7,4 @@ export default function Button(){
         </button>
 
     )
-
-
 };

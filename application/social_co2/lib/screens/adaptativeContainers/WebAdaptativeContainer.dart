@@ -26,7 +26,7 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
     // Obtention des informations necessaire au lancement de l'écran d'accueil depuis le serveur
     Provider.of<UserActivitiesProvider>(context, listen: false)
         .getCurrentUserActivities(0);
-    Provider.of<UserSCO2DataProvider>(context, listen: false).getUserScore();
+    Provider.of<UserSCO2DataProvider>(context, listen: false).getUserSCO2Data();
   }
 
   @override

@@ -2,15 +2,15 @@ const express = require('express');
 const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
 
-activite = {
-    emission_chauffage : {
+const activite = {
+    "emission_chauffage" : {
       "pellet":6, 
       "electrique":8,
       "poele a bois":9,
       "gaz":39,
       "fioul":57
       },
-    emission_vehicule : {
+    "emission_vehicule" : {
       "Grosse voiture hybride" : 110,
       "Moyenne voiture hybride" : 100,
       "Petite voiture hybride" : 80,
@@ -31,13 +31,13 @@ activite = {
       "tram":4.3,
       "covoiturage":55,
     },
-    emission_article : {
+    "emission_article" : {
       "vetement":10,
       "electromenager":300,
       "ordinateur":150,
       "telephone":40
     },
-    emission_aliment : {
+    "emission_aliment" : {
       "vegetarien":0.5,
       "poisson gras":1,
       "poisson blanc":2,
@@ -45,7 +45,7 @@ activite = {
       "boeuf":7,
       "autre viande":2
       },
-    emission_mobilier : {
+    "emission_mobilier" : {
       "chaise":19,
       "table":80,
       "canape":180,
@@ -64,62 +64,41 @@ function scorePassif(multiplicateur, score) {
   return score; // On retourne le score inchangé si le multiplicateur = 1
 }
 
-function multiplicateur(recycl, nb_habitants, surface, potager, multiplicateur){
+function multiplicateur(recycl, nb_habitants, surface, potager, multiplicateur, chauffage){
   if (recycl==true){
     multiplicateur+=261*nb_habitants
     if (potager==true){
       multiplicateur+=50*nb_habitants
     } else if(potager == false){
       multiplicateur-=50*nb_habitants
-    }else{
-      const response = {
-        error: true,
-        error_message: 'Donnée manquante',
-        error_code: 32
-      }
-      return res.status(400).json(response);
     }
   } else if(recycl== false){
       multiplicateur-=261*nb_habitants
-  } else {
-    const response = {
-      error: true,
-      error_message: 'Donnée manquante',
-      error_code: 32
-    }
-    return res.status(400).json(response);
   }
-  multiplicateur+=(30-emission_chauffage[chauffage])*surface
+  multiplicateur+=(30-activite["emission_chauffage"][chauffage])*surface
   return multiplicateur
 }
 
 function nouv_trajet(vehicule,distance){
-  ajout_score=(60-emission_vehicule[vehicule])*Math.log(distance)*1/10
+  ajout_score=(60-activite["emission_vehicule"][vehicule])*Math.log(distance)*1/10
   return ajout_score
 }
     
 function nouv_achat(article,etat){
   if (etat== true ){//neuf
-    ajout_score=emission_article[article]*-1
+    ajout_score=activite["emission_article"][article]*-1
   }else if (etat==false){//seconde main
-    ajout_score=emission_article[article]
-  }else{
-    const response = {
-      error: true,
-      error_message: 'Donnée manquante',
-      error_code: 32
-    }
-    return res.status(400).json(response);
+    ajout_score=activite["emission_article"][article]
   }
   return ajout_score
 }
    
 function nouv_repas(aliment){
-  return (1-emission_aliment[aliment])*10
+  return (1-activte["emission_aliment"][aliment])*10
 }
 
 function renovation(meuble){
-  return emission_mobilier[meuble]
+  return activite["emission_mobilier"][meuble]
 }
 
 
@@ -128,13 +107,6 @@ function boite_mail(mail_test){ //a faire tester par l'utilisateur toutes les se
     return 5
   }else if (mail_test==false){ //l'utilisateur n'a pas vidé sa boite mail
     return -5
-  }else{
-    const response = {
-      error: true,
-      error_message: 'Donnée manquante',
-      error_code: 32
-    }
-    return res.status(400).json(response);
   }
 }      
 

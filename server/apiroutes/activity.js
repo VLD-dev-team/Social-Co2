@@ -185,7 +185,7 @@ router.route('/')
             // On met à jour le score
             let score = selectResult.score + activityCO2Impact
             // Puis on applique le score passif
-            score = activityCalculator.scorePassif(activityCalculator.multiplicateur(selectResult.recycl, selectResult.nb_habitants, selectResult.surface, selectResult.potager, selectResult.multiplicateur), score)
+            score = activityCalculator.scorePassif(activityCalculator.multiplicateur(selectResult.recycl, selectResult.nb_habitants, selectResult.surface, selectResult.potager, selectResult.multiplicateur, selectResult.chauffage), score)
 
             // On peut maintenant insérer l'activité dans la table activities
             const insertQuery = `
@@ -390,7 +390,7 @@ router.route('/favorite')
 
         // Vérification du typage
 
-        if (typeof userID !== 'string' || isNaN(activityId)) {
+        if (typeof userID !== 'string' || isNaN(activityID)) {
             const response = {
                     error : true,
                     error_message : 'Invalid user ID or activity ID',

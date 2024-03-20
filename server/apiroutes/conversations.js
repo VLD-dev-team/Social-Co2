@@ -1,3 +1,9 @@
+const express = require('express');
+const router = express.Router();
+const { executeQuery } = require('../utils/database.js');
+const verifyAuthToken = require('../utils/requireAuth.js');
+const notificationHandler = require('../utils/notificationHandler.js'); // Importez le gestionnaire de notifications
+const socketManager = require('../utils/socketManager.js'); // Importez le gestionnaire de sockets pour accéder à `io`
 
 
 
@@ -93,3 +99,5 @@ router.route('/conversations')
             return res.status(500).json(response);
         }
     });
+
+module.exports = router;

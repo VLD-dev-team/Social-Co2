@@ -95,4 +95,6 @@ router.route('/friends')
             return res.status(500).json(response)
         }
         
-    })
+    });
+
+module.exports = router;

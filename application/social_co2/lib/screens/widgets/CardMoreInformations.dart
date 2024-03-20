@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:social_co2/collections/MoreInformationsData.dart';
 import 'package:social_co2/providers/UserSCO2DataProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
+import 'package:social_co2/utils/enumDataParser.dart';
 
 class CardMoreInformations extends StatefulWidget {
   const CardMoreInformations({
@@ -101,7 +102,7 @@ class _CardMoreInformations extends State<CardMoreInformations> {
                           textColor: Colors.red,
                           leading: const Icon(Icons.error),
                           title: const Text(
-                              "Une erreur est survenue lors de l'obtention des données."),
+                              "Une erreur est survenue lors de l'obtention/envoi des données."),
                           subtitle: Text(value.error.toString()),
                           trailing: (value.isLoading)
                               ? const SizedBox(
@@ -346,7 +347,11 @@ class _CardMoreInformations extends State<CardMoreInformations> {
               label: const Text("Sauvegarder"),
               onPressed: () {
                 setState(() {
-                  saved = true;
+                  final Map<String, dynamic> data = createJson();
+                  print(data);
+                  Provider.of<UserSCO2DataProvider>(context, listen: false)
+                      .updateUserSCO2Data(data)
+                      .then((value) => {saved = true});
                 });
               },
             ),
@@ -417,5 +422,18 @@ class _CardMoreInformations extends State<CardMoreInformations> {
         ),
       ),
     );
+  }
+
+  Map<String, dynamic> createJson() {
+    return {
+      'surface': surfaceFieldController.text.toString(),
+      'heatingMode': getHeatingModeLabelFromEnum(_selectedHeatingMode!),
+      'heatingCount': heatersCountController.text.toString(),
+      'buildingDate': buildingDateController.text.toString(),
+      'potager': garden,
+      'recycl': recycling,
+      'carSize': getCarSizeLabelFromEnum(_selectedCarSize!),
+      'hybride': isCarHybrid,
+    };
   }
 }

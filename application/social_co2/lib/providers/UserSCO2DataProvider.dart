@@ -92,4 +92,41 @@ class UserSCO2DataProvider extends ChangeNotifier {
     notifyListeners();
     return CurrentUserScore;
   }
+
+  Future<bool> updateUserSCO2Data(Map<String, dynamic> userData) async {
+    isLoading = true;
+    notifyListeners();
+
+    // On récupère le token de connexion
+    final authToken = await firebaseAuth.currentUser!.getIdToken();
+    final userID = await firebaseAuth.currentUser!.uid;
+
+    // On fait la requette au server
+    final data = await requestService().post(
+        "user/",
+        {
+          "authorization": '$authToken',
+          'userid': '$userID',
+        },
+        userData);
+
+    // On analyse la réponse du server
+    // En cas d'erreur, on renvoie erreur aux widgets
+    if (data["error"] == true) {
+      try {
+        error = 'error: ${data["error_message"].toString()}';
+      } catch (e) {
+        error = "error: unknown error";
+      }
+      CurrentUserScoreScale = 0;
+      isLoading = false;
+
+      notifyListeners();
+      return false;
+    }
+
+    // Si pas d'erreur on recharge l'utilisateur avec les nouvelles données
+    getUserSCO2Data();
+    return true;
+  }
 }

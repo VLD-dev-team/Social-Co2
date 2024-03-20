@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
 
+// Co-authored by Gookd
+
 const activite = {
     "emission_chauffage" : {
       "pellet":6, 

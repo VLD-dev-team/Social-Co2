@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-03-19T08:48:38.787Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="NZOlqJF3FJi2hPYhFwtn" version="24.0.7" type="github">
+<mxfile host="app.diagrams.net" modified="2024-03-20T08:46:28.190Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="7yfgjDEVOSbp8WNl4g8q" version="24.0.7" type="github">
   <diagram name="Page-1" id="jhAAQiRTMC3WOToZxg92">
     <mxGraphModel dx="2741" dy="3328" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -532,7 +532,7 @@
           <mxGeometry x="-568" y="-1270" width="310" height="80" as="geometry" />
         </mxCell>
         <mxCell id="iu74Z957g5xioMOJV0q_-13" value="users" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="-240" y="-1130" width="200" height="300" as="geometry" />
+          <mxGeometry x="-240" y="-1130" width="200" height="330" as="geometry" />
         </mxCell>
         <mxCell id="iu74Z957g5xioMOJV0q_-14" value="userID Varchar(255)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="iu74Z957g5xioMOJV0q_-13" vertex="1">
           <mxGeometry y="30" width="200" height="30" as="geometry" />
@@ -560,6 +560,9 @@
         </mxCell>
         <mxCell id="eBHFEck8xo7xaAXGFLvW-2" value="hybride bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="iu74Z957g5xioMOJV0q_-13" vertex="1">
           <mxGeometry y="270" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="qw757Y5fhRMVRlfdcRwc-1" value="chauffage varchar(255)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="iu74Z957g5xioMOJV0q_-13">
+          <mxGeometry y="300" width="200" height="30" as="geometry" />
         </mxCell>
         <mxCell id="iu74Z957g5xioMOJV0q_-21" value="reccurentActivities" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-768" y="-870" width="200" height="210" as="geometry" />
@@ -663,6 +666,24 @@
               <mxPoint x="-310" y="-710" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="qw757Y5fhRMVRlfdcRwc-2" value="notifications" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-768" y="-630" width="200" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="qw757Y5fhRMVRlfdcRwc-3" value="notificationID int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="qw757Y5fhRMVRlfdcRwc-2">
+          <mxGeometry y="30" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="qw757Y5fhRMVRlfdcRwc-4" value="userID varchar(255)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="qw757Y5fhRMVRlfdcRwc-2">
+          <mxGeometry y="60" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="qw757Y5fhRMVRlfdcRwc-5" value="notifcationContent varchar(255)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="qw757Y5fhRMVRlfdcRwc-2">
+          <mxGeometry y="90" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="qw757Y5fhRMVRlfdcRwc-6" value="notificationTitle varchar(255)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="qw757Y5fhRMVRlfdcRwc-2">
+          <mxGeometry y="120" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="qw757Y5fhRMVRlfdcRwc-7" value="notificationStatus varchar(255) " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="qw757Y5fhRMVRlfdcRwc-2">
+          <mxGeometry y="150" width="200" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

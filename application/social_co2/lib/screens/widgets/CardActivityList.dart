@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
+import 'package:social_co2/screens/dialogs/dialogNewActivity.dart';
 import 'package:social_co2/screens/widgets/ActivitiesList.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
@@ -127,7 +128,11 @@ class _CardActivityList extends State<CardActivitiesList> {
           FloatingActionButton.extended(
             backgroundColor: Colors.white,
             onPressed: () {
-              // TODO : Ajouter le dialobox d'ajout des activités
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return const newActivityDialog();
+                  });
             },
             label: const Text(
               "Ajouter une activité",

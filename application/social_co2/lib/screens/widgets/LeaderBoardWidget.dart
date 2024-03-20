@@ -30,6 +30,8 @@ class LeaderBoardWidget extends StatelessWidget {
           ),
           Consumer<LeaderBoardProvider>(
               builder: ((context, value, child) {
+
+                
             if (value.isLoading) {          //affichage du charment
               return const SizedBox(
                 height: 40,
@@ -69,8 +71,8 @@ class LeaderBoardWidget extends StatelessWidget {
                                         size: 40,
                                         ),          //affichage icone utilisateur
                                     ),
-                                    const Expanded(child: Center(child: Text(
-                                      "Username",
+                                    Expanded(child: Center(child: Text(
+                                      value.leaderBoardFriends.leaderBoardData[index]['username'].toString(),
                                       style: TextStyle(fontSize:25 ),
                                       ))),  //affichage pseudo utilisateur                           //TODO : remplacer par vraies valeurs
                                     Text('${index + 5000 }',

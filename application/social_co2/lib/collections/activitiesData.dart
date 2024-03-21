@@ -4,30 +4,67 @@ List<Map<String, dynamic>> activeActivityTypes = [
   {
     "type": "meal",
     "label": "Repas",
-    "icon": const Icon(Icons.restaurant, color: Colors.black)
+    "icon": const Icon(Icons.restaurant, color: Colors.black),
+    "next": true
   },
   {
     "type": "purchase",
     "label": "Achat",
-    "icon": const Icon(Icons.shopping_bag, color: Colors.black)
+    "icon": const Icon(Icons.shopping_bag, color: Colors.black),
+    "next": true
   },
   {
     "type": "build",
     "label": "Bricolage",
-    "icon": const Icon(Icons.build, color: Colors.black)
+    "icon": const Icon(Icons.build, color: Colors.black),
+    "next": true
   },
   {
     "type": "route",
     "label": "Trajet",
-    "icon": const Icon(Icons.route, color: Colors.black)
+    "icon": const Icon(Icons.route, color: Colors.black),
+    "next": true
   },
   {
     "type": "cleanInbox",
-    "label": "Repas",
-    "icon": const Icon(Icons.delete_forever, color: Colors.black)
+    "label": "Vider sa boite email",
+    "icon": const Icon(Icons.delete_forever, color: Colors.black),
+    "next": false
   },
 ];
 
+List<Map<String, dynamic>> meals = [
+  {"type": "vegetarien", "label": "Végétarien"},
+  {
+    "type": "poisson_gras",
+    "label":
+        "Poisson gras (Maquereau, Sardine, Saumon, Anchois, Hareng, Truite, Anguille fumée, thon)"
+  },
+  {
+    "type": "poisson_blanc",
+    "label":
+        "Poisson Blanc (Cabillaud, Merlu, Colin, Mérou, Lotte, Sole, Dorade, Grenadier)"
+  },
+  {"type": "poulet", "label": "Poulet"},
+  {"type": "boeuf", "label": "Boeuf"},
+  {"type": "autre_viande", "label": "Autre viande"}
+];
+
+List<Map<String, dynamic>> purchases = [
+  {"type": "newclothes", "label": "Vêtements 1ère main"},
+  {"type": "reusedclothes", "label": "Vêtements 2nd main"},
+  {"type": "homeappliance", "label": "Éléctroménager"},
+  {"type": "computer", "label": "Ordinateur"},
+  {"type": "smartphone", "label": "Téléphone"}
+];
+
+List<Map<String, dynamic>> builds = [
+  {"type": "table", "label": "Table"},
+  {"type": "chair", "label": "Chaise"},
+  {"type": "sofa", "label": "Canapé"},
+  {"type": "bed", "label": "Lit"},
+  {"type": "wardrobe", "label": "Armoire"}
+];
 
 /* 
 

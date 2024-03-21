@@ -11,6 +11,7 @@ class UserActivitiesProvider extends ChangeNotifier {
 
   // Variable spécifique à l'utilisation du provider et des requettes
   bool isLoading = false;
+  bool isPosting = false;
   String error = "";
 
   Future<List<SCO2activity>> getCurrentUserActivities(int index) async {
@@ -39,8 +40,6 @@ class UserActivitiesProvider extends ChangeNotifier {
             activityTimestamp: today.subtract(const Duration(days: 1)))
       ]
     });
-
-    print(userActivitiesPerDays.toString());
 
     isLoading = false;
     notifyListeners();
@@ -76,5 +75,37 @@ class UserActivitiesProvider extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
     return userActivitiesPerDays[date]!;
+  }
+
+  Future<SCO2activity> postEmailActivity() async {
+    return SCO2activity(
+        userID: "000",
+        activityType: "type",
+        activityName: "1",
+        activityTimestamp: DateTime.now());
+  }
+
+  Future<SCO2activity> postMealActivity(String meal_type) async {
+    return SCO2activity(
+        userID: "000",
+        activityType: "type",
+        activityName: "1",
+        activityTimestamp: DateTime.now());
+  }
+
+  Future<SCO2activity> postPurchaseActivity(String purchase_type) async {
+    return SCO2activity(
+        userID: "000",
+        activityType: "type",
+        activityName: "1",
+        activityTimestamp: DateTime.now());
+  }
+
+  Future<SCO2activity> postBuildActivity(String build_type) async {
+    return SCO2activity(
+        userID: "000",
+        activityType: "type",
+        activityName: "1",
+        activityTimestamp: DateTime.now());
   }
 }

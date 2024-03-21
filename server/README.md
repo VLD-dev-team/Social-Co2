@@ -121,52 +121,91 @@ mysql -u root -p
 3. Création des tables
 
 ```sql
-CREATE TABLE users(
-  userID varchar(255) PRIMARY KEY NOT NULL, 
-  score int ,
-  recycl boolean ,
-  nb_habitants int ,
-  surface float ,
-  potager boolean ,
-  multiplicateur float ,
-  voiture int ,
-  hybride boolean ,
-  chauffage varchar(255)
+
+CREATE TABLE activities (
+  activityID INT AUTO_INCREMENT,
+  userID varchar(255),
+  activityType VARCHAR(255),
+  activityCO2Impact FLOAT,
+  activityName VARCHAR(255),
+  activityTimestamp TIMESTAMP,
+  PRIMARY KEY (activityID)
 );
 
-CREATE TABLE notifications(
-  notificationID int PRIMARY KEY AUTO_INCREMENT, 
-  userID varchar(255) NOT NULL, 
-  notificationContent varchar(255), 
-  notificationTitle varchar(255), 
-  notificationStatus varchar(255)
+CREATE TABLE favorite_activities (
+  activityID INT AUTO_INCREMENT,
+  userID varchar(255),
+  activityType VARCHAR(255),
+  activityCO2Impact FLOAT,
+  activityName VARCHAR(255),
+  activityTimestamp TIMESTAMP,
+  PRIMARY KEY (activityID)
 );
 
-CREATE TABLE activities(
-  activityID int PRIMARY KEY AUTO_INCREMENT, 
-  userID varchar(255) NOT NULL, 
-  activityType varchar(255),
-  activityCO2Impact float, 
-  activityPollutionImpact float, 
-  activityName varchar(255), 
-  activityTimestamp CURRENT_TIMESTAMP
+CREATE TABLE users (
+  userID Varchar(255),
+  score INT,
+  recycl BOOLEAN,
+  nb_habitants INT,
+  surface FLOAT,
+  potager BOOLEAN,
+  multiplicateur FLOAT,
+  voiture INT,
+  hybride BOOLEAN,
+  chauffage VARCHAR(255),
+  PRIMARY KEY (userID)
 );
 
-CREATE TABLE recurrentActivities(
-  recurrentActivityID int PRIMARY KEY AUTO_INCREMENT, 
-  userID varchar(255) NOT NULL, 
-  recurrentActivityType varchar(255), 
-  recurrentActivityCO2Impact float, 
-  recurentActivityPollutionImpact float, 
-  activityName varchar(255), 
-  activityTimestamp CURRENT_TIMESTAMP
+CREATE TABLE friends (
+  friendshipID INT,
+  userID1 varchar(255),
+  userID2 varchar(255),
+  friendshipStatus VARCHAR(255),
+  PRIMARY KEY (friendshipID),
+  FOREIGN KEY (userID1) REFERENCES users(userID),
+  FOREIGN KEY (userID2) REFERENCES users(userID)
 );
 
-CREATE TABLE friends(
-  friendshipID int PRIMARY KEY AUTO_INCREMENT, 
-  userID1 varchar(255), 
-  userID2 varchar(255), 
-  friendshipStatus varchar(255)
+CREATE TABLE notifications (
+  notificationID INT AUTO_INCREMENT,
+  userID VARCHAR(255),
+  notificationContent VARCHAR(255),
+  notificationTitle VARCHAR(255),
+  notificationStatus VARCHAR(255),
+  PRIMARY KEY (notificationID)
+);
+
+CREATE TABLE conversations (
+  convID INT AUTO_INCREMENT,
+  userID1 VARCHAR(255),
+  userID2 VARCHAR(255),
+  convName VARCHAR(255),
+  convCreatedAt TIMESTAMP,
+  convLastMessage INT,
+  conviD INT,
+  messageSenderID VARCHAR(255),
+  messageReceiverID VARCHAR(255),
+  messageStatus VARCHAR(255),
+  messageTextContent VARCHAR(255),
+  messageMediaContentURL VARCHAR(255),
+  messageCreatedAt TIMESTAMP,
+  PRIMARY KEY (convID),
+  FOREIGN KEY (userID1) REFERENCES users(userID),
+  FOREIGN KEY (userID2) REFERENCES users(userID)
+);
+
+CREATE TABLE posts (
+  postID INT,
+  userID VARCHAR(255),
+  postTextContent VARCHAR(255),
+  postMediaContentURL VARCHAR(255),
+  postLinkedActivity VARCHAR(255),
+  postLikesNumber INT,
+  postCreatedAt TIMESTAMP,
+  postCommentsNumber INT,
+  postType VARCHAR(255),
+  PRIMARY KEY (postID),
+  FOREIGN KEY (userID) REFERENCES users(userID)
 );
 
 CREATE TABLE messages(
@@ -179,27 +218,6 @@ CREATE TABLE messages(
   messageMediaContentURL varchar(255), 
   messageCreatedAt CURRENT_TIMESTAMP
 );
-
-CREATE TABLE conversations( 
-  convID int PRIMARY KEY AUTO_INCREMENT, 
-  userID1 varchar(255), 
-  userID2 varchar(255), 
-  convName varchar(255), 
-  convCreatedAt CURRENT_TIMESTAMP, 
-  convLastMessage int
-);
-
-CREATE TABLE posts(
-  postID int PRIMARY KEY AUTO_INCREMENT,
-  userID varchar(255),
-  postTextContent varchar(255),
-  postMediaContentURL varchar(255),
-  postLinkedActivity varchar(255)
-  postLikesNumber int, 
-  postCreatedAt CURRENT_TIMESTAMP,
-  postCommentsNumber int,
-  postType varchar(255)
-)
 
 CREATE TABLE likes(
   postID int,
@@ -351,6 +369,7 @@ Pour traiter les erreurs, nous avons identifiés chacunes des erreurs par un cod
 * Code d'erreur n°31 : Donnée manquante - Statut 400
 * Code d'erreur n°32 : User doesnt have this activity in favorite - Statut 400
 * Code d'erreur n°33 : Invalid Data - Statut 400
+* Code d'erreur n°34 : Failed to create post - Statut 400
 
 
 

@@ -126,7 +126,7 @@ router.route('/like')
     });
 
 
-router.route('/comments')
+router.route('/comments') // Route pour charger les commentaires
     .get (async (req,res) => {
         const postID = req.body.postid;
 
@@ -160,6 +160,7 @@ router.route('/comments')
         return res.status(500).json(response);
     })
     .post(async (req, res) => {
+            // Pour creer un commentaire
             const userID = req.headers.userid;
             const postID = req.body.postid;
             const commentTextContent = req.body.commentTextContent;
@@ -229,9 +230,180 @@ router.route('/comments')
             }
     });
 
+
 router.route('/posts')
-    .post(async (req,res)=> {
-        
-    })
+    .post( async (req, res) => {
+        const userID = req.headers.userid;
+        const postType = req.body.postType;
+    
+        // Vérification des paramètres obligatoires
+        if (!userID || !postType) {
+            const response = {
+                error: true,
+                error_message: 'User ID and postType are required fields.',
+                error_code: 1
+            };
+            return res.status(400).json(response);
+        }
+    
+        // Création de la requête en fonction du postType pour éviter de définir plusieurs constantes
+        let sqlQuery = '';
+        let sqlValues = [];
+        let response = {};
+    
+        switch (postType) { // On va gérer les différents types de posts
+            case 'mood':
+                const mood = req.body.mood
+                // Vérification du paramètre moodPhrase
+                if (!mood || typeof mood !== 'string') {
+                    const response = {
+                        error: true,
+                        error_message: 'moodPhrase is required for postType "mood".',
+                        error_code: 2
+                    };
+                    return res.status(400).json(response);
+                }
+                let Moodphrase = "";
+                switch(mood){
+                    case 'Chanceux':
+                        Moodphrase = Moodphrase + "Je suis d'humeur chanceuse aujourd'hui ! 🍀 🍀 🍀";
+                        break;
+                    case 'Heureux':
+                        Moodphrase = Moodphrase + "Je suis heureux/se aujourd'hui ! 😃 😃 😃 "
+                        break;
+                    case 'Choqué':
+                        Moodphrase = Moodphrase + "Je suis choqué/ée !!!! 😱 😱 😱 ";
+                        break;
+                    case 'Sans mots':
+                        Moodphrase = Moodphrase + "Je suis sans mots de ce que je constate. 🤐 🤐 🤐 "
+                        break;
+                    case 'Hyper bien':
+                        Moodphrase = Moodphrase + "Je suis trop trop bien aujourd'hui !!! 😁 😁 😁";
+                        break;
+                    case 'Malade':
+                        Moodphrase = Moodphrase + "Je suis maladeeeee... 🤧 🤧 🤧  "
+                        break;
+                    case 'Bien':
+                        Moodphrase = Moodphrase + "Je suis bieng ! 😀 😀 😀  ";
+                        break;
+                    case 'En colère':
+                        Moodphrase = Moodphrase + "Je suis pas content !!! 😠 😠 😠"
+                        break;
+                    default:
+                        const response = {
+                            error: true,
+                            error_message: 'Invalid postType. Allowed values are "mood", "message", "activite", or "rapport".',
+                            error_code: 6
+                        };
+                        return res.status(400).json(response);
+                }
+                sqlQuery = `INSERT INTO posts (userID, postTextContent, postType) VALUES (?, ?, ?);`;
+                sqlValues = [userID, Moodphrase, 'mood'];
+                response = {
+                    message: 'Post has been created successfully.',
+                    userID : userID,
+                    postType : postType,
+                    postTextContent : Moodphrase,
+                    }
+                break;
+            case 'message':
+                // Vérification du paramètre postTextContent
+                const postTextContent = req.body.postTextContent
+                if (!postTextContent || typeof postTextContent !== 'string') {
+                    response = {
+                        error: true,
+                        error_message: 'postTextContent is required for postType "message".',
+                        error_code: 3
+                    };
+                    return res.status(400).json(response);
+                }
+                sqlQuery = `INSERT INTO posts (userID, postTextContent, postType) VALUES (?, ?, ?);`;
+                sqlValues = [userID, postTextContent, 'message'];
+                response = {
+                    message: 'Post has been created successfully.',
+                    userID : userID,
+                    postType : postType,
+                    postTextContent : postTextContent,
+                    }
+                break;
+            case 'activite':
+                // Vérification des paramètres activityType et activityCO2Impact
+                const activityID = req.body.activityid
+                
+                if (!activityID || NaN(activityID)) {
+                    const response = {
+                        error: true,
+                        error_message: 'Invalid activity ID',
+                        error_code: 12
+                    };
+                    return res.status(400).json(response);
+                }
+                sqlQueryActivity = `SELECT * FROM activities WHERE activityID = ?`
+                selectQueryActivityResult = await executeQuery(sqlQueryActivity,[activityID])
+            
+                const activityType = selectQueryActivityResult.activityType
+                const activityCO2Impact = selectQueryActivityResult.activityCO2Impact
+                const activityName = selectQueryActivityResult.activityName
+                const activityTimestamp = selectQueryActivityResult.activityTimestamp
+                sqlQuery = `INSERT INTO posts (userID, postLinkedActivity, postType) VALUES (?, ?, ?);`;
+                sqlValues = [userID, JSON.stringify({activityType, activityCO2Impact, activityName, activityTimestamp }), 'activite'];
+                response = {
+                    message: 'Post has been created successfully.',
+                    userID : userID,
+                    postType : postType,
+                    postLinkedActivity :  JSON.stringify({activityType, activityCO2Impact, activityName, activityTimestamp }),
+                    }
+                break;
+            case 'rapport':
+                sqlQueryActivity = `
+                SELECT * FROM activities 
+                WHERE userID = ? 
+                ORDER BY activityTimestamp DESC 
+                ORDER BY activityType ASC
+                LIMIT 20 ;`
+                selectQueryActivityResult = await executeQuery(sqlQueryActivity,[userID])
+                const rapport = selectQueryActivityResult
+                sqlQuery = `INSERT INTO posts (userID, postTextContent, postType) VALUES (?, ?, ?);`;
+                sqlValues = [userID, JSON.stringify(rapport), 'rapport'];
+                response = {
+                    message: 'Post has been created successfully.',
+                    userID : userID,
+                    postType : postType,
+                    postTextContent :  JSON.stringify(rapport),
+                    }
+                break;
+            default:
+                const response = {
+                    error: true,
+                    error_message: 'Invalid postType. Allowed values are "mood", "message", "activite", or "rapport".',
+                    error_code: 33
+                };
+                return res.status(400).json(response);
+        }
+    
+        // Exécution de la requête SQL pour insérer le post dans la base de données
+        try {
+            const insertResult = await executeQuery(sqlQuery, sqlValues);
+            if (insertResult.affectedRows > 0) {
+                return res.status(201).json(response);
+            } else {
+                const response = {
+                    error: true,
+                    error_message: 'Failed to create post',
+                    error_code: 34
+                };
+                return res.status(500).json(response);
+            }
+        } catch (error) {
+            console.error('Error creating post:', error);
+            const response = {
+                error: true,
+                error_message: 'Internal Server Error',
+                error_code: 2
+            };
+            return res.status(500).json(response);
+        }
+    });
+
 
 module.exports = router;

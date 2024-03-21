@@ -91,7 +91,7 @@ class _newActivityDialog extends State<newActivityDialog> {
       case "purchase":
         return purchaseList();
       case "build":
-        return build;
+        return buildList();
       case "route":
         return Text('route');
       default:

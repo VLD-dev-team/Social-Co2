@@ -21,6 +21,9 @@ class _newActivityDialog extends State<newActivityDialog> {
   // Variable du menu actuellement affiché
   String _currentMenu = "main";
 
+  // Mode de transport selectionné
+  int? routeMode = 0;
+
   // Widget de dialogbox avec le menu actuellement affiché
   @override
   Widget build(BuildContext context) {
@@ -93,7 +96,7 @@ class _newActivityDialog extends State<newActivityDialog> {
       case "build":
         return buildList();
       case "route":
-        return Text('route');
+        return routeMenu();
       default:
         return mainList();
     }
@@ -200,7 +203,84 @@ class _newActivityDialog extends State<newActivityDialog> {
 
   Column routeMenu() {
     return Column(
-      children: [],
+      children: [
+        // Conteneur haut avec itinéraire
+        Container(
+          decoration: primaryCard,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text("Départ"),
+                        SizedBox(height: 5),
+                        TextField(
+                          keyboardType: TextInputType.streetAddress,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Entrez une adresse',
+                          ),
+                        )
+                      ],
+                    )),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Expanded(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text("Arrivée"),
+                        SizedBox(height: 5),
+                        TextField(
+                            keyboardType: TextInputType.streetAddress,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Entrez une adresse',
+                            ))
+                      ],
+                    ))
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text("Nombre de Km"),
+                    SizedBox(height: 5),
+                    TextField(
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Entrez une adresse',
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+        // Conteneur bas avec mode de transport
+        Container(
+          decoration: primaryCard,
+          child: Wrap(
+            spacing: 5.0,
+            children: List<ChoiceChip>.generate(availableVehicles.length,
+                (int index) {
+              var vehicule = availableVehicles[index];
+              return ChoiceChip(
+                  label: vehicule['label'], selected: routeMode == index);
+            }),
+          ),
+        )
+      ],
     );
   }
 }

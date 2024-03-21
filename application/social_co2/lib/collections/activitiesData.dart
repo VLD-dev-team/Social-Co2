@@ -66,6 +66,40 @@ List<Map<String, dynamic>> builds = [
   {"type": "wardrobe", "label": "Armoire"}
 ];
 
+List<Map<String, dynamic>> availableVehicles = [
+  {"type": "car", "label": "Voiture", "icon": const Icon(Icons.directions_car)},
+  {
+    "type": "electriccar",
+    "label": "Voiture éléctrique",
+    "icon": const Icon(Icons.electric_car)
+  },
+  {"type": "motorcycle", "label": "Moto", "icon": const Icon(Icons.motorcycle)},
+  {"type": "bus", "label": "Bus", "icon": const Icon(Icons.directions_bus)},
+  {"type": "plane", "label": "Avion", "icon": const Icon(Icons.flight)},
+  {"type": "train", "label": "TER", "icon": const Icon(Icons.train)},
+  {"type": "rer", "label": "RER", "icon": const Icon(Icons.directions_railway)},
+  {"type": "highspeedtrain", "label": "TGV", "icon": const Icon(Icons.train)},
+  {
+    "type": "walking",
+    "label": "À pied",
+    "icon": const Icon(Icons.directions_walk)
+  },
+  {"type": "bicycle", "label": "Vélo", "icon": const Icon(Icons.pedal_bike)},
+  {
+    "type": "electricbike",
+    "label": "Vélo Elec.",
+    "icon": const Icon(Icons.electric_bike)
+  },
+  {"type": "metro", "label": "Metro", "icon": const Icon(Icons.subway)},
+  {"type": "tram", "label": "Tramway", "icon": const Icon(Icons.tram)},
+  {
+    "type": "carpooling",
+    "label": "Covoiturage",
+    "icon": const Icon(Icons.groups)
+  }
+];
+
+
 /* 
 
 const activite = {

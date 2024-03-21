@@ -145,10 +145,19 @@ router.route('/comments')
         const selectResult = await executeQuery(selectQuery, [postID])
 
         if (selectResult.length > 0){
-            
+            let response = {};
+            for (let each of selectResult) {
+                const authUser = await admin.auth().getUser(each.userID);
+                response[authUser.displayName] = selectResult[each];
+            }
+            return res.status(200).json(response);
         }
-
-
+        const response = {
+            error : true,
+            error_message : 'Failed to process comment',
+            error_code : 10
+        }
+        return res.status(500).json(response);
     })
     .post(async (req, res) => {
             const userID = req.headers.userid;
@@ -220,5 +229,9 @@ router.route('/comments')
             }
     });
 
+router.route('/posts')
+    .post(async (req,res)=> {
+        
+    })
 
 module.exports = router;

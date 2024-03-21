@@ -123,7 +123,15 @@ mysql -u root -p
 ```sql
 CREATE TABLE users(
   userID varchar(255) PRIMARY KEY NOT NULL, 
-  score int
+  score int ,
+  recycl boolean ,
+  nb_habitants int ,
+  surface float ,
+  potager boolean ,
+  multiplicateur float ,
+  voiture int ,
+  hybride boolean ,
+  chauffage varchar(255)
 );
 
 CREATE TABLE notifications(

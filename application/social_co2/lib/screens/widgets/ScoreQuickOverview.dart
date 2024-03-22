@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:social_co2/providers/IndexProvider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/providers/UserSCO2DataProvider.dart';
+import 'package:social_co2/screens/dialogs/dialogNewActivity.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 import 'package:social_co2/styles/ScoreColors.dart';
 import 'package:social_co2/utils/responsiveHandler.dart';
@@ -191,7 +192,11 @@ class SQOLeftColumn extends StatelessWidget {
                       padding: MaterialStatePropertyAll(
                           EdgeInsets.symmetric(vertical: 20, horizontal: 15)),
                       backgroundColor: MaterialStatePropertyAll(Colors.white)),
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => const newActivityDialog());
+                  },
                   icon: const Icon(
                     Icons.add,
                     color: Colors.black,

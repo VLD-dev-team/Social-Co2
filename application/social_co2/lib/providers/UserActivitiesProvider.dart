@@ -108,4 +108,12 @@ class UserActivitiesProvider extends ChangeNotifier {
         activityName: "1",
         activityTimestamp: DateTime.now());
   }
+
+  Future<SCO2activity> postRouteActivity(String vehicule, double distance) async {
+    return SCO2activity(
+        userID: "000",
+        activityType: "type",
+        activityName: "1",
+        activityTimestamp: DateTime.now());
+  }
 }

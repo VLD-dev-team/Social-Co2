@@ -25,6 +25,11 @@ class _newActivityDialog extends State<newActivityDialog> {
   // Mode de transport selectionné
   int? routeMode = 0;
 
+  // Controller des champs de text de route
+  final startController = TextEditingController();
+  final endController = TextEditingController();
+  final distanceController = TextEditingController();
+
   // Widget de dialogbox avec le menu actuellement affiché
   @override
   Widget build(BuildContext context) {
@@ -35,6 +40,7 @@ class _newActivityDialog extends State<newActivityDialog> {
           return Consumer<UserActivitiesProvider>(
               builder: (context, value, child) {
             return AlertDialog(
+              scrollable: true,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               backgroundColor: secondaryCardColor,
@@ -80,6 +86,21 @@ class _newActivityDialog extends State<newActivityDialog> {
                 child: chooseMenu(
                     _currentMenu), // On affiche le menu selectionné ou main si le dialog vient d'apparaitre
               ),
+              actions: [
+                if (_currentMenu == "route" && !value.isPosting)
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10, bottom: 20, left: 20, right: 20),
+                    child: ElevatedButton.icon(
+                        onPressed: () {
+                          value.postRouteActivity(
+                              availableVehicles[routeMode!]["type"],
+                              double.parse(distanceController.text));
+                        },
+                        icon: const Icon(Icons.check),
+                        label: const Text('Envoyer')),
+                  )
+              ],
             );
           });
         }));
@@ -203,13 +224,9 @@ class _newActivityDialog extends State<newActivityDialog> {
   }
 
   dynamic routeMenu() {
-    final startController = TextEditingController();
-    final endController = TextEditingController();
-    final distanceController = TextEditingController();
-
     return ChangeNotifierProvider(
       create: (context) => DirectionProvider(),
-      builder: (context, child) => Column(
+      builder: (context, child) => ListView(
         children: [
           // Conteneur haut avec itinéraire
           Container(
@@ -310,23 +327,32 @@ class _newActivityDialog extends State<newActivityDialog> {
             ),
           ),
           // Conteneur bas avec mode de transport
+          const SizedBox(
+            height: 20,
+          ),
           Container(
             decoration: primaryCard,
-            child: Wrap(
-              spacing: 5.0,
-              children: List<ChoiceChip>.generate(availableVehicles.length,
-                  (int index) {
-                var vehicule = availableVehicles[index];
-                return ChoiceChip(
-                    onSelected: (value) {
-                      setState(() {
-                        routeMode = index;
-                      });
-                    },
-                    avatar: vehicule["icon"],
-                    label: Text(vehicule['label']),
-                    selected: routeMode == index);
-              }),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Expanded(
+                child: Wrap(
+                  runSpacing: 10.0,
+                  spacing: 10.0,
+                  children: List<ChoiceChip>.generate(availableVehicles.length,
+                      (int index) {
+                    var vehicule = availableVehicles[index];
+                    return ChoiceChip(
+                        onSelected: (value) {
+                          setState(() {
+                            routeMode = index;
+                          });
+                        },
+                        avatar: vehicule["icon"],
+                        label: Text(vehicule['label']),
+                        selected: routeMode == index);
+                  }),
+                ),
+              ),
             ),
           )
         ],

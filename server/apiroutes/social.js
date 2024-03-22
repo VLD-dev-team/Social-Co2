@@ -258,7 +258,7 @@ router.route('/posts')
                 if (!mood || typeof mood !== 'string') {
                     const response = {
                         error: true,
-                        error_message: 'moodPhrase is required for postType "mood".',
+                        error_message: 'moodType is required for postType "mood".',
                         error_code: 2
                     };
                     return res.status(400).json(response);

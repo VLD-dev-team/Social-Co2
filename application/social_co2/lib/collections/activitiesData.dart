@@ -36,18 +36,18 @@ List<Map<String, dynamic>> activeActivityTypes = [
 List<Map<String, dynamic>> meals = [
   {"type": "vegetarien", "label": "Végétarien"},
   {
-    "type": "poisson_gras",
+    "type": "oilyfish",
     "label":
         "Poisson gras (Maquereau, Sardine, Saumon, Anchois, Hareng, Truite, Anguille fumée, thon)"
   },
   {
-    "type": "poisson_blanc",
+    "type": "whitefish",
     "label":
         "Poisson Blanc (Cabillaud, Merlu, Colin, Mérou, Lotte, Sole, Dorade, Grenadier)"
   },
-  {"type": "poulet", "label": "Poulet"},
-  {"type": "boeuf", "label": "Boeuf"},
-  {"type": "autre_viande", "label": "Autre viande"}
+  {"type": "chicken", "label": "Poulet"},
+  {"type": "beef", "label": "Boeuf"},
+  {"type": "other", "label": "Autre viande"}
 ];
 
 List<Map<String, dynamic>> purchases = [

@@ -48,3 +48,6 @@ app.*.map.json
 
 #idea
 .idea/
+
+# Credentials
+/lib/collections/credentials.dart

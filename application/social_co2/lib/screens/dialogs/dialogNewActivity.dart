@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/collections/activitiesData.dart';
+import 'package:social_co2/providers/DirectionsProvider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
@@ -201,86 +202,135 @@ class _newActivityDialog extends State<newActivityDialog> {
         itemCount: builds.length);
   }
 
-  Column routeMenu() {
-    return Column(
-      children: [
-        // Conteneur haut avec itinéraire
-        Container(
-          decoration: primaryCard,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text("Départ"),
-                        SizedBox(height: 5),
-                        TextField(
-                          keyboardType: TextInputType.streetAddress,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Entrez une adresse',
-                          ),
-                        )
-                      ],
-                    )),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text("Arrivée"),
-                        SizedBox(height: 5),
-                        TextField(
+  dynamic routeMenu() {
+    final startController = TextEditingController();
+    final endController = TextEditingController();
+    final distanceController = TextEditingController();
+
+    return ChangeNotifierProvider(
+      create: (context) => DirectionProvider(),
+      builder: (context, child) => Column(
+        children: [
+          // Conteneur haut avec itinéraire
+          Container(
+            decoration: primaryCard,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text("Départ"),
+                          const SizedBox(height: 5),
+                          TextField(
+                            controller: startController,
                             keyboardType: TextInputType.streetAddress,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Entrez une adresse',
-                            ))
-                      ],
-                    ))
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text("Nombre de Km"),
-                    SizedBox(height: 5),
-                    TextField(
-                      keyboardType:
-                          TextInputType.numberWithOptions(decimal: true),
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Entrez une adresse',
+                            ),
+                          )
+                        ],
+                      )),
+                      const SizedBox(
+                        width: 20,
                       ),
-                    )
-                  ],
-                )
-              ],
+                      Expanded(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text("Arrivée"),
+                          const SizedBox(height: 5),
+                          TextField(
+                              controller: endController,
+                              keyboardType: TextInputType.streetAddress,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Entrez une adresse',
+                              ))
+                        ],
+                      ))
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    children: [
+                      ElevatedButton.icon(
+                          onPressed: () {
+                            var start = startController.text;
+                            var end = endController.text;
+                            Provider.of<DirectionProvider>(context,
+                                    listen: false)
+                                .getDistanceBetweenAdresses(start, end)
+                                .then((value) {
+                              distanceController.text = value.toString();
+                            });
+                          },
+                          icon: const Icon(Icons.route),
+                          label: const Text('Calculer la distance')),
+                      Consumer<DirectionProvider>(
+                          builder: ((context, value, child) {
+                        if (value.isLoading) {
+                          return const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.black,
+                              ));
+                        } else if (value.error == "") {
+                          return Text(value.error);
+                        } else {
+                          return const Text("OpenRouteService API");
+                        }
+                      }))
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text("Nombre de Km"),
+                      SizedBox(height: 5),
+                      TextField(
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Entrez une adresse',
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-        // Conteneur bas avec mode de transport
-        Container(
-          decoration: primaryCard,
-          child: Wrap(
-            spacing: 5.0,
-            children: List<ChoiceChip>.generate(availableVehicles.length,
-                (int index) {
-              var vehicule = availableVehicles[index];
-              return ChoiceChip(
-                  label: vehicule['label'], selected: routeMode == index);
-            }),
-          ),
-        )
-      ],
+          // Conteneur bas avec mode de transport
+          Container(
+            decoration: primaryCard,
+            child: Wrap(
+              spacing: 5.0,
+              children: List<ChoiceChip>.generate(availableVehicles.length,
+                  (int index) {
+                var vehicule = availableVehicles[index];
+                return ChoiceChip(
+                    onSelected: (value) {
+                      setState(() {
+                        routeMode = index;
+                      });
+                    },
+                    avatar: vehicule["icon"],
+                    label: Text(vehicule['label']),
+                    selected: routeMode == index);
+              }),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

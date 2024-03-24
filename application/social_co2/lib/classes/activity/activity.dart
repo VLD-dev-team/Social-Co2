@@ -1,18 +1,28 @@
 class SCO2activity {
   final int? activityID;
-  final String userID;
-  String activityType;
-  int? activityCO2Impact;
-  String activityName;
-  DateTime activityTimestamp;
+  final String? userID;
+  final String activityType;
+  final int? activityCO2Impact;
+  final String activityName;
+  final DateTime activityTimestamp;
+  final String? activityMealIngredients;
+  final String? activityPurchase;
+  final double? activityDistance;
+  final String? activityVehicle;
+  final String? activityBuild;
 
   SCO2activity({
-    required this.userID,
     required this.activityType,
     required this.activityName,
     required this.activityTimestamp,
+    this.userID,
     this.activityID,
     this.activityCO2Impact,
+    this.activityMealIngredients,
+    this.activityPurchase,
+    this.activityDistance,
+    this.activityVehicle,
+    this.activityBuild,
   });
 
   factory SCO2activity.fromJSON(Map<String, dynamic> json) {
@@ -22,18 +32,35 @@ class SCO2activity {
       activityType: json['activityType'],
       activityCO2Impact: json['activityCO2Impact'],
       activityName: json['activityName'],
+      activityMealIngredients: json['activityMealIngredients'],
+      activityPurchase: json['activityPurchase'],
+      activityDistance: double.tryParse(json['activityDistance']),
+      activityVehicle: json['activityVehicle'],
+      activityBuild: json['activityBuild'],
       activityTimestamp: DateTime.parse(json['activityTimestamp']),
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'activityID': activityID,
-      'userID': userID,
+    final Map<String, dynamic> data = {
       'activityType': activityType,
       'activityName': activityName,
       'activityTimestamp': activityTimestamp.toIso8601String(),
-      if (activityCO2Impact != null) 'activityCO2Impact': activityCO2Impact,
     };
+
+    if (activityID != null) data['activityID'] = activityID;
+    if (userID != null) data['userID'] = userID;
+    if (activityCO2Impact != null) {
+      data['activityCO2Impact'] = activityCO2Impact;
+    }
+    if (activityMealIngredients != null) {
+      data['activityMealIngredients'] = activityMealIngredients;
+    }
+    if (activityPurchase != null) data['activityPurchase'] = activityPurchase;
+    if (activityDistance != null) data['activityDistance'] = activityDistance;
+    if (activityVehicle != null) data['activityVehicle'] = activityVehicle;
+    if (activityBuild != null) data['activityBuild'] = activityBuild;
+
+    return data;
   }
 }

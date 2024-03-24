@@ -330,28 +330,26 @@ class _newActivityDialog extends State<newActivityDialog> {
           const SizedBox(
             height: 20,
           ),
-          Container(
-            decoration: primaryCard,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Expanded(
-                child: Wrap(
-                  runSpacing: 10.0,
-                  spacing: 10.0,
-                  children: List<ChoiceChip>.generate(availableVehicles.length,
-                      (int index) {
-                    var vehicule = availableVehicles[index];
-                    return ChoiceChip(
-                        onSelected: (value) {
-                          setState(() {
-                            routeMode = index;
-                          });
-                        },
-                        avatar: vehicule["icon"],
-                        label: Text(vehicule['label']),
-                        selected: routeMode == index);
-                  }),
-                ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Container(
+              decoration: primaryCard,
+              child: Wrap(
+                runSpacing: 10.0,
+                spacing: 10.0,
+                children: List<ChoiceChip>.generate(availableVehicles.length,
+                    (int index) {
+                  var vehicule = availableVehicles[index];
+                  return ChoiceChip(
+                      onSelected: (value) {
+                        setState(() {
+                          routeMode = index;
+                        });
+                      },
+                      avatar: vehicule["icon"],
+                      label: Text(vehicule['label']),
+                      selected: routeMode == index);
+                }),
               ),
             ),
           )

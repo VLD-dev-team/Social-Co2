@@ -30,7 +30,7 @@ class UserActivitiesProvider extends ChangeNotifier {
       today: [
         SCO2activity(
             userID: '$userID',
-            activityType: "journey",
+            activityType: "route",
             activityName: "Trajet 1",
             activityTimestamp: today)
       ],

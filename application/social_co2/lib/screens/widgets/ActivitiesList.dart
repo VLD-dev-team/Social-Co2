@@ -17,90 +17,120 @@ class ActivitiesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-        itemCount: activities.length,
-        separatorBuilder: (context, index) {
-          return const SizedBox(height: 5);
-        },
-        itemBuilder: (context, index) {
-          SCO2activity activity = activities[index];
+    if (activities == []) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          Icon(Icons.check_circle_outline),
+          Text("Aucun élément enregistré pour cette journée.")
+        ],
+      );
+    } else {
+      return ListView.separated(
+          itemCount: activities.length,
+          separatorBuilder: (context, index) {
+            return const SizedBox(height: 5);
+          },
+          itemBuilder: (context, index) {
+            SCO2activity activity = activities[index];
 
-          Icon icon = (activeActivityTypes.indexWhere(
-                      (element) => element['type'] == activity.activityType) ==
-                  -1)
-              ? const Icon(Icons.category, color: Colors.black)
-              : activeActivityTypes[activeActivityTypes.indexWhere(
-                      (element) => element['type'] == activity.activityType)]
-                  ['icon'];
+            Icon icon = (activeActivityTypes.indexWhere((element) =>
+                        element['type'] == activity.activityType) ==
+                    -1)
+                ? const Icon(Icons.category, color: Colors.black)
+                : activeActivityTypes[activeActivityTypes.indexWhere(
+                        (element) => element['type'] == activity.activityType)]
+                    ['icon'];
 
-          String details = "";
-          switch (activity.activityType) {
-            case "meal":
-              details = (meals.indexWhere((element) =>
-                          element['type'] ==
-                          activity.activityMealIngredients) ==
-                      -1)
-                  ? ""
-                  : meals[meals.indexWhere((element) =>
-                          element['type'] == activity.activityMealIngredients)]
-                      ['label'];
-              break;
-            case "purchase":
-              details = (purchases.indexWhere((element) =>
-                          element['type'] == activity.activityPurchase) ==
-                      -1)
-                  ? ""
-                  : purchases[purchases.indexWhere((element) =>
-                      element['type'] == activity.activityPurchase)]['label'];
-              break;
-            case "build":
-              details = (builds.indexWhere((element) =>
-                          element['type'] == activity.activityBuild) ==
-                      -1)
-                  ? ""
-                  : builds[builds.indexWhere((element) =>
-                      element['type'] == activity.activityBuild)]['label'];
-              break;
-            case "route":
-              break;
-            case "cleanInbox":
-              break;
-            default:
-          }
+            String details = "";
+            switch (activity.activityType) {
+              case "meal":
+                details = (meals.indexWhere((element) =>
+                            element['type'] ==
+                            activity.activityMealIngredients) ==
+                        -1)
+                    ? ""
+                    : meals[meals.indexWhere((element) =>
+                        element['type'] ==
+                        activity.activityMealIngredients)]['label'];
+                break;
+              case "purchase":
+                details = (purchases.indexWhere((element) =>
+                            element['type'] == activity.activityPurchase) ==
+                        -1)
+                    ? ""
+                    : purchases[purchases.indexWhere((element) =>
+                        element['type'] == activity.activityPurchase)]['label'];
+                break;
+              case "build":
+                details = (builds.indexWhere((element) =>
+                            element['type'] == activity.activityBuild) ==
+                        -1)
+                    ? ""
+                    : builds[builds.indexWhere((element) =>
+                        element['type'] == activity.activityBuild)]['label'];
+                break;
+              case "route":
+                final distance = activity.activityDistance;
+                final vehicule = (availableVehicles.indexWhere((element) =>
+                            element['type'] == activity.activityVehicule) ==
+                        -1)
+                    ? ""
+                    : availableVehicles[availableVehicles.indexWhere(
+                            (element) =>
+                                element['type'] == activity.activityVehicule)]
+                        ['label'];
+                details = '${distance}km - $vehicule';
+                if (availableVehicles.indexWhere((element) =>
+                        element['type'] == activity.activityVehicule) !=
+                    -1) {
+                  icon = availableVehicles[availableVehicles.indexWhere(
+                          (element) =>
+                              element['type'] == activity.activityVehicule)]
+                      ['icon'];
+                }
+                break;
+              case "cleanInbox":
+                details = "Moins d'espace utilisé sur vos espaces en ligne !";
+                break;
+              default:
+            }
 
-          return Container(
-            decoration: primaryCard,
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            child: ListTile(
-              leading: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                      '${activity.activityTimestamp.hour}:${activity.activityTimestamp.minute}'),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  CircleAvatar(
-                    backgroundColor: const Color.fromRGBO(157, 188, 152, 1),
-                    child: icon,
-                  ),
-                ],
+            return Container(
+              decoration: primaryCard,
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              child: ListTile(
+                leading: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                        '${activity.activityTimestamp.hour}:${activity.activityTimestamp.minute}'),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    CircleAvatar(
+                      backgroundColor: const Color.fromRGBO(157, 188, 152, 1),
+                      child: icon,
+                    ),
+                  ],
+                ),
+                title: Text(activity.activityName),
+                subtitle: Text(details),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('${activity.activityCO2Impact}'),
+                    if (multiSelection)
+                      Checkbox(
+                        value: false,
+                        onChanged: (value) => {value == true},
+                      )
+                  ],
+                ),
               ),
-              title: Text(activity.activityName),
-              subtitle: Text(activity.activityType),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('${activity.activityCO2Impact}'),
-                  if (multiSelection)
-                    Checkbox(
-                      value: false,
-                      onChanged: (value) => {value == true},
-                    )
-                ],
-              ),
-            ),
-          );
-        });
+            );
+          });
+    }
   }
 }

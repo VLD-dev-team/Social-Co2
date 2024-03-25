@@ -67,35 +67,117 @@ List<Map<String, dynamic>> builds = [
 ];
 
 List<Map<String, dynamic>> availableVehicles = [
-  {"type": "car", "label": "Voiture", "icon": const Icon(Icons.directions_car)},
+  {
+    "type": "car",
+    "label": "Voiture",
+    "icon": const Icon(
+      Icons.directions_car,
+      color: Colors.black,
+    )
+  },
   {
     "type": "electriccar",
     "label": "Voiture éléctrique",
-    "icon": const Icon(Icons.electric_car)
+    "icon": const Icon(
+      Icons.electric_car,
+      color: Colors.black,
+    )
   },
-  {"type": "motorcycle", "label": "Moto", "icon": const Icon(Icons.motorcycle)},
-  {"type": "bus", "label": "Bus", "icon": const Icon(Icons.directions_bus)},
-  {"type": "plane", "label": "Avion", "icon": const Icon(Icons.flight)},
-  {"type": "train", "label": "TER", "icon": const Icon(Icons.train)},
-  {"type": "rer", "label": "RER", "icon": const Icon(Icons.directions_railway)},
-  {"type": "highspeedtrain", "label": "TGV", "icon": const Icon(Icons.train)},
+  {
+    "type": "motorcycle",
+    "label": "Moto",
+    "icon": const Icon(
+      Icons.motorcycle,
+      color: Colors.black,
+    )
+  },
+  {
+    "type": "bus",
+    "label": "Bus",
+    "icon": const Icon(
+      Icons.directions_bus,
+      color: Colors.black,
+    )
+  },
+  {
+    "type": "plane",
+    "label": "Avion",
+    "icon": const Icon(
+      Icons.flight,
+      color: Colors.black,
+    )
+  },
+  {
+    "type": "train",
+    "label": "TER",
+    "icon": const Icon(
+      Icons.train,
+      color: Colors.black,
+    )
+  },
+  {
+    "type": "rer",
+    "label": "RER",
+    "icon": const Icon(
+      Icons.directions_railway,
+      color: Colors.black,
+    )
+  },
+  {
+    "type": "highspeedtrain",
+    "label": "TGV",
+    "icon": const Icon(
+      Icons.train,
+      color: Colors.black,
+    )
+  },
   {
     "type": "walking",
     "label": "À pied",
-    "icon": const Icon(Icons.directions_walk)
+    "icon": const Icon(
+      Icons.directions_walk,
+      color: Colors.black,
+    )
   },
-  {"type": "bicycle", "label": "Vélo", "icon": const Icon(Icons.pedal_bike)},
+  {
+    "type": "bicycle",
+    "label": "Vélo",
+    "icon": const Icon(
+      Icons.pedal_bike,
+      color: Colors.black,
+    )
+  },
   {
     "type": "electricbike",
     "label": "Vélo Elec.",
-    "icon": const Icon(Icons.electric_bike)
+    "icon": const Icon(
+      Icons.electric_bike,
+      color: Colors.black,
+    )
   },
-  {"type": "metro", "label": "Metro", "icon": const Icon(Icons.subway)},
-  {"type": "tram", "label": "Tramway", "icon": const Icon(Icons.tram)},
+  {
+    "type": "metro",
+    "label": "Metro",
+    "icon": const Icon(
+      Icons.subway,
+      color: Colors.black,
+    )
+  },
+  {
+    "type": "tram",
+    "label": "Tramway",
+    "icon": const Icon(
+      Icons.tram,
+      color: Colors.black,
+    )
+  },
   {
     "type": "carpooling",
     "label": "Covoiturage",
-    "icon": const Icon(Icons.groups)
+    "icon": const Icon(
+      Icons.groups,
+      color: Colors.black,
+    )
   }
 ];
 

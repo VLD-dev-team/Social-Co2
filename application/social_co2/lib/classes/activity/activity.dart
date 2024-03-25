@@ -8,7 +8,7 @@ class SCO2activity {
   final String? activityMealIngredients;
   final String? activityPurchase;
   final double? activityDistance;
-  final String? activityVehicle;
+  final String? activityVehicule;
   final String? activityBuild;
 
   SCO2activity({
@@ -21,7 +21,7 @@ class SCO2activity {
     this.activityMealIngredients,
     this.activityPurchase,
     this.activityDistance,
-    this.activityVehicle,
+    this.activityVehicule,
     this.activityBuild,
   });
 
@@ -35,7 +35,7 @@ class SCO2activity {
       activityMealIngredients: json['activityMealIngredients'],
       activityPurchase: json['activityPurchase'],
       activityDistance: double.tryParse(json['activityDistance']),
-      activityVehicle: json['activityVehicle'],
+      activityVehicule: json['activityVehicle'],
       activityBuild: json['activityBuild'],
       activityTimestamp: DateTime.parse(json['activityTimestamp']),
     );
@@ -58,7 +58,7 @@ class SCO2activity {
     }
     if (activityPurchase != null) data['activityPurchase'] = activityPurchase;
     if (activityDistance != null) data['activityDistance'] = activityDistance;
-    if (activityVehicle != null) data['activityVehicle'] = activityVehicle;
+    if (activityVehicule != null) data['activityVehicle'] = activityVehicule;
     if (activityBuild != null) data['activityBuild'] = activityBuild;
 
     return data;

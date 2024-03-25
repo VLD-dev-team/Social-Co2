@@ -7,7 +7,8 @@ import 'package:social_co2/main.dart';
 import 'package:social_co2/utils/requestsService.dart';
 
 class UserActivitiesProvider extends ChangeNotifier {
-  List<SCO2activity> userActivities = []; // Liste des activités en "vrac"
+  Map<DateTime, String> userRecapPhrasePerDays =
+      {}; // Liste des phrases récapituatives par jour
   Map<DateTime, List<SCO2activity>> userActivitiesPerDays =
       {}; // Liste des activités triés par jour
 
@@ -16,67 +17,52 @@ class UserActivitiesProvider extends ChangeNotifier {
   bool isPosting = false;
   String error = "";
 
-  Future<List<SCO2activity>> getCurrentUserActivities(int index) async {
-    isLoading = true;
-    final String? token = await firebaseAuth.currentUser?.getIdToken();
-    final String? userID = firebaseAuth.currentUser?.uid;
-
-    await Future.delayed(const Duration(seconds: 3));
-
-    DateTime now = DateTime.now();
-    DateTime today = DateTime(now.year, now.month, now.day);
-
-    userActivitiesPerDays.addAll({
-      today: [
-        SCO2activity(
-            userID: '$userID',
-            activityType: "route",
-            activityName: "Trajet 1",
-            activityTimestamp: today)
-      ],
-      today.subtract(const Duration(days: 1)): [
-        SCO2activity(
-            userID: '$userID',
-            activityType: "journey",
-            activityName: "Trajet 2",
-            activityTimestamp: today.subtract(const Duration(days: 1)))
-      ]
-    });
-
-    isLoading = false;
-    notifyListeners();
-    return userActivities;
-  }
-
   Future<List<SCO2activity>> getCurrentUserActivitiesByDate(
       DateTime date) async {
+    error = "";
     isLoading = true;
+    notifyListeners();
+
+    // On obtient les données de l'utilisateur et on enlève les heures et minutes à la date demandé
     final String? token = await firebaseAuth.currentUser?.getIdToken();
     final String? userID = firebaseAuth.currentUser?.uid;
+    final DateTime parsedDate = DateTime(date.year, date.month, date.day);
 
-    if (userActivitiesPerDays[date] == null) {
-      userActivitiesPerDays.addAll({
-        date: [
-          SCO2activity(
-              userID: '$userID',
-              activityType: "journey",
-              activityName: "Trajet",
-              activityTimestamp: date)
-        ]
-      });
-    } else {
-      userActivitiesPerDays[date]!.add(SCO2activity(
-          userID: '$userID',
-          activityType: "journey",
-          activityName: "Trajet",
-          activityTimestamp: date));
+    // On prépare la requette get
+    final headers = {'authorization': '$token'};
+    const endpoint = "user/activities";
+
+    // On effectue la requette
+    final data = await requestService().get(endpoint, headers);
+
+    // On vérifie l'absence d'erreurs
+    if (data["error"] == true) {
+      try {
+        error = 'error: ${data["error_message"].toString()}';
+      } catch (e) {
+        error = "error: unknown error";
+      }
+
+      isPosting = false;
+      notifyListeners();
+
+      return userActivitiesPerDays[parsedDate]!;
     }
 
-    await Future.delayed(const Duration(seconds: 3));
+    // Si pas d'erreur on enregistre les données temporairement
+    // Phrase de récap
+    userRecapPhrasePerDays.update(parsedDate, (value) => data['phrase']);
+    // Liste d'activités
+    List<SCO2activity> parsingList = [];
+    for (var i = 0; i < data['activities']; i++) {
+      parsingList.add(SCO2activity.fromJSON(data[i]));
+    }
+    userActivitiesPerDays.update(parsedDate, (value) => parsingList);
 
+    // On renvoie les données aux widgets et à l'appel de la fonction
     isLoading = false;
     notifyListeners();
-    return userActivitiesPerDays[date]!;
+    return userActivitiesPerDays[parsedDate]!;
   }
 
   Future<SCO2activity> postEmailActivity() async {
@@ -136,7 +122,7 @@ class UserActivitiesProvider extends ChangeNotifier {
       activityType: 'route',
       activityName: 'Trajet de $time',
       activityTimestamp: DateTime.now(),
-      activityVehicle: vehicule,
+      activityVehicule: vehicule,
       activityDistance: distance,
     );
     // On envoie l'activité

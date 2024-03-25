@@ -83,8 +83,31 @@ class _newActivityDialog extends State<newActivityDialog> {
               content: SizedBox(
                 height: 400,
                 width: 600,
-                child: chooseMenu(
-                    _currentMenu), // On affiche le menu selectionné ou main si le dialog vient d'apparaitre
+                child: (value.isPosting)
+                    ? const Center(
+                        child: CircularProgressIndicator(color: Colors.black),
+                      )
+                    : (value.error == "")
+                        ? chooseMenu(_currentMenu)
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.error,
+                                color: Colors.red,
+                              ),
+                              const Text(
+                                "Erreur lors du post de votre activité",
+                                style: TextStyle(color: Colors.red),
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                value.error,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ), // On affiche le menu selectionné ou main si le dialog vient d'apparaitre
               ),
               actions: [
                 if (_currentMenu == "route" && !value.isPosting)

@@ -46,6 +46,7 @@ class MakePostProvider extends ChangeNotifier {
           'userid': '$userID',
         },
         body);
+    print(data);
 
     // TODO : ERREUR DE TYPE À CONFIRMER AVEC LUKA
 

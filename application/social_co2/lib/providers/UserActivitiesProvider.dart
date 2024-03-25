@@ -29,24 +29,25 @@ class UserActivitiesProvider extends ChangeNotifier {
     final DateTime parsedDate = DateTime(date.year, date.month, date.day);
 
     // On prépare la requette get
-    final headers = {'authorization': '$token'};
+    final headers = {'authorization': '$token', 'userid': '$userID'};
     const endpoint = "user/activities";
 
     // On effectue la requette
     final data = await requestService().get(endpoint, headers);
+    print(data);
 
     // On vérifie l'absence d'erreurs
-    if (data["error"] == true) {
+    if (data["error"]) {
       try {
         error = 'error: ${data["error_message"].toString()}';
       } catch (e) {
         error = "error: unknown error";
       }
 
-      isPosting = false;
+      isLoading = false;
       notifyListeners();
 
-      return userActivitiesPerDays[parsedDate]!;
+      return [];
     }
 
     // Si pas d'erreur on enregistre les données temporairement
@@ -90,7 +91,7 @@ class UserActivitiesProvider extends ChangeNotifier {
   Future<SCO2activity> postPurchaseActivity(String purchaseType) async {
     final String time = '${DateTime.now().hour}:${DateTime.now().minute}';
     final String label = purchases[purchases
-        .indexWhere((element) => element['type'] == "purchase")]['label'];
+        .indexWhere((element) => element['type'] == purchaseType)]['label'];
     final SCO2activity activity = SCO2activity(
       activityType: 'purchase',
       activityName: 'Achat de $time - $label',
@@ -140,11 +141,12 @@ class UserActivitiesProvider extends ChangeNotifier {
 
     // On construit les headers et le body de la requette
     final body = activity.toJson();
-    final headers = {'autorization': '$token'};
+    final headers = {'authorization': '$token', 'userid': '$userID'};
 
     // On effectue la requette
-    const endpoint = "activity/post/";
+    const endpoint = "activity";
     final data = await requestService().post(endpoint, headers, body);
+    print(data);
 
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets

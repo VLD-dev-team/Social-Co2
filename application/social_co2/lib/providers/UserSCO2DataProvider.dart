@@ -49,10 +49,11 @@ class UserSCO2DataProvider extends ChangeNotifier {
     final userID = await firebaseAuth.currentUser!.uid;
 
     // On fait la requette au server
-    final data = await requestService().get("user/", {
+    final data = await requestService().get("user", {
       "authorization": '$authToken',
       'userid': '$userID',
     });
+    print('USERSCO2DATAPROVIDER1 : $data');
 
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
@@ -109,6 +110,7 @@ class UserSCO2DataProvider extends ChangeNotifier {
           'userid': '$userID',
         },
         userData);
+    print('USERSCO2DATAPROVIDER2 : $data');
 
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets

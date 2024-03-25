@@ -114,14 +114,13 @@ class _CardActivityList extends State<CardActivitiesList> {
               decoration: secondaryCardInnerShadow,
               child: ActivitiesList(
                 multiSelection: false,
-                activities: (Provider.of<UserActivitiesProvider>(context,
-                                listen: true)
-                            .userActivitiesPerDays[_selectedDate] ==
-                        null)
-                    ? [] // Aucune activité à afficher
-                    : Provider.of<UserActivitiesProvider>(context, listen: true)
-                            .userActivitiesPerDays[
-                        _selectedDate]!, // Activités à afficher pour le jour selectionné
+                activities: Provider.of<UserActivitiesProvider>(context,
+                            listen: true)
+                        .userActivitiesPerDays[
+                    _selectedDate], // Activités à afficher pour le jour selectionné
+                error:
+                    Provider.of<UserActivitiesProvider>(context, listen: true)
+                        .error,
               ),
             ),
           ),

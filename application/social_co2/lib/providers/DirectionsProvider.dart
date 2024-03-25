@@ -28,6 +28,7 @@ class DirectionProvider extends ChangeNotifier {
 
       final response = await http.get(url);
       data = json.decode(response.body);
+      print(data);
       distance = data['feature']['properties']['summary']['distance'];
     } catch (err) {
       data = {"error": true, "error_message": err.toString()};

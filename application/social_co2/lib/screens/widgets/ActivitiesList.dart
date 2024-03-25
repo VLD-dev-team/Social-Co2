@@ -7,16 +7,19 @@ import 'package:social_co2/styles/CardStyles.dart';
 
 class ActivitiesList extends StatelessWidget {
   bool multiSelection = false;
-  List<SCO2activity> activities = [];
+  List<SCO2activity>? activities = [];
+  String error = "";
 
-  ActivitiesList({
-    super.key,
-    required this.activities,
-    required this.multiSelection,
-  });
+  ActivitiesList(
+      {super.key,
+      required this.activities,
+      required this.multiSelection,
+      required this.error});
 
   @override
   Widget build(BuildContext context) {
+    activities ??= []; // Si activities est null, alors on crée une liste vide
+
     if (activities == []) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -26,14 +29,33 @@ class ActivitiesList extends StatelessWidget {
           Text("Aucun élément enregistré pour cette journée.")
         ],
       );
+    } else if (error != "") {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.error,
+            color: Colors.red,
+          ),
+          const Text(
+            "Erreur lors de l'obtention des données",
+            style: TextStyle(color: Colors.red),
+          ),
+          Text(
+            error,
+            style: const TextStyle(color: Colors.red),
+          )
+        ],
+      );
     } else {
       return ListView.separated(
-          itemCount: activities.length,
+          itemCount: activities!.length,
           separatorBuilder: (context, index) {
             return const SizedBox(height: 5);
           },
           itemBuilder: (context, index) {
-            SCO2activity activity = activities[index];
+            SCO2activity activity = activities![index];
 
             Icon icon = (activeActivityTypes.indexWhere((element) =>
                         element['type'] == activity.activityType) ==

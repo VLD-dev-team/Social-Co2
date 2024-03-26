@@ -6,19 +6,18 @@ const pool = mysql.createPool({
     database: process.env.BDDdatabase,
     password: process.env.BDDpsw,
     port: process.env.BDDport,
-    connectionLimit: 1000,
-    multipleStatements: false
+    connectionLimit: 1000
 });
 
-const executeQuery = function (query, parameters) {
-    return new Promise((resolve, reject) => {
-        pool.query(query, parameters, (error, results, fields) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(results);
-            }
-        });
+executeQuery = function (userQuery, query, callback) {
+    pool.query(query, userQuery, function (error, results, fields) {
+        if (error) {
+            callback(error, results = null);
+            return;
+        }
+    
+        callback(false, results = results, fields = fields);       
+        return;
     });
 };
 

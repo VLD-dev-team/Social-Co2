@@ -128,7 +128,7 @@ router.route('/like')
 
 router.route('/comments') // Route pour charger les commentaires
     .get (async (req,res) => {
-        const postID = req.body.postid;
+        const postID = req.query.postid;
 
         if(isNaN(postID)){
             const response = {

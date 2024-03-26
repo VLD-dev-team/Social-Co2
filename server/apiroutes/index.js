@@ -14,7 +14,8 @@ const social= require('./social.js')
 const friends= require('./friends.js')
 const rapport= require('./rapport.js')
 const conversations = require('./conversations.js')
-const messages = require('./messages.js')
+const messages = require('./messages.js');
+const { executeQuery } = require('../utils/database.js');
 
 /// Pages principale de l'espace de travail
 router.use('/websocket', websocket);
@@ -32,7 +33,8 @@ router.use('/messages', messages);
 
 // Route de l'api pour voir si la connection fonctionne bel et bien
 
-router.get('/',(req,res)=>{
+router.get('/',async (req,res)=>{
+    await executeQuery(`SELECT * FROM users;`,[])
     const response = {
         ping : 'Is check',
         status : 200,

@@ -12,7 +12,7 @@ router.route('/*')
 router.route('/')
     .get(async (req, res) => {
         const userid = req.headers.userid;
-        const activityid = req.body.activityid;
+        const activityid = req.headers.activityid;
 
 
         // Vérification des types

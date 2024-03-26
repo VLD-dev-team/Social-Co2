@@ -124,15 +124,15 @@ mysql -u root -p
 
 CREATE TABLE activities (
   activityID INT AUTO_INCREMENT,
-  userID varchar(255),
+  userID VARCHAR(255),
   activityType VARCHAR(255),
-  activityCO2Impact FLOAT,
+  activityCO2Impact INT,
   activityName VARCHAR(255),
-  activityTimestamp TIMESTAMP,
+  activityTimestamp TIMESTAMP ,
   PRIMARY KEY (activityID)
 );
 
-CREATE TABLE favorite_activities (
+CREATE TABLE reccurentActivities (
   activityID INT AUTO_INCREMENT,
   userID varchar(255),
   activityType VARCHAR(255),

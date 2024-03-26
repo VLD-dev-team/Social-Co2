@@ -258,7 +258,7 @@ router.route('/')
 router.route('/activities')
     .get(async(req,res)=> {
         const userID = req.headers.userid;
-        const currentTimestamp = req.body.currentTimestamp;
+        const currentTimestamp = req.query.currentTimestamp;
 
         if (typeof userID !== 'string') {
             const response = {

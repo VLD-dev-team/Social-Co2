@@ -46,7 +46,7 @@ router.route('/search')
     .get(async (req, res) => {
         try {
             const userID = req.headers.userid;
-            const friendshipID = req.query.friendshipId;
+            const friendshipID = req.query.friendshipid;
 
             // Requête pour rechercher une personne par son friendshipID
             const searchFriendQuery = `

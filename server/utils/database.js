@@ -9,15 +9,14 @@ const pool = mysql.createPool({
     connectionLimit: 1000
 });
 
-executeQuery = function (userQuery, query, callback) {
+executeQuery = function (query, userQuery) {
     pool.query(query, userQuery, function (error, results, fields) {
         if (error) {
-            callback(error, results = null);
-            return;
+            console.error(error);
+            return [];
         }
     
-        callback(false, results = results, fields = fields);       
-        return;
+        return results;
     });
 };
 

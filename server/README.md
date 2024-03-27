@@ -158,10 +158,10 @@ CREATE TABLE users (
 
 CREATE TABLE friends (
   friendshipID INT,
-  userID1 varchar(255),
-  userID2 varchar(255),
+  userID1 VARCHAR(255),
+  userID2 VARCHAR(255),
   friendshipStatus VARCHAR(255),
-  PRIMARY KEY (friendshipID),
+  PRIMARY KEY (friendshipID)
 );
 
 CREATE TABLE notifications (
@@ -180,15 +180,7 @@ CREATE TABLE conversations (
   convName VARCHAR(255),
   convCreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   convLastMessage INT,
-  PRIMARY KEY (convID),
-)
-
-CREATE TABLE friends (
-  friendshipID INT,
-  userID1 VARCHAR(255),
-  userID2 VARCHAR(255),
-  friendshipStatus varchar(255)
-  PRIMARY KEY (convID),
+  PRIMARY KEY (convID)
 )
 
 CREATE TABLE messages (
@@ -200,7 +192,7 @@ CREATE TABLE messages (
   messageTextContent VARCHAR(255),
   messageMediaContentURL VARCHAR(255),
   messageCreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (messageID),
+  PRIMARY KEY (messageID)
 );
 
 CREATE TABLE posts (
@@ -210,10 +202,10 @@ CREATE TABLE posts (
   postMediaContentURL VARCHAR(255) DEFAULT NULL,
   postLinkedActivity VARCHAR(255) DEFAULT NULL,
   postLikesNumber INT DEFAULT 0,
-  postCreatedAt TIMESTAMP DEFAULT DEFAULT CURRENT_TIMESTAMP ,
+  postCreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
   postCommentsNumber INT DEFAULT 0,
   postType VARCHAR(255),
-  PRIMARY KEY (postID),
+  PRIMARY KEY (postID)
 );
 
 CREATE TABLE likes(

@@ -4,120 +4,117 @@ const { executeQuery } = require('../utils/database.js');
 
 // Co-authored by Gookd
 
-const activite = {
-    "emission_chauffage" : {
-      "pellet":6, 
-      "electrique":8,
-      "poele a bois":9,
-      "gaz":39,
-      "fioul":57
-      },
-    "emission_vehicule" : {
-      "Grosse voiture hybride" : 110,
-      "Moyenne voiture hybride" : 100,
-      "Petite voiture hybride" : 80,
-      "Grosse voiture" : 195,
-      "Moyenne voiture" : 180,
-      "Petite voiture" : 175,
-      "voiture_electrique":20,
-      "moto":165,
-      "bus":110,
-      "avion":250,
-      "ter":22,
-      "rer":10,
-      "tgv":2.3,
-      "a_pied":0,
-      "velo":0,
-      "velo ou trotinnette electrique":2,
-      "metro":4.2,
-      "tram":4.3,
-      "covoiturage":55,
-    },
-    "emission_article" : {
-      "vetement":10,
-      "electromenager":300,
-      "ordinateur":150,
-      "telephone":40
-    },
-    "emission_aliment" : {
-      "vegetarien":0.5,
-      "poisson gras":1,
-      "poisson blanc":2,
-      "poulet":1.6,
-      "boeuf":7,
-      "autre viande":2
-      },
-    "emission_mobilier" : {
-      "chaise":19,
-      "table":80,
-      "canape":180,
-      "lit":450,
-      "armoire":900
-    }
+const activity = {
+  "heating_emission": {
+      "wood_pellet": 6,
+      "electric": 8,
+      "wood_stove": 9,
+      "gas": 39,
+      "fuel_oil": 57
+  },
+  "vehicle_emission": {
+      "Large hybrid car": 110,
+      "Medium hybrid car": 100,
+      "Small hybrid car": 80,
+      "Large car": 195,
+      "Medium car": 180,
+      "Small car": 175,
+      "electric_car": 20,
+      "motorcycle": 165,
+      "bus": 110,
+      "plane": 250,
+      "train": 22,
+      "subway": 10,
+      "high_speed_train": 2.3,
+      "on_foot": 0,
+      "bike": 0,
+      "electric_bike_or_scooter": 2,
+      "metro": 4.2,
+      "tram": 4.3,
+      "carpooling": 55
+  },
+  "article_emission": {
+      "clothing": 10,
+      "appliances": 300,
+      "computer": 150,
+      "phone": 40
+  },
+  "food_emission": {
+      "vegetarian": 0.5,
+      "fatty_fish": 1,
+      "white_fish": 2,
+      "chicken": 1.6,
+      "beef": 7,
+      "other_meat": 2
+  },
+  "furniture_emission": {
+      "chair": 19,
+      "table": 80,
+      "sofa": 180,
+      "bed": 450,
+      "wardrobe": 900
   }
+}
 
-
-function scorePassif(multiplicateur, score) {
-  if (multiplicateur > 1) {
-      return score + 100 * Math.log(multiplicateur);
-  } else if (multiplicateur < 1) {
-      return score - 100 * Math.log(Math.abs(multiplicateur));
+function passiveScore(multiplier, score) {
+  if (multiplier > 1) {
+      return score + 100 * Math.log(multiplier);
+  } else if (multiplier < 1) {
+      return score - 100 * Math.log(Math.abs(multiplier));
   }
-  return score; // On retourne le score inchangé si le multiplicateur = 1
+  return score; // retourne le score inchangé si le multiplier = 1
 }
 
-function multiplicateur(recycl, nb_habitants, surface, potager, multiplicateur, chauffage){
-  if (recycl==true){
-    multiplicateur+=261*nb_habitants
-    if (potager==true){
-      multiplicateur+=50*nb_habitants
-    } else if(potager == false){
-      multiplicateur-=50*nb_habitants
-    }
-  } else if(recycl== false){
-      multiplicateur-=261*nb_habitants
+function multiplier(recycle, nb_residents, surface, garden, multiplier, heating) {
+  if (recycle) {
+      multiplier += 261 * nb_residents;
+      if (garden) {
+          multiplier += 50 * nb_residents;
+      } else {
+          multiplier -= 50 * nb_residents;
+      }
+  } else {
+      multiplier -= 261 * nb_residents;
   }
-  multiplicateur+=(30-activite["emission_chauffage"][chauffage])*surface
-  return multiplicateur
+  multiplier += (30 - activity["heating_emission"][heating]) * surface;
+  return multiplier;
 }
 
-function nouv_trajet(vehicule,distance){
-  ajout_score=(60-activite["emission_vehicule"][vehicule])*Math.log(distance)*1/10
-  return ajout_score
+function newTrip(vehicle, distance) {
+  return (60 - activity["vehicle_emission"][vehicle]) * Math.log(distance) * 1 / 10;
 }
-    
-function nouv_achat(article,etat){
-  if (etat== true ){//neuf
-    ajout_score=activite["emission_article"][article]*-1
-  }else if (etat==false){//seconde main
-    ajout_score=activite["emission_article"][article]
+
+function newPurchase(item, condition) {
+  if (condition) { // New
+      return activity["article_emission"][item] * -1;
+  } else { // Second hand
+      return activity["article_emission"][item];
   }
-  return ajout_score
-}
-   
-function nouv_repas(aliment){
-  return (1-activte["emission_aliment"][aliment])*10
 }
 
-function renovation(meuble){
-  return activite["emission_mobilier"][meuble]
+function newMeal(food) {
+  return (1 - activity["food_emission"][food]) * 10;
 }
 
+function renovation(meuble) {
+  return activity["furniture_emission"][meuble];
+}
 
-function boite_mail(mail_test){ //a faire tester par l'utilisateur toutes les semaines
-  if (mail_test==true){  //l'utilisateur a vidé sa boite mail
-    return 5
-  }else if (mail_test==false){ //l'utilisateur n'a pas vidé sa boite mail
-    return -5
+function inbox(mail_test) { // To be tested by the user every week
+  if (mail_test) { // User emptied inbox
+      return 5;
+  } else { // User didn't empty inbox
+      return -5;
   }
-}      
+}
+
 
 module.exports = {
-  boite_mail,
+  inbox,
   renovation,
-  nouv_repas,
-  nouv_achat,
-  nouv_trajet,
-  multiplicateur,
-  scorePassif
+  newMeal,
+  newPurchase,
+  newTrip,
+  multiplier,
+  passiveScore
 }

@@ -7,16 +7,16 @@ const activityCalculator = require('../utils/activityCalculator.js')
 
 router.route('/*')
     .all((req, res, next) => verifyAuthToken(req, res, next));
-    // Vérification de la connection
+    // Connection verification
 
 router.route('/')
     .get(async (req, res) => {
-        const userid = req.headers.userid;
-        const activityid = req.headers.activityid;
+        const userID = req.headers.userid;
+        const activityID = req.headers.activityid;
 
 
-        // Vérification des types
-        if (typeof userid !== 'string') {
+        // Type verification
+        if (typeof userID !== 'string') {
             const response = {
                     error : true,
                     error_message : 'Invalid user ID',
@@ -24,7 +24,7 @@ router.route('/')
             }
             return res.status(400).json(response);
         }
-        if (isNaN(activityid)) {
+        if (isNaN(activityID)) {
             const response = {
                     error : true,
                     error_message : 'Invalid activity ID',
@@ -33,12 +33,12 @@ router.route('/')
             return res.status(400).json(response);
         }
 
-        // On récupère toutes les infos de l'activité
+        // Retrieve all activity info
         const sqlQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ? ;`;
-        const sqlResult = await executeQuery(sqlQuery, [userid, activityid]);
+        const sqlResult = await executeQuery(sqlQuery, [userID, activityID]);
 
 
-        // On retourne au format JSON
+        // Return in JSON format
         if (sqlResult.length > 0){
             const response = {
                 activityData : {
@@ -54,7 +54,7 @@ router.route('/')
             }
             return req.status(200).json(response)
 
-        // Si on ne trouve aucune activité correspondante, on retourne une erreur
+        // If no corresponding activity is found, return an error
         }else {
             const response = {
                     error : true,
@@ -65,67 +65,67 @@ router.route('/')
         }
     })
     .post(async (req, res) => {
-        // Ajout d'une activité
-        // On récupère les données nécessaires à la création d'une activité
+        // Adding an activity
+        // Retrieve necessary data for activity creation
 
         const userID = req.headers.userid;
-        const activityType = req.body.activityType; // Voir juste en dessous
+        const activityType = req.body.activityType; // See below
         const activityName = req.body.activityName;
         const activityTimestamp = req.body.activityTimestamp;
         
-        // On initialise une variable à 0
+        // Initialize variable to 0
         let activityCO2Impact = 0;
-        // On va calculer l'impact au score en fonction du type d'activité choisi
-        if (activityType == "trajet"){
-            let vehicule = req.body.vehicule
-            if (vehicule == 'voiture'){
-                const sqlQuery = 'SELECT voiture, hybride FROM users WHERE userID = ? '
+        // Calculate impact on score based on chosen activity type
+        if (activityType == "trip"){
+            let vehicle = req.body.vehicle
+            if (vehicle == 'car'){
+                const sqlQuery = 'SELECT car, hybrid FROM users WHERE userID = ? '
                 const sqlResult = await executeQuery(sqlQuery, [userID])
-                if (sqlQuery.hybride){
-                    if (sqlQuery.voiture == 1){
-                        vehicule = 'Grosse voiture hybride'
-                    } else if (sqlQuery.voiture == 2){
-                        vehicule = 'Moyenne voiture hybride'
+                if (sqlQuery.hybrid){
+                    if (sqlQuery.car == 1){
+                        vehicle = 'Large hybrid car'
+                    } else if (sqlQuery.car == 2){
+                        vehicle = 'Medium hybrid car'
                     } else {
-                        vehicule = 'Petite voiture hybride'
+                        vehicle = 'Small hybrid car'
                     }
                 } else {
-                    if (sqlQuery.voiture == 1){
-                        vehicule = 'Grosse voiture'
-                    } else if (sqlQuery.voiture == 2){
-                        vehicule = 'Moyenne voiture'
+                    if (sqlQuery.car == 1){
+                        vehicle = 'Large car'
+                    } else if (sqlQuery.car == 2){
+                        vehicle = 'Medium car'
                     } else {
-                        vehicule = 'Petite voiture'
+                        vehicle = 'Small car'
                     }
                 }
             }
             const distance = req.body.distance
-            activityCO2Impact = activityCalculator.nouv_trajet(vehicule,distance)
-        } else if (activityType == "achat"){
+            activityCO2Impact = activityCalculator.newTrip(vehicle, distance)
+        } else if (activityType == "purchase"){
             const article = req.body.article
-            const etat = req.body.etat
-            activityCO2Impact = activityCalculator.nouv_achat(article,etat)
-        } else if (activityType == "repas"){
-            const aliment = req.body.aliment
-            activityCO2Impact = activityCalculator.nouv_repas(aliment)
+            const condition = req.body.condition
+            activityCO2Impact = activityCalculator.newPurchase(article, condition)
+        } else if (activityType == "meal"){
+            const food = req.body.food
+            activityCO2Impact = activityCalculator.newMeal(food)
         } else if (activityType == "renovation"){
-            const meuble = req.body.meuble
-            activityCO2Impact = activityCalculator.renovation(meuble)
+            const furniture = req.body.furniture
+            activityCO2Impact = activityCalculator.renovation(furniture)
         } else if (activityType == "mail"){
             const mail_test = req.body.mail
-            activityCO2Impact = activityCalculator.boite_mail(mail_test)
+            activityCO2Impact = activityCalculator.inbox(mail_test)
         }else{
             const response = {
                 error : true,
-                error_message : 'Donnée manquante',
+                error_message : 'Missing data',
                 error_code : 31
             }
             return res.status(400).json(response);
         }
 
-        // Une fois arrivé ici, on connaît normalement activityCO2Impact, on va maintenant appliqué la fonction score_passif()
-        // Pour ce faire on va avoir besoin des divers informations de l'utilisateur
-        // Mais avant ça vérifions toutes le données pour préventir des injections SQL
+        // Once here, we should have activityCO2Impact, now apply the passive score function
+        // For this, we need various user information
+        // But before that, let's verify all data to prevent SQL injections
 
         if (typeof userID !== 'string') {
             const response = {
@@ -143,7 +143,7 @@ router.route('/')
             }
             return res.status(400).json(response);
         }
-        if (isNaN(activity.activityCO2Impact)) {
+        if (isNaN(activityCO2Impact)) {
             const response = {
                     error : true,
                     error_message : 'Invalid activityCO2Impact',
@@ -168,7 +168,7 @@ router.route('/')
             return res.status(400).json(response);
         }
 
-        // Toutes les données ont été vérifiées, passons au calcul
+        // All data has been verified, let's proceed with the calculation
 
         const selectQuery = `SELECT * FROM users WHERE userID = ?;`;
         const selectResult = await executeQuery(selectQuery, [userID]);
@@ -182,12 +182,12 @@ router.route('/')
             return res.status(403).json(response);
         } else {
 
-            // On met à jour le score
+            // Update the score
             let score = selectResult.score + activityCO2Impact
-            // Puis on applique le score passif
-            score = activityCalculator.scorePassif(activityCalculator.multiplicateur(selectResult.recycl, selectResult.nb_habitants, selectResult.surface, selectResult.potager, selectResult.multiplicateur, selectResult.chauffage), score)
+            // Then apply the passive score
+            score = activityCalculator.passiveScore(activityCalculator.multiplier(selectResult.recycl, selectResult.nb_inhabitants, selectResult.surface, selectResult.garden, selectResult.multiplier, selectResult.heating), score)
 
-            // On peut maintenant insérer l'activité dans la table activities
+            // We can now insert the activity into the activities table
             const insertQuery = `
             INSERT INTO activities (userID, activityType, activityCO2Impact, activityName, activityTimestamp)
             VALUES (?, ?, ?, ?, ?) ;`;
@@ -195,35 +195,35 @@ router.route('/')
 
             if (insertResult.affectedRows > 0) {
                 
-            // On va mettre à jour le score de l'utilisateur avec celui qu'on a calculé
-            const updateQuery = `UPDATE TABLE users SET score = ? WHERE userID = ? ;`;
+            // Update the user's score with the calculated one
+            const updateQuery = `UPDATE users SET score = ? WHERE userID = ? ;`;
             const updateResult = await executeQuery(updateQuery, [parseInt(score) , userID]);
                 
-            // On renvoie un JSON
+            // Return JSON
             const activityID = insertResult.insertId;
-                const response = {
-                        activityID : activityID,
-                        userID : userID,
-                        activityType : activityType,
-                        activityCO2Impact : activityCO2Impact,
-                        activityName : activityName,
-                        activityTimestamp : activityTimestamp
-                }
+            const response = {
+                activityID : activityID,
+                userID : userID,
+                activityType : activityType,
+                activityCO2Impact : activityCO2Impact,
+                activityName : activityName,
+                activityTimestamp : activityTimestamp
+            }
 
             return res.status(200).json(response);
             } else {
                 const response = {
-                        error : true,
-                        error_message : 'Failed to insert activity',
-                        error_code : 18
+                    error : true,
+                    error_message : 'Failed to insert activity',
+                    error_code : 18
                 }
                 return res.status(500).json(response);
             }
         }
     })
     .put(async (req, res) => {
-        // Pour mettre à jour une activité
-        // On récupère toutes les données
+        // Update an activity
+        // Retrieve all data
         const userID = req.headers.userid;
         const activityId = req.body.activityid;
         const activityType = req.body.activityType;
@@ -231,7 +231,7 @@ router.route('/')
         const activityName = req.body.activityName;
         const activityTimestamp = req.body.activityTimestamp;
 
-        // Vérifications du typage
+        // Type verification
 
         if (typeof userID !== 'string' || isNaN(activityId)) {
             const response = {
@@ -242,7 +242,7 @@ router.route('/')
             return res.status(400).json(response);
         }
 
-        // On vérifie si l'activité est déjà existante
+        // Check if activity already exists
         const permissionQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ? ;`;
         const permissionResult = await executeQuery(permissionQuery, [userID, activityId]);
 
@@ -255,7 +255,7 @@ router.route('/')
             return res.status(403).json(response);
         }
 
-        // On met à jour la table activities avec les nouvelles infos
+        // Update activities table with new info
 
         const updateQuery = `
             UPDATE activities
@@ -285,11 +285,11 @@ router.route('/')
         }
     })
     .delete(async (req, res) => {
-        // On récupère les infos nécessaire à la suppression
+        // Retrieve necessary info for deletion
         const userID = req.headers.userid;
         const activityId = req.params.activityId;
 
-        // Vérification du typage
+        // Type verification
 
         if (typeof userID !== 'string' || isNaN(activityId)) {
             const response = {
@@ -300,7 +300,7 @@ router.route('/')
             return res.status(400).json(response);
         }
 
-        // Vérification de la permission
+        // Permission check
 
         const permissionQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ? ;`;
         const permissionResult = await executeQuery(permissionQuery, [userID, activityId]);
@@ -314,7 +314,7 @@ router.route('/')
             return res.status(403).json(response);
         }
 
-        // On supprime l'activité
+        // Delete activity
         const deleteQuery = `DELETE FROM activities WHERE userID = ? AND activityID = ? ;`;
         const deleteResult = await executeQuery(deleteQuery, [userID, activityId]);
 
@@ -334,12 +334,13 @@ router.route('/')
         }
     });
 
+
 router.route('/favorite')
     .post(async (req,res) => {
         const userID = req.headers.userid
         const activityID = req.body.activityid
 
-        // Vérification du typage
+        // Type verification
 
         if (typeof userID !== 'string' || isNaN(activityId)) {
             const response = {
@@ -350,7 +351,7 @@ router.route('/favorite')
             return res.status(400).json(response);
         }
 
-        // Vérification de la permission
+        // Permission check
 
         const permissionQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ? ;`;
         const permissionResult = await executeQuery(permissionQuery, [userID, activityID]);
@@ -364,13 +365,13 @@ router.route('/favorite')
             return res.status(403).json(response);
         } else {
             const insertQuery = `
-            INSERT INTO reccurentActivities (activityID, userID, activityType, activityCO2Impact, activityName, activityTimestamp)
+            INSERT INTO recurrentActivities (activityID, userID, activityType, activityCO2Impact, activityName, activityTimestamp)
             VALUES (?, ?, ?, ?, ?, ?) ;`;
             const insertResult = await executeQuery(insertQuery, [activityID , userID, permissionResult.activityType, permissionResult.activityCO2Impact, permissionResult.activityName, permissionResult.activityTimestamp]);
 
             if (insertResult.affectedRows > 0) {
                 const response = {
-                    message : 'Activity add to favorites successfully',
+                    message : 'Activity added to favorites successfully',
                     status : 200,
                 }
                 return res.status(200).json(response);
@@ -388,7 +389,7 @@ router.route('/favorite')
         const userID = req.headers.userid
         const activityID = req.body.activityid
 
-        // Vérification du typage
+        // Type verification
 
         if (typeof userID !== 'string' || isNaN(activityID)) {
             const response = {
@@ -399,7 +400,7 @@ router.route('/favorite')
             return res.status(400).json(response);
         }
 
-        // Vérification de la permission
+        // Permission check
 
         const permissionQuery = `SELECT * FROM activities WHERE userID = ? AND activityID = ? ;`;
         const permissionResult = await executeQuery(permissionQuery, [userID, activityID]);
@@ -412,19 +413,19 @@ router.route('/favorite')
             }
             return res.status(403).json(response);
         } else {
-            const deleteQuery = `DELETE FROM reccurentActivities WHERE activityID = ? AND userID = ? ;`;
+            const deleteQuery = `DELETE FROM recurrentActivities WHERE activityID = ? AND userID = ? ;`;
             const deleteResult = await executeQuery(deleteQuery, [activityID , userID]);
 
             if (deleteResult.affectedRows > 0) {
                 const response = {
-                    message : 'Activity delete from favorites successfully',
+                    message : 'Activity deleted from favorites successfully',
                     status : 200,
                 }
                 return res.status(200).json(response);
             } else {
                 const response = {
                     error : true,
-                    error_message : 'User doesnt have this activity in favorite',
+                    error_message : 'User does not have this activity in favorites',
                     error_code : 32
                 }
                 return res.status(400).json(response);
@@ -433,6 +434,3 @@ router.route('/favorite')
     });
 
 module.exports = router;
-
-
-    

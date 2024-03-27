@@ -40,13 +40,13 @@ router.route('/')
                     derniereConnexion: authUser.metadata.lastSignInTime,
                     score: sqlResult[0].score,
                     recycl : sqlResult[0].recycl,
-                    nb_habitants : sqlResult[0].nb_habitants,
-                    surface : sqlResult[0].surface,
-                    potager : sqlResult[0].potager,
-                    multiplicateur : sqlResult[0].multiplicateur,
-                    voiture : sqlResult[0].voiture,
-                    hybride : sqlResult[0].hybride,
-                    chauffage : sqlResult[0].chauffage
+                    nb_inhabitants : sqlResult[0].nb_inhabitants,
+                    area : sqlResult[0].area,
+                    garden : sqlResult[0].garden,
+                    multiplier : sqlResult[0].multiplier,
+                    car : sqlResult[0].car,
+                    hybrid : sqlResult[0].hybrid,
+                    heating : sqlResult[0].heating
                 }
             return res.status(200).json(response);
         } else {
@@ -75,14 +75,14 @@ router.route('/')
         // On récupère les paramètres directement sur la page pour mettre à jour la BDD
 
         const recycl = req.body.recycl
-        const nb_habitants = req.body.nb_habitants
-        const surface = req.body.surface
-        const potager = req.body.potager
-        const voiture = req.body.voiture
-        const hybride = req.body.hybride
-        const chauffage = req.body.chauffage
+        const nb_inhabitants = req.body.nb_inhabitants
+        const area = req.body.area
+        const garden = req.body.garden
+        const car = req.body.car
+        const hybrid = req.body.hybrid
+        const heating = req.body.heating
 
-        if (typeof recycl !== 'boolean' || typeof nb_habitants !== 'number' || typeof surface !== 'number' || typeof potager !== 'boolean' || typeof voiture !== 'number' || typeof hybride !== 'boolean' || typeof chauffage !== 'string') {
+        if (typeof recycl !== 'boolean' || typeof nb_inhabitants !== 'number' || typeof area !== 'number' || typeof garden !== 'boolean' || typeof car !== 'number' || typeof hybrid !== 'boolean' || typeof heating !== 'string') {
             const response = {
                 error: true,
                 error_message: 'Invalid parameters',
@@ -100,17 +100,17 @@ router.route('/')
 
         if (sqlResult.length > 0) {
             // Création d'un objet avec les données d'authentification et le score
-            const newscore = activityCalculator.scorePassif(activityCalculator.multiplicateur(recycl, nb_habitants, surface, potager, multiplicateur, chauffage),sqlResult[0].score)
+            const newscore = activityCalculator.passiveScore(activityCalculator.multiplier(recycl, nb_inhabitants, area, garden, multiplier, heating),sqlResult[0].score)
             const updateQuery = `UPDATE users SET score = ? WHERE userID = ? ;`;
             const updateResult = await executeQuery(updateQuery, [parseInt(newscore) , userID]);
 
             // Requête de mise à jour de la table users
             const updateQuery2 = `
             UPDATE users 
-            SET recycl = ?, nb_habitants = ?, surface = ?, potager = ?, multiplicateur = ?, voiture = ?, hybride = ?, chauffage = ?
+            SET recycl = ?, nb_inhabitants = ?, area = ?, garden = ?, multiplier = ?, car = ?, hybrid = ?, heating = ?
             WHERE userID = ?;
             `;
-            const updateResult2 = await executeQuery(updateQuery2, [recycl, nb_habitants, surface, potager, multiplicateur, voiture, hybride, chauffage, userID]);
+            const updateResult2 = await executeQuery(updateQuery2, [recycl, nb_inhabitants, area, garden, multiplier, car, hybrid, heating, userID]);
 
             if (updateResult2.affectedRows > 0) {
                 // Réponse avec les détails de la mise à jour
@@ -118,13 +118,13 @@ router.route('/')
                     userId: userID,
                     score : newscore,
                     recycl,
-                    nb_habitants,
-                    surface,
-                    potager,
-                    multiplicateur,
-                    voiture,
-                    hybride,
-                    chauffage,
+                    nb_inhabitants,
+                    area,
+                    garden,
+                    multiplier,
+                    car,
+                    hybrid,
+                    heating,
                     message: 'User data has been updated',
                 };
                 return res.status(200).json(response);
@@ -211,15 +211,15 @@ router.route('/')
         // On récupère les paramètres directement sur la page pour mettre à jour la BDD
 
         const recycl = req.body.recycl
-        const nb_habitants = req.body.nb_habitants
-        const surface = req.body.surface
-        const potager = req.body.potager
-        const multiplicateur = req.body.multiplicateur
-        const voiture = req.body.voiture
-        const hybride = req.body.hybride
-        const chauffage = req.body.chauffage
+        const nb_inhabitants = req.body.nb_inhabitants
+        const area = req.body.area
+        const garden = req.body.garden
+        const multiplier = req.body.multiplier
+        const car = req.body.car
+        const hybrid = req.body.hybrid
+        const heating = req.body.heating
 
-        if (typeof recycl !== 'boolean' || typeof nb_habitants !== 'number' || typeof surface !== 'number' || typeof potager !== 'boolean' || typeof multiplicateur !== 'number' || typeof voiture !== 'number' || typeof hybride !== 'boolean' || typeof chauffage !== 'string') {
+        if (typeof recycl !== 'boolean' || typeof nb_inhabitants !== 'number' || typeof area !== 'number' || typeof garden !== 'boolean' || typeof multiplier !== 'number' || typeof car !== 'number' || typeof hybrid !== 'boolean' || typeof heating !== 'string') {
             const response = {
                 error: true,
                 error_message: 'Invalid parameters',
@@ -229,11 +229,11 @@ router.route('/')
         }
 
         // On calcul le score de base avec les paramètres de l'utilisateurs
-        const newscore = activityCalculator.scorePassif(activityCalculator.multiplicateur(recycl, nb_habitants, surface, potager, multiplicateur, chauffage),5000)
+        const newscore = activityCalculator.passiveScore(activityCalculator.multiplier(recycl, nb_inhabitants, area, garden, multiplier, heating),5000)
         // Maintenant, q'on a vérifié le typage, on peut creer notre utilisateur avec les différents paramètres associés
 
-        const sqlQuery = `INSERT INTO users (userID, score, recycl, nb_habitants, surface, potager, multiplicateur, voiture, hybride, chauffage) VALUES ( ? , ? , ? , ? , ? , ? , ?, ?, ?, ?) ;`;
-        const sqlResult = await executeQuery(sqlQuery, [userID, parseInt(newscore) , recycl, nb_habitants, surface, potager, multiplicateur, voiture, hybride, chauffage]);
+        const sqlQuery = `INSERT INTO users (userID, score, recycl, nb_inhabitants, area, garden, multiplier, car, hybrid, heating) VALUES ( ? , ? , ? , ? , ? , ? , ?, ?, ?, ?) ;`;
+        const sqlResult = await executeQuery(sqlQuery, [userID, parseInt(newscore) , recycl, nb_inhabitants, area, garden, multiplier, car, hybrid, heating]);
 
         if (sqlResult.affectedRows > 0){
             // On active la fonction d'envoie d'email toutes les 24 heures

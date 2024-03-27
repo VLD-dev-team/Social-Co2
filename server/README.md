@@ -146,13 +146,13 @@ CREATE TABLE users (
   userID Varchar(255),
   score INT,
   recycl BOOLEAN,
-  nb_habitants INT,
-  surface FLOAT,
-  potager BOOLEAN,
-  multiplicateur FLOAT,
-  voiture INT,
-  hybride BOOLEAN,
-  chauffage VARCHAR(255),
+  nb_inhabitants INT,
+  area FLOAT,
+  garden BOOLEAN,
+  multiplier FLOAT,
+  car INT,
+  hybrid BOOLEAN,
+  heating VARCHAR(255),
   PRIMARY KEY (userID)
 );
 
@@ -162,8 +162,6 @@ CREATE TABLE friends (
   userID2 varchar(255),
   friendshipStatus VARCHAR(255),
   PRIMARY KEY (friendshipID),
-  FOREIGN KEY (userID1) REFERENCES users(userID),
-  FOREIGN KEY (userID2) REFERENCES users(userID)
 );
 
 CREATE TABLE notifications (
@@ -180,43 +178,42 @@ CREATE TABLE conversations (
   userID1 VARCHAR(255),
   userID2 VARCHAR(255),
   convName VARCHAR(255),
-  convCreatedAt TIMESTAMP,
+  convCreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   convLastMessage INT,
-  conviD INT,
+  PRIMARY KEY (convID),
+)
+
+CREATE TABLE friends (
+  friendshipID INT,
+  userID1 VARCHAR(255),
+  userID2 VARCHAR(255),
+  friendshipStatus varchar(255)
+  PRIMARY KEY (convID),
+)
+
+CREATE TABLE messages (
+  messageID INT AUTO_INCREMENT,
+  convID INT,
   messageSenderID VARCHAR(255),
   messageReceiverID VARCHAR(255),
   messageStatus VARCHAR(255),
   messageTextContent VARCHAR(255),
   messageMediaContentURL VARCHAR(255),
-  messageCreatedAt TIMESTAMP,
-  PRIMARY KEY (convID),
-  FOREIGN KEY (userID1) REFERENCES users(userID),
-  FOREIGN KEY (userID2) REFERENCES users(userID)
+  messageCreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (messageID),
 );
 
 CREATE TABLE posts (
-  postID INT,
+  postID INT AUTO_INCREMENT,
   userID VARCHAR(255),
-  postTextContent VARCHAR(255),
-  postMediaContentURL VARCHAR(255),
-  postLinkedActivity VARCHAR(255),
-  postLikesNumber INT,
-  postCreatedAt TIMESTAMP,
-  postCommentsNumber INT,
+  postTextContent VARCHAR(255) DEFAULT NULL,
+  postMediaContentURL VARCHAR(255) DEFAULT NULL,
+  postLinkedActivity VARCHAR(255) DEFAULT NULL,
+  postLikesNumber INT DEFAULT 0,
+  postCreatedAt TIMESTAMP DEFAULT DEFAULT CURRENT_TIMESTAMP ,
+  postCommentsNumber INT DEFAULT 0,
   postType VARCHAR(255),
   PRIMARY KEY (postID),
-  FOREIGN KEY (userID) REFERENCES users(userID)
-);
-
-CREATE TABLE messages(
-  messageID int PRIMARY KEY AUTO_INCREMENT, 
-  convID int NOT NULL, 
-  messageSenderID varchar(255), 
-  messageReceiverID varchar(255), 
-  messageStatus varchar(255), 
-  messageTextContent varchar(255), 
-  messageMediaContentURL varchar(255), 
-  messageCreatedAt CURRENT_TIMESTAMP
 );
 
 CREATE TABLE likes(
@@ -225,10 +222,10 @@ CREATE TABLE likes(
 )
 
 CREATE TABLE comments(
-  commentID int,
   userID varchar(255),
+  postID int,
   commentTextContent varchar(255),
-  commentCreatedAt CURRENT_TIMESTAMP
+  commentCreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 ```
 

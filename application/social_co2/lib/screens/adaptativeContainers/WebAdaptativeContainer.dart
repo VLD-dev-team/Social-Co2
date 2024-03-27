@@ -1,18 +1,21 @@
 // Importation des packages requis pour flutter
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_co2/providers/UserActivitiesProvider.dart';
-import 'package:social_co2/providers/UserSCO2DataProvider.dart';
+
+// Importation des écrans
 import 'package:social_co2/screens/homeScreen/ActivitiesScreen.dart';
 import 'package:social_co2/screens/homeScreen/HomeScreen.dart';
 import 'package:social_co2/screens/homeScreen/LeaderBoardScreen.dart';
+import 'package:social_co2/screens/homeScreen/SettingsScreen.dart';
 
 // Importation des styles et des providers pour le menu/drawer
 import 'package:social_co2/styles/webDrawersStyle.dart';
+import 'package:social_co2/utils/responsiveHandler.dart';
 
 // Importation des providers
 import 'package:social_co2/providers/IndexProvider.dart';
-import 'package:social_co2/utils/responsiveHandler.dart';
+import 'package:social_co2/providers/UserActivitiesProvider.dart';
+import 'package:social_co2/providers/UserSCO2DataProvider.dart';
 
 class WebAdaptativeContainer extends StatefulWidget {
   @override
@@ -60,12 +63,15 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
                       // TODO : Implémenter le logo et le clic sur le logo
                       margin: const EdgeInsets.symmetric(
                           vertical: 20, horizontal: 15),
-                      child: Text(
-                        "SCO2",
-                        style: (responsive_format == ResponsiveFormats.small ||
+                      child: RotatedBox(
+                        quarterTurns: (responsive_format ==
+                                    ResponsiveFormats.small ||
                                 responsive_format == ResponsiveFormats.mobile)
-                            ? const TextStyle(fontSize: 10)
-                            : const TextStyle(fontSize: 70),
+                            ? 3
+                            : 0,
+                        child: Image.asset(
+                          "logos/LOGO_SCO2.png",
+                        ),
                       ),
                     );
                   } else {
@@ -129,6 +135,8 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
                 return const ActivityScreen();
               case 4:
                 return const LeaderBoardScreeen();
+              case 6:
+                return const SettingsScreen();
               default:
                 return const HomeScreen(); // ACCUEIL
             }

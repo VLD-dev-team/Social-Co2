@@ -359,6 +359,8 @@ Pour traiter les erreurs, nous avons identifiés chacunes des erreurs par un cod
 * Code d'erreur n°32 : User doesnt have this activity in favorite - Statut 400
 * Code d'erreur n°33 : Invalid Data - Statut 400
 * Code d'erreur n°34 : Failed to create post - Statut 400
+* Code d'erreur n°35 : Friendship already exist - Statut 400
+
 
 
 

@@ -78,9 +78,11 @@ router.route('/')
     })
     .post(async (req,res) => {
         try {
+            // On recupère les données nécessaires
             const userID = req.headers.userid;
             const actionType = req.query.actionType;
             const friendID = req.query.friendID;
+            // Vérification du typage
             if (typeof actionType !== 'string' || typeof userID !== 'string') {
                 const response = {
                     error: true,
@@ -94,7 +96,19 @@ router.route('/')
             // - accept : pour accepter la demande d'ami si il y en a une
             // - refuse
             // - deblock
+            
+            // Pour ajouter un ami
             if (actionType == "add"){
+                const sqlFriend = `SELECT * FROM friends WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;`;
+                const sqlFriendResult = await executeQuery(sqlFriend, [userID, friendID, userID, friendID]);
+                if (sqlFriendResult.length > 0){
+                    const response = {
+                        error: true,
+                        error_message: 'Friendship already exist',
+                        error_code: 35
+                    };
+                    return res.status(400).json(response);
+                }
                 const sqlQuery = `INSERT INTO friends (userID1, userID2, friendshipStatus) VALUES (?, ?, ?);`;
                 const sqlResult = await executeQuery(sqlQuery, [userID, friendID, "21"]);
                 if (sqlResult.affectedRows > 0){
@@ -103,17 +117,78 @@ router.route('/')
                         status : 200,
                     }
                     return res.status(200).json(response);
+                } else {
+                    const response = {
+                        error: true,
+                        error_message: 'Internal Server Error',
+                        error_code: 2
+                    };
+                    return res.status(400).json(response);
                 }
             }
             if (actionType == "block"){
-                const sqlQuery = `INSERT INTO friends (userID1, userID2, friendshipStatus) VALUES (?, ?, ?);`;
-                const sqlResult = await executeQuery(sqlQuery, [userID, friendID, "30"]);
-                if (sqlResult.affectedRows > 0){
-                    const response = {
-                        message : "User block",
-                        status : 200,
+                const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? ;`;
+                const sqlFriendResult = await executeQuery(sqlFriend, [userID, friendID]);
+                if (sqlFriendResult.length > 0){
+                    let FriendshipStatus = sqlFriendResult.friendshipStatus
+                    FriendshipStatus[0] = "3";
+                    const sqlQuery = `UPDATE friends SET friendshipStatus = ? WHERE userID1 = ? AND userID2 = ?;`;
+                    const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, userID, friendID]);
+                    if (sqlResult.affectedRows > 0){
+                        const response = {
+                            message : "User block successfuly",
+                            status : 200,
+                        }
+                        return res.status(200).json(response);
+                    } else {
+                        const response = {
+                            error: true,
+                            error_message: 'Internal Server Error',
+                            error_code: 2
+                        };
+                        return res.status(400).json(response);
                     }
-                    return res.status(200).json(response);
+                } else {
+                    const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? ;`;
+                    const sqlFriendResult = await executeQuery(sqlFriend, [friendID, userID]);
+                    if (sqlFriendResult.length > 0){
+                        let FriendshipStatus = sqlFriendResult.friendshipStatus
+                        FriendshipStatus[1] = "3";
+                        const sqlQuery = `UPDATE friends SET friendshipStatus = ? WHERE userID1 = ? AND userID2 = ?;`;
+                        const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, userID, friendID]);
+                        if (sqlResult.affectedRows > 0){
+                            const response = {
+                                message : "User block successfuly",
+                                status : 200,
+                            }
+                            return res.status(200).json(response);
+                        } else {
+                            const response = {
+                                error: true,
+                                error_message: 'Internal Server Error',
+                                error_code: 2
+                            };
+                            return res.status(400).json(response);
+                        }
+
+                    } else {
+                        const sqlQuery = `INSERT INTO friends (userID1, userID2, friendshipStatus) VALUES (?, ?, ?);`;
+                        const sqlResult = await executeQuery(sqlQuery, [userID, friendID, "30"]);
+                        if (sqlResult.affectedRows > 0){
+                            const response = {
+                                message : "User block",
+                                status : 200,
+                            }
+                            return res.status(200).json(response);
+                        } else {
+                            const response = {
+                                error: true,
+                                error_message: 'Internal Server Error',
+                                error_code: 2
+                            };
+                            return res.status(400).json(response);
+                        }
+                    }
                 }
             }
 

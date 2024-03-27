@@ -5,7 +5,7 @@ const verifyAuthToken = require('../utils/requireAuth.js');
 
 router.route('/*')
     .all((req, res, next) => verifyAuthToken(req, res, next));
-
+    
 router.route('/')
     .get(async (req, res) => {
         try {
@@ -14,51 +14,119 @@ router.route('/')
 
             if (typeof actionType !== 'string') {
                 const response = {
-                        error : true,
-                        error_message : 'Invalid Data',
-                        error_code : 33
-                }
+                    error: true,
+                    error_message: 'Invalid Data',
+                    error_code: 33
+                };
                 return res.status(400).json(response);
             }
 
-            if (actionType=="request send"){
-                // Requête pour obtenir les amis dont la demande d'amitié a été envoyé
-                const getFriendsQuery = `SELECT userID FROM users JOIN friends ON users.userID = friendshipStatus.userID2 WHERE (userID1 = ? AND friendshipStatus = "21") ;`
+            let friends = [];
+
+            if (actionType === "request send") {
+                // Requête pour obtenir les amis dont la demande d'amitié a été envoyée
+                const getFriendsQuery = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID2 WHERE userID1 = ? AND friendshipStatus = "21" ;`;
                 const friends1 = await executeQuery(getFriendsQuery, [userID]);
-                const getFriendsQuery2 = `SELECT userID FROM users JOIN friends ON users.userID = friendshipStatus.userID1 WHERE (userID2 = ? AND friendshipStatus = "12") ;`
+                const getFriendsQuery2 = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID1 WHERE userID2 = ? AND friendshipStatus = "12" ;`;
                 const friends2 = await executeQuery(getFriendsQuery2, [userID]);
-
-                
-            } else if (actionType=="request receive"){
+                friends = friends1.concat(friends2);
+            } else if (actionType === "request receive") {
                 // Requête pour obtenir les amis en attente
-                const getFriendsQuery = `SELECT * FROM friends WHERE (userID1 = ? AND friendshipStatus = "12") OR (userID2 = ? AND friendshipStatus = "21") ;`
-                const friends = await executeQuery(getFriendsQuery, [userID, userID]);
-            } else if (actionType=="block"){
-                // Requête pour obtenir les personnes bloqués
-                const getFriendsQuery = `SELECT * FROM friends WHERE (userID1 = ? AND (friendshipStatus = "31" OR friendshipStatus = "33")) OR (userID2 = ? AND (friendshipStatus = "13" OR friendshipStatus = "33")) ;`
-                const friends = await executeQuery(getFriendsQuery, [userID, userID]);
-            } else if (actionType=="friends"){
+                const getFriendsQuery = `SELECT * FROM friends WHERE userID1 = ? AND friendshipStatus = "12" ;`;
+                const friends1 = await executeQuery(getFriendsQuery, [userID]);
+                const getFriendsQuery2 = `SELECT * FROM friends WHERE userID2 = ? AND friendshipStatus = "21" ;`;
+                const friends2 = await executeQuery(getFriendsQuery2, [userID]);
+                friends = friends1.concat(friends2);
+            } else if (actionType === "block") {
+                // Requête pour obtenir les personnes bloquées
+                const getFriendsQuery = `SELECT * FROM friends WHERE userID1 = ? AND (friendshipStatus = "31" OR friendshipStatus = "33") ;`;
+                const friends1 = await executeQuery(getFriendsQuery, [userID]);
+                const getFriendsQuery2 = `SELECT * FROM friends WHERE userID2 = ? AND (friendshipStatus = "13" OR friendshipStatus = "33") ;`;
+                const friends2 = await executeQuery(getFriendsQuery2, [userID]);
+                friends = friends1.concat(friends2);
+            } else if (actionType === "friends") {
                 // Requête pour obtenir ses amis
-                const getFriendsQuery = `SELECT * FROM friends WHERE (userID1 = ? AND friendshipStatus = "22") OR (userID2 = ? AND friendshipStatus = "22") ;`
-                const friends = await executeQuery(getFriendsQuery, [userID, userID]);
+                const getFriendsQuery = `SELECT * FROM friends WHERE userID1 = ? AND friendshipStatus = "22" ;`;
+                const friends1 = await executeQuery(getFriendsQuery, [userID]);
+                const getFriendsQuery2 = `SELECT * FROM friends WHERE userID2 = ? AND friendshipStatus = "22" ;`;
+                const friends2 = await executeQuery(getFriendsQuery2, [userID]);
+                friends = friends1.concat(friends2);
             }
-            
 
-            const response = {
-                friends : friends,
-                status : 200,
-            }
-            return res.status(200).json(response);
+            // Récupération des informations utilisateur à partir de Firebase
+            const usersPromises = friends.map(async (friend) => {
+                const friendID = friend.userID1 === userID ? friend.userID2 : friend.userID1;
+                const userRecord = await admin.auth().getUser(friendID);
+                return {
+                    userID: userRecord.uid,
+                    name: userRecord.displayName,
+                    photoURL: userRecord.photoURL
+                };
+        });
+            const users = await Promise.all(usersPromises);
+    
+            return res.status(200).json(users);
         } catch (error) {
             console.error('Error retrieving friends:', error);
             const response = {
-                    error : true,
-                    error_message : 'Internal Server Error',
-                    error_code : 2
-            }
+                error: true,
+                error_message: 'Internal Server Error',
+                error_code: 2
+            };
             return res.status(500).json(response);
         }
-    });
+    })
+    .post(async (req,res) => {
+        try {
+            const userID = req.headers.userid;
+            const actionType = req.query.actionType;
+            const friendID = req.query.friendID;
+            if (typeof actionType !== 'string' || typeof userID !== 'string') {
+                const response = {
+                    error: true,
+                    error_message: 'Invalid Data',
+                    error_code: 33
+                };
+                return res.status(400).json(response);
+            }
+            // -add : pour envoyer une demande d'ami
+            // - block : pour bloquer
+            // - accept : pour accepter la demande d'ami si il y en a une
+            // - refuse
+            // - deblock
+            if (actionType == "add"){
+                const sqlQuery = `INSERT INTO friends (userID1, userID2, friendshipStatus) VALUES (?, ?, ?);`;
+                const sqlResult = await executeQuery(sqlQuery, [userID, friendID, "21"]);
+                if (sqlResult.affectedRows > 0){
+                    const response = {
+                        message : "Request send",
+                        status : 200,
+                    }
+                    return res.status(200).json(response);
+                }
+            }
+            if (actionType == "block"){
+                const sqlQuery = `INSERT INTO friends (userID1, userID2, friendshipStatus) VALUES (?, ?, ?);`;
+                const sqlResult = await executeQuery(sqlQuery, [userID, friendID, "30"]);
+                if (sqlResult.affectedRows > 0){
+                    const response = {
+                        message : "User block",
+                        status : 200,
+                    }
+                    return res.status(200).json(response);
+                }
+            }
+
+        } catch (error) {
+            console.error('Error retrieving friends:', error);
+            const response = {
+                error: true,
+                error_message: 'Internal Server Error',
+                error_code: 2
+            };
+            return res.status(500).json(response);
+        }
+    })
 
 router.route('/search')
     .get(async (req, res) => {

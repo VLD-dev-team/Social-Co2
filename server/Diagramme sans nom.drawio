@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-03-23T17:38:04.338Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="dF1DemY2sfDmfo85KiBV" version="24.1.0" type="github">
+<mxfile host="app.diagrams.net" modified="2024-03-27T15:20:43.534Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="9hMj08VlhUxtmiSyMflb" version="24.1.0" type="github">
   <diagram name="Page-1" id="jhAAQiRTMC3WOToZxg92">
     <mxGraphModel dx="2741" dy="3328" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -336,7 +336,7 @@
         <mxCell id="wuqC6jIEuIp08qezgk6B-117" value="/friends" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="109" y="1090" width="110" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="wuqC6jIEuIp08qezgk6B-119" value="GET : Donne les différents amis, personnes en attente et bloqués dans un dictionnaire JSON" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
+        <mxCell id="wuqC6jIEuIp08qezgk6B-119" value="GET : Donne les différents amis, personnes en attente et bloqués dans un dictionnaire JSON" style="html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="272" y="1075" width="141" height="80" as="geometry" />
         </mxCell>
         <mxCell id="wuqC6jIEuIp08qezgk6B-120" value="require userid" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
@@ -628,19 +628,19 @@
           <mxGeometry x="109" y="-1311" width="169" height="30" as="geometry" />
         </mxCell>
         <mxCell id="eBHFEck8xo7xaAXGFLvW-3" value="friends" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="-230" y="-785" width="200" height="150" as="geometry" />
+          <mxGeometry x="-230" y="-785" width="240" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="eBHFEck8xo7xaAXGFLvW-4" value="friendshipID int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="eBHFEck8xo7xaAXGFLvW-3" vertex="1">
-          <mxGeometry y="30" width="200" height="30" as="geometry" />
+        <mxCell id="eBHFEck8xo7xaAXGFLvW-4" value="friendshipID int AUTO_INCREMENT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="eBHFEck8xo7xaAXGFLvW-3" vertex="1">
+          <mxGeometry y="30" width="240" height="30" as="geometry" />
         </mxCell>
         <mxCell id="eBHFEck8xo7xaAXGFLvW-5" value="userID1 varchar(255)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="eBHFEck8xo7xaAXGFLvW-3" vertex="1">
-          <mxGeometry y="60" width="200" height="30" as="geometry" />
+          <mxGeometry y="60" width="240" height="30" as="geometry" />
         </mxCell>
         <mxCell id="eBHFEck8xo7xaAXGFLvW-10" value="userID2 varchar(255)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="eBHFEck8xo7xaAXGFLvW-3" vertex="1">
-          <mxGeometry y="90" width="200" height="30" as="geometry" />
+          <mxGeometry y="90" width="240" height="30" as="geometry" />
         </mxCell>
         <mxCell id="eBHFEck8xo7xaAXGFLvW-11" value="friendshipStatus varchar(255) " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="eBHFEck8xo7xaAXGFLvW-3" vertex="1">
-          <mxGeometry y="120" width="200" height="30" as="geometry" />
+          <mxGeometry y="120" width="240" height="30" as="geometry" />
         </mxCell>
         <mxCell id="eBHFEck8xo7xaAXGFLvW-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;" parent="1" source="iu74Z957g5xioMOJV0q_-14" target="eBHFEck8xo7xaAXGFLvW-10" edge="1">
           <mxGeometry relative="1" as="geometry">

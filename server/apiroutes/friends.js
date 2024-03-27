@@ -10,21 +10,39 @@ router.route('/')
     .get(async (req, res) => {
         try {
             const userID = req.headers.userid;
+            const actionType = req.query.actionType;
 
-            // Requête pour obtenir les amis et leurs statuts
-            const getFriendsQuery = `
-                SELECT 
-                    f.friendshipID,
-                    f.userID1 AS friendID,
-                    u.userName AS friendName,
-                    f.friendshipStatus
-                FROM friends f
-                JOIN users u ON (f.userID1 = u.userID OR f.userID2 = u.userID) AND u.userID != ?
-                WHERE f.userID1 = ? OR f.userID2 = ? ;`;
+            if (typeof actionType !== 'string') {
+                const response = {
+                        error : true,
+                        error_message : 'Invalid Data',
+                        error_code : 33
+                }
+                return res.status(400).json(response);
+            }
 
-                // Test d'un nouveau type de requête :)
+            if (actionType=="request send"){
+                // Requête pour obtenir les amis dont la demande d'amitié a été envoyé
+                const getFriendsQuery = `SELECT userID FROM users JOIN friends ON users.userID = friendshipStatus.userID2 WHERE (userID1 = ? AND friendshipStatus = "21") ;`
+                const friends1 = await executeQuery(getFriendsQuery, [userID]);
+                const getFriendsQuery2 = `SELECT userID FROM users JOIN friends ON users.userID = friendshipStatus.userID1 WHERE (userID2 = ? AND friendshipStatus = "12") ;`
+                const friends2 = await executeQuery(getFriendsQuery2, [userID]);
 
-            const friends = await executeQuery(getFriendsQuery, [userID, userID, userID]);
+                
+            } else if (actionType=="request receive"){
+                // Requête pour obtenir les amis en attente
+                const getFriendsQuery = `SELECT * FROM friends WHERE (userID1 = ? AND friendshipStatus = "12") OR (userID2 = ? AND friendshipStatus = "21") ;`
+                const friends = await executeQuery(getFriendsQuery, [userID, userID]);
+            } else if (actionType=="block"){
+                // Requête pour obtenir les personnes bloqués
+                const getFriendsQuery = `SELECT * FROM friends WHERE (userID1 = ? AND (friendshipStatus = "31" OR friendshipStatus = "33")) OR (userID2 = ? AND (friendshipStatus = "13" OR friendshipStatus = "33")) ;`
+                const friends = await executeQuery(getFriendsQuery, [userID, userID]);
+            } else if (actionType=="friends"){
+                // Requête pour obtenir ses amis
+                const getFriendsQuery = `SELECT * FROM friends WHERE (userID1 = ? AND friendshipStatus = "22") OR (userID2 = ? AND friendshipStatus = "22") ;`
+                const friends = await executeQuery(getFriendsQuery, [userID, userID]);
+            }
+            
 
             const response = {
                 friends : friends,

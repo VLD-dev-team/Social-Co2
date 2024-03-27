@@ -23,6 +23,7 @@ router.route('/')
             return res.status(400).json(response);
         }
 
+
         // Récupérétation des informations d'authentification de l'utilisateur
         const authUser = await admin.auth().getUser(userID);
 

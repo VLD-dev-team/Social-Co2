@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+// TODO : Implémenter la requette de suppression de compte
+
 class dialogDeleteAccount extends StatefulWidget {
   const dialogDeleteAccount({
     super.key,

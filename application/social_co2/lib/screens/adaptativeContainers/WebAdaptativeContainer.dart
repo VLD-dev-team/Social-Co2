@@ -60,7 +60,7 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
                   if (index == 0) {
                     // Si l'index est égal à 0, alors on affiche le logo de l'application
                     return Container(
-                      // TODO : Implémenter le logo et le clic sur le logo
+                      // TODO : Implémenter le clic sur le logo
                       margin: const EdgeInsets.symmetric(
                           vertical: 20, horizontal: 15),
                       child: RotatedBox(

@@ -617,4 +617,86 @@ Pour plus d'informations, voir le fichier `GestionAPI.drawio`
 -- Utilisation de la route /activity/favorite --
 
 * POST : Met en favori une activité
-* DELETE : Enlève une ectivité des favoris
+* DELETE : Enlève une activité des favoris
+
+-- Utilisation de la route /activities --
+
+* GET : Donne les 20 activités d'un utilisateur à partir d'un index
+
+-- Utilisation de la route /activities/favorite --
+
+* GET : Donne les 20 activités favorite d'un utilisateur à partir d'un index
+
+### Gestion de l'utilisateur
+
+-- Utilisation de la route /user --
+
+* GET : Donne toutes les infos de l'utilisateur
+* POST : Création de l'utilisateur
+* PUT : Met à jour les infos de l'utilisateur
+* DELETE : Supprime l'utilisateur et tout ce qu'il lui est associé
+
+-- Utilisation de la route /user/activities --
+
+* GET : Donne toutes les activités et leurs infos d'un utilisateur à partir d'une date + donne la phrase récapitulative
+
+-- Utilisation de la route /user/notifications --
+
+* GET : Donne le contenu des 10 dernières notifications émises
+
+### Gestion du leaderboard
+
+-- Utilisation de la route /leaderboard/friends --
+
+* GET : Donne le classement des amis avec soit compris au niveau du score
+
+-- Utilisation de la route /leaderboard/world --
+
+* GET : Donne le classement des utilisateurs avec soit compris au niveau du score
+
+### Gestion du réseau social principal
+
+-- Utilisation de la route /social/feed --
+
+* GET : Donne les différents posts liés au compte de l'utilisateur donc aussi ces amis
+
+-- Utilisation de la route /social/like --
+
+* POST : permet d'ajouter un like au post
+
+-- Utilisation de la route /social/comments --
+
+* GET : Charger les commentaires d'un post
+* POST : ajouter un commentaire à un post
+
+### Gestion de l'amitié
+
+-- Utilisation de la route /friends --
+
+* GET : Donne les différents amis, personnes en attente et bloqués dans un dictionnaire JSON
+* POST : actionType :
+  - add : pour envoyer une demande d'ami
+  - block : pour bloquer
+  - accept : pour accepter la demande d'ami si il y en a une
+  - refuse
+  - deblock
+
+-- Utilisation de la route /friends/search --
+
+* GET : rechercher un utilisateur qui commence par idSearch
+
+### Affichage du rapport
+
+-- Utilisation de la route /rapport --
+
+* GET : Charge le rapport en envoyant les acitivtés trioés par types et par dates sous forme de dictionnaire JSON
+
+### Gestion du système de messagerie
+
+-- Utilisation de la route /conversations --
+
+* GET : Charger les conversations de l'utilisateur
+
+-- Utilisation de la route /messages --
+
+* GET : Charger les 40 derniers messages partir d'un index 

@@ -358,9 +358,8 @@ router.route('/posts')
                 sqlQueryActivity = `
                 SELECT * FROM activities 
                 WHERE userID = ? 
-                ORDER BY activityTimestamp DESC 
-                ORDER BY activityType ASC
-                LIMIT 20 ;`
+                ORDER BY activityTimestamp DESC, activityType ASC
+                LIMIT 200 ;`
                 selectQueryActivityResult = await executeQuery(sqlQueryActivity,[userID])
                 const rapport = selectQueryActivityResult
                 sqlQuery = `INSERT INTO posts (userID, postTextContent, postType) VALUES (?, ?, ?);`;

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// Page 404
 router.route('/*')
     .all((req, res) => {
         const response = {

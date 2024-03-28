@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 const { executeQuery } = require('./utils/database.js');
 
-const websocketRouter = require('./apiroutes//websocket.js'); // Importer le routeur WebSocket
+const websocketRouter = require('./apiroutes/websocket.js'); // Importer le routeur WebSocket
 
 // initialisation de la variable environnement
 require('dotenv').config()
@@ -17,8 +17,8 @@ require('dotenv').config()
 const app = express();
 
 // initialisation de firebase admin
-var firebaseAdmin = require("firebase-admin");
-var serviceAccount = require("./credentials/firebaseAdminCredentials.json");
+const firebaseAdmin = require("firebase-admin");
+const serviceAccount = require("./credentials/firebaseAdminCredentials.json");
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount)
 });

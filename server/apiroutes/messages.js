@@ -2,14 +2,17 @@ const express = require('express');
 const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
-const notificationHandler = require('../utils/notificationHandler.js'); // Importez le gestionnaire de notifications
-const socketManager = require('../utils/socketManager.js'); // Importez le gestionnaire de sockets pour accéder à `io`
+
+
+router.route('/*')
+    .all((req, res, next) => verifyAuthToken(req, res, next));
+
 
 router.route('/messages')
     .get(async (req, res) => {
         try {
             const userID = req.headers.userid;
-            const convID = req.query.convID;
+            const convID = req.query.convid;
             const startIndex = parseInt(req.query.startIndex) || 0;
 
             // Vérifies si l'utilisateur fait partie de la conversation ;)

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
+const admin = require('firebase-admin');
 
 router.route('/*')
     .all((req, res, next) => verifyAuthToken(req, res, next));
@@ -81,7 +82,7 @@ router.route('/')
             // On recupère les données nécessaires
             const userID = req.headers.userid;
             const actionType = req.query.actionType;
-            const friendID = req.query.friendID;
+            const friendID = req.query.friendid;
             // Vérification du typage
             if (typeof actionType !== 'string' || typeof userID !== 'string') {
                 const response = {
@@ -130,7 +131,7 @@ router.route('/')
                         error_message: 'Internal Server Error',
                         error_code: 2
                     };
-                    return res.status(400).json(response);
+                    return res.status(500).json(response);
                 }
             }
             // Pour bloquer une personne
@@ -159,7 +160,7 @@ router.route('/')
                             error_message: 'Internal Server Error',
                             error_code: 2
                         };
-                        return res.status(400).json(response);
+                        return res.status(500).json(response);
                     }
                 // Sinon on regarde les relations friendID - userID
                 } else {
@@ -185,7 +186,7 @@ router.route('/')
                                 error_message: 'Internal Server Error',
                                 error_code: 2
                             };
-                            return res.status(400).json(response);
+                            return res.status(500).json(response);
                         }
                     // Si il n'y a pas de relations existante alors le code sera le suivant "30"
                     } else {
@@ -206,7 +207,7 @@ router.route('/')
                                 error_message: 'Internal Server Error',
                                 error_code: 2
                             };
-                            return res.status(400).json(response);
+                            return res.status(500).json(response);
                         }
                     }
                 }
@@ -220,6 +221,9 @@ router.route('/')
                     const sqlQuery = `UPDATE friends SET friendshipStatus = "22" WHERE userID1 = ? AND userID2 = ?;`;
                     const sqlResult = await executeQuery(sqlQuery, [userID, friendID]);
                     if (sqlResult.affectedRows > 0){
+                        const createConversationQuery = `INSERT INTO conversations (userID1, userID2, convName) VALUES (?, ?, ?);`;
+                        const convName = `Conversation entre ${userID} et ${friendID}`;
+                        const convResult = await executeQuery(createConversationQuery, [userID, friendID, convName]);
                         const response = {
                             message : "user accept succesfully",
                             status : 200
@@ -231,7 +235,7 @@ router.route('/')
                             error_message: 'Internal Server Error',
                             error_code: 2
                         };
-                        return res.status(400).json(response);
+                        return res.status(500).json(response);
                     }
 
 
@@ -243,6 +247,9 @@ router.route('/')
                         const sqlQuery = `UPDATE friends SET friendshipStatus = "22" WHERE userID1 = ? AND userID2 = ?;`;
                         const sqlResult = await executeQuery(sqlQuery, [friendID, userID]);
                         if (sqlResult.affectedRows > 0){
+                            const createConversationQuery = `INSERT INTO conversations (userID1, userID2, convName) VALUES (?, ?, ?);`;
+                            const convName = `Conversation entre ${userID} et ${friendID}`;
+                            const convResult = await executeQuery(createConversationQuery, [userID, friendID, convName]);
                             const response = {
                                 message : "user accept succesfully",
                                 status : 200
@@ -254,7 +261,7 @@ router.route('/')
                                 error_message: 'Internal Server Error',
                                 error_code: 2
                             };
-                            return res.status(400).json(response);
+                            return res.status(500).json(response);
                         }
                     } else {
                         // Aucune relation trouvé
@@ -286,7 +293,7 @@ router.route('/')
                             error_message: 'Internal Server Error',
                             error_code: 2
                         };
-                        return res.status(400).json(response);
+                        return res.status(500).json(response);
                     }
 
 
@@ -309,7 +316,7 @@ router.route('/')
                                 error_message: 'Internal Server Error',
                                 error_code: 2
                             };
-                            return res.status(400).json(response);
+                            return res.status(500).json(response);
                         }
                     } else {
                         // Aucune relation trouvé
@@ -345,7 +352,7 @@ router.route('/')
                             error_message: 'Internal Server Error',
                             error_code: 2
                         };
-                        return res.status(400).json(response);
+                        return res.status(500).json(response);
                     }
                 } else {
                     const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND (friendshipStatus = "13" OR friendshipStatus = "23" OR friendshipStatus = "33") ;`;
@@ -370,7 +377,7 @@ router.route('/')
                                 error_message: 'Internal Server Error',
                                 error_code: 2
                             };
-                            return res.status(400).json(response);
+                            return res.status(500).json(response);
                         }
                     } else {
                        // Aucune relation trouvé
@@ -383,6 +390,12 @@ router.route('/')
                     }
                 } 
             }
+            const response = {
+                error: true,
+                error_message: 'Invalid Data',
+                error_code: 33
+            };
+            return res.status(400).json(response);
         } catch (error) {
             console.error('Error retrieving friends:', error);
             const response = {
@@ -394,56 +407,54 @@ router.route('/')
         }
     });
 
-
-// search pas fini
 router.route('/search')
     .get(async (req, res) => {
+        const userID = req.headers.userid;
+        const idSearch = req.query.idSearch;
+
+        // Obtenir une référence à la collection d'utilisateurs dans Firebase
+        const usersRef = admin.firestore().collection('users');
+
         try {
-            const userID = req.headers.userid;
-            const friendshipID = req.query.friendshipid;
+            // Effectuer une requête pour récupérer les utilisateurs dont l'ID contient la recherche
+            const querySnapshot = await usersRef.where('userID', '>=', idSearch)
+                                                .where('userID', '<', idSearch + '\uf8ff')
+                                                .get();
 
-            // Requête pour rechercher une personne par son friendshipID
-            const searchFriendQuery = `
-                SELECT 
-                    f.friendshipID,
-                    f.userID1 AS friendID,
-                    u.userName AS friendName,
-                    f.friendshipStatus
-                FROM friends f
-                JOIN users u ON (f.userID1 = u.userID OR f.userID2 = u.userID) AND u.userID != ?
-                WHERE f.friendshipID = ? ;`;
+            // Construire la réponse
+            const users = [];
+            querySnapshot.forEach((doc) => {
+                const userData = doc.data();
+                const user = {
+                    userID: userData.userID,
+                    userName: userData.userName,
+                    userProfilePhoto: userData.userProfilePhoto
+                };
+                users.push(user);
+            });
 
-            const friend = await executeQuery(searchFriendQuery, [userID, friendshipID]);
-
-            if (friend.length === 0) {
+            // Vérifier si des utilisateurs ont été trouvés
+            if (users.length > 0) {
+                return res.status(200).json(users);
+            } else {
                 const response = {
-                        error : true,
-                        error_message : 'Friend not found',
-                        error_code : 27
-                }
-                return res.status(404).json(response);
+                    message: "Aucun utilisateur trouvé"
+                };
+                return res.status(200).json(response);
             }
-            const response = {
-                friend : friend[0],
-                status : 200,
-            }
-            return res.status(200).json(response);
         } catch (error) {
-            console.error('Error searching friend:', error);
-            const response = {
-                    error : true,
-                    error_message : 'Internal Server Error',
-                    error_code : 2
-            }
-            return res.status(500).json(response);
+            console.error('Error searching for users:', error);
+            return res.status(500).json({ error: 'Internal Server Error' });
         }
     });
 
+
+// Route status si besoin
 router.route('/status')
     .post(async (req, res) => {
         try {
             const userID = req.headers.userid;
-            const friendID = req.body.friendID;
+            const friendID = req.body.friendid;
             const friendshipStatus = req.body.friendshipStatus;
 
             // Vérifie si l'amitié existe déjà

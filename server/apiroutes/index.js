@@ -25,7 +25,7 @@ router.use('/activities', activities);
 router.use('/leaderboard', leaderboard);
 router.use('/social', social);
 router.use('/friends', friends);
-//router.use('/rapport', rapport);
+router.use('/rapport', rapport);
 router.use('/conversations', conversations);
 router.use('/messages', messages);
 

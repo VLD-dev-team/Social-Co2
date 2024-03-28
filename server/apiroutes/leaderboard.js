@@ -22,22 +22,29 @@ router.route('/world')
             return res.status(400).json(response);
         }
 
-        // On y récupère et dans l'ordre
-        const getLeaderboard = `
+        try {
+            // Récupération de tous les utilisateurs ordonnés par score
+            const getLeaderboardQuery = `
                 SELECT *
                 FROM users
-                ORDER BY score DESC ;`;
-        const leaderboardResult = executeQuery(getLeaderboard);
+                ORDER BY score DESC;
+            `;
+            const leaderboardResult = await executeQuery(getLeaderboardQuery);
 
-        // Gestion d'erreur
-        if (leaderboardResult.length > 0) {
-            let response = {};
-            for (let each of leaderboardResult) {
-                const authUser = await admin.auth().getUser(each.userID);
-                response[authUser.displayName] = leaderboardResult[each];
-            }
+            // Construction de la réponse avec les informations demandées
+            const response = await Promise.all(leaderboardResult.map(async (user) => {
+                const userData = await admin.auth().getUser(user.userID);
+                return {
+                    id: userData.uid,
+                    name: userData.displayName,
+                    photoURL: userData.photoURL,
+                    score: user.score
+                };
+            }));
+
             return res.status(200).json(response);
-        } else {
+        } catch (error) {
+            console.error('Error fetching leaderboard:', error);
             const response = {
                 error: true,
                 error_message: 'Internal Server Error',
@@ -45,8 +52,7 @@ router.route('/world')
             };
             return res.status(500).json(response);
         }
-   }
-);
+    });
 
 router.route('/friends')
     .get(async (req, res) => {
@@ -63,49 +69,54 @@ router.route('/friends')
             return res.status(400).json(response);
         }
 
-        const getFriendsQuery = `
+        try {
+            // Récupérer les amis de l'utilisateur
+            const getFriendsQuery = `
                 SELECT userID1, userID2
                 FROM friends
-                WHERE (userID1 = ? OR userID2 = ?) AND friendshipStatus = '22' ;
+                WHERE (userID1 = ? OR userID2 = ?) AND friendshipStatus = '22';
             `;
-        const friendsResult = executeQuery(getFriendsQuery, [userID, userID]);
+            const friendsResult = await executeQuery(getFriendsQuery, [userID, userID]);
 
-        // Vérifiez si l'utilisateur a des amis
-        if (friendsResult.length === 0) {
-            const response = {
-                error: true,
-                error_message: 'User has no friends',
-                error_code: 3
-            };
-            return res.status(400).json(response);
-        }
+            if (friendsResult.length === 0) {
+                const response = {
+                    error: true,
+                    error_message: 'User has no friends',
+                    error_code: 3
+                };
+                return res.status(400).json(response);
+            }
 
-        // Extraire les IDs des amis (-:
-        const friendIDs = friendsResult.map(friendship => {
-            return friendship.userID1 === userID ? friendship.userID2 : friendship.userID1;
-        });
+            // Extraire les IDs des amis
+            const friendIDs = friendsResult.map(friendship => {
+                return friendship.userID1 === userID ? friendship.userID2 : friendship.userID1;
+            });
 
-        friendIDs.push(userID);
+            friendIDs.push(userID);
 
-        // On affiche et dans l'ordre
-        const getLeaderboard = `
+            // Récupérer les détails des amis ordonnés par score
+            const getLeaderboardQuery = `
                 SELECT *
                 FROM users
                 WHERE userID IN (?)
-                ORDER BY score DESC ;`;
-        const leaderboardResult = executeQuery(getLeaderboard, [friendIDs]);
+                ORDER BY score DESC;
+            `;
+            const leaderboardResult = await executeQuery(getLeaderboardQuery, [friendIDs]);
 
-        // Gestion des erreurs
-        if (leaderboardResult.length > 0) {
-            let response = {};
-            for (let each of leaderboardResult) {
-                const authUser = await admin.auth().getUser(each.userID);
-                response[authUser.displayName] = leaderboardResult[each];
-                response[each.userID] = each;
-            }
+            // Construction de la réponse avec les informations demandées
+            const response = await Promise.all(leaderboardResult.map(async (user) => {
+            const userData = await admin.auth().getUser(user.userID);
+                return {
+                    id: userData.uid,
+                    name: userData.displayName,
+                    photoURL: userData.photoURL,
+                    score: user.score
+                };
+            }));
 
             return res.status(200).json(response);
-        } else {
+        } catch (error) {
+            console.error('Error fetching friends leaderboard:', error);
             const response = {
                 error: true,
                 error_message: 'Internal Server Error',
@@ -113,7 +124,7 @@ router.route('/friends')
             };
             return res.status(500).json(response);
         }
-    }
-);
+    });
+
 
 module.exports = router;

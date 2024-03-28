@@ -284,12 +284,8 @@ router.route('/activities')
             }
             return res.status(200).json(response)
         } else {
-            const response = {
-                error : true,
-                error_message : 'Invalid activity ID',
-                error_code : 12
-        }
-        return res.status(400).json(response);
+            const response = []
+            return res.status(200).json(response);
         }
     });
 

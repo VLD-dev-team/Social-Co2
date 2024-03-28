@@ -226,27 +226,29 @@ CREATE TABLE comments(
 ### Plan des routes
 
 - '*' (get) 404
-- '/' (get) Application React
 - '/api' (get)
-    - '/websocket' (socket.io)
-        - score
-        - messages
-        - notifications
-        - conversations
-    - '/user' (get)
-        - '/activities' (get)
-        - '/friends' (get)
-            - '/search' (get)
-            - '/status' (post)
-        - '/notifications' (get)
-        - '/social' (get)
-            - '/feed' (get)
-            - '/conversations' (get) & (post)
-                - '/messages' (get)
-    - '/activity' (get) & (post) & (put) & (delete)
+  - '/activity' (get & post & put & delete)
+    - '/favorite' (post & delete)
+  - '/activities' (get)
+    - '/favorite' (get)
+  - '/user' (get & post & put & delete)
+    - '/activities' (get)
+    - '/notifications' (get)
+  - '/leaderboard'
+    - '/friends' (get)
+    - '/world' (get)
+  - '/social'
+    - '/feed' (get)
     - '/like' (post)
-    - '/comments' (post)
-    - '/initialisation' (post)
+    - '/comments' (get & post)
+    - '/posts' (post)
+  - '/friends' (get & post)
+    - '/search' (get)
+  - '/rapport' (get)
+  - '/conversations' (get)
+  - '/messages (get)
+  - '/websocket' (socket.io)
+
 
 ### L'authentification
 
@@ -370,12 +372,12 @@ Pour traiter les erreurs, nous avons identifiés chacunes des erreurs par un cod
 
 Pour utiliser le socket socket.io, nous avons creer un fichier `websocket.js` dans le dossier `apiroutes` qui va s'occuper de gérer les messages et les notifications.
 
+
 ```js
+// Fichier websocket.js
+
 const express = require('express');
 const initializeSocket = require('../utils/socketManager.js');
-const { verifyAuthToken } = require('../utils/requireAuth.js');
-const notificationHandler = require('../utils/notificationHandler.js');
-const { sendMessage } = require('../utils/messageHandler.js');
 const { createServer } = require("http");
 
 const router = express.Router();
@@ -389,44 +391,77 @@ router.use('/', (req, res, next) => {
     next();
 });
 
-io.on('connection', (socket) => {
-    // Gestion de l'événement 'sendMessage'
-    socket.on('sendMessage', async (data) => {
-        try {
-            // Vérification de l'authentification de l'utilisateur
-            const userID = await verifyAuthToken(data.token);
-
-            // Appel de la fonction sendMessage avec les données appropriées
-            const result = await sendMessage(userID, data.receiver, data.message);
-            
-            // Émission d'événements au client une fois le message traité
-            io.to(result.convID).emit('updateConv', {
-                convID: result.convID,
-                lastMessage: result.lastMessage,
-                unreadCount: result.unreadCount
-            });
-            io.to(result.convID).emit('newMessage', {
-                convID: result.convID,
-                lastMessage: result.lastMessage,
-                unreadCount: result.unreadCount
-            });
-
-            console.log(result);  // Vous pouvez supprimer cette ligne si vous n'avez pas besoin de l'afficher côté serveur
-        } catch (error) {
-            console.error('Error sending message:', error);
-            // Gérer les erreurs ici et émettre un événement d'erreur au client si nécessaire
-            socket.emit('sendMessageError', { error: 'Failed to send message' });
-        }
-    });
-});
-
-// On surveille les modifications de la table notifications
-//notificationHandler.watchNotifications(io);
 
 module.exports = router;
 ```
 
-C'est dans ce fichier qu'on initialise le socket, qu'on creer le serveur pour communiqué en instantané et qu'on traite la commande `socket.emit('sendMessage')`. Cela nous permet d'écouter le côté client et dès qu'un message sera envoyé par l'intermédiaire de cette commande alors il sera immédiatement traité, et la conversation sera mise à jour en temps réel. Et c'est dans le fichier `messageHandler.js` que l'on envoie le message : 
+```js
+// Fichier socketManager.js
+
+const socketIo = require('socket.io');
+const { verifyAuthToken } = require('./requireAuth.js');
+const { sendMessage } = require('./messageHandler.js');
+
+// Fonction pour initialiser Socket.io avec le serveur Express
+const initializeSocket = (server) => {
+    const io = socketIo(server);
+
+    // Gestion des connexions
+    io.on('connection', (socket) => {
+        console.log('User connected:', socket.id);
+
+        // Gestion des déconnexions
+        socket.on('disconnect', () => {
+            console.log('User disconnected:', socket.id);
+        });
+
+        socket.on('sendMessage', async (data) => {
+            try {
+                // Vérification de l'authentification de l'utilisateur
+                const userID = await verifyAuthToken(data.token);
+    
+                // Appel de la fonction sendMessage avec les données appropriées
+                const result = await sendMessage(userID, data.receiver, data.message);
+                
+                // Émission d'événements au client une fois le message traité
+                io.to(result.convID).emit('updateConv', {
+                    convID: result.convID,
+                    lastMessage: result.lastMessage,
+                    unreadCount: result.unreadCount
+                });
+                io.to(result.convID).emit('newMessage', {
+                    convID: result.convID,
+                    lastMessage: result.lastMessage,
+                    unreadCount: result.unreadCount
+                });
+    
+                console.log(result);
+            } catch (error) {
+                console.error('Error sending message:', error);
+                // Gérer les erreurs ici et émettre un événement d'erreur au client si nécessaire
+                socket.emit('sendMessageError', { error: 'Failed to send message' });
+            }
+        });
+    });
+
+    // Middleware pour ajouter le socket à la demande Express
+    io.use((socket, next) => {
+        const userID = socket.handshake.auth.userID;
+        if (userID) {
+            socket.userID = userID;
+            return next();
+        }
+        return next(new Error('Authentication error'));
+    });
+
+    return io;
+};
+
+module.exports = initializeSocket;
+
+```
+
+C'est dans ce fichier qu'on initialise le socket, qu'on creer le serveur pour communiqué en instantané. Cela nous permet d'écouter le côté client et dès qu'un message sera envoyé par l'intermédiaire de cette commande alors il sera immédiatement traité, et la conversation sera mise à jour en temps réel. Et c'est dans le fichier `messageHandler.js` que l'on envoie le message : 
 
 ```js
 const { executeQuery } = require('./database.js');
@@ -539,51 +574,27 @@ module.exports = {
 };
 ```
 
-En traitant toutes les potentiels erreurs et vérifications, on s'assure du bon fonctionnement de notre système de messagerie. Et c'est dans `socketManager.js` que le socket est creer : 
+Nous avons utilisé le même procédé pour les notifications dans le fichier `notificationHandler.js` :
 
 ```js
-const socketIo = require('socket.io');
+const { executeQuery } = require('./database.js');
+const socketManager = require('../utils/socketManager.js');
 
-// Fonction pour initialiser Socket.io avec le serveur Express
-const initializeSocket = (server) => {
-    const io = socketIo(server);
+const handleNewNotification = async (io, notificationData) => {
+    const { userID, notificationContent } = notificationData;
 
-    // Gestion des connexions
-    io.on('connection', (socket) => {
-        console.log('User connected:', socket.id);
+    // On émet la notification à l'utilisateur concerné via Socket.io
+    io.to(userID).emit('newNotification', { notificationContent });
 
-        // Gestion des déconnexions
-        socket.on('disconnect', () => {
-            console.log('User disconnected:', socket.id);
-        });
-
-        // Écoute des événements liés aux notifications
-        socket.on('notification', (notificationData) => {
-            const { userID, notificationContent } = notificationData;
-            io.to(userID).emit('newNotification', { notificationContent });
-        });
-        // Écoute des événements liés aux messages
-        socket.on('message', (messageData) => {
-            const { convID, messageSenderID, messageTextContent } = messageData;
-            io.to(convID).emit('newMessage', { messageSenderID, messageTextContent });
-        });
-    });
-
-    // Middleware pour ajouter le socket à la demande Express
-    io.use((socket, next) => {
-        const userID = socket.handshake.auth.userID;
-        if (userID) {
-            socket.userID = userID;
-            return next();
-        }
-        return next(new Error('Authentication error'));
-    });
-
-    return io;
+    // Mettre à jour le statut de la notification dans la base de données
+    const updateNotificationQuery = `UPDATE notifications SET notificationStatus = 'send' WHERE userID = ? AND notificationContent = ? ;`;
+    await executeQuery(updateNotificationQuery, [userID, notificationContent]);
 };
 
-module.exports = initializeSocket;
-
+module.exports = {
+    handleNewNotification,
+    // watchNotifications
+};
 ```
 
 #### Pourquoi avoir utiliser ce procédé ?
@@ -592,11 +603,18 @@ Nous avons utilisé ce procédé afin de pouvoir avoir des interactions en temps
 
 ## Documentation de l'API
 
+Pour plus d'informations, voir le fichier `GestionAPI.drawio`
+
 ### Gestion des activités
 
 -- Utilisation de la route /activity --
 
-* GET :  Donne les informations d'une activité -- require activityId
-* POST : Creer une activité dans la table activité -- require activityId et userid
-* PUT : Met à jour une activité -- require activityId et userid
-* DELETE : Supprime une activité -- require activityId et userid
+* GET :  Donne les informations d'une activité
+* POST : Creer une activité dans la table activité
+* PUT : Met à jour une activité
+* DELETE : Supprime une activité
+
+-- Utilisation de la route /activity/favorite --
+
+* POST : Met en favori une activité
+* DELETE : Enlève une ectivité des favoris

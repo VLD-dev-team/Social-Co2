@@ -287,7 +287,7 @@ router.route('/')
     .delete(async (req, res) => {
         // Retrieve necessary info for deletion
         const userID = req.headers.userid;
-        const activityId = req.params.activityId;
+        const activityId = req.params.activityid;
 
         // Type verification
 

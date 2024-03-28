@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:social_co2/screens/dialogs/dialogChangeDisplayName.dart';
+import 'package:social_co2/screens/dialogs/dialogChangePassword.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 import 'package:social_co2/styles/MainScreenStyle.dart';
 import 'package:social_co2/utils/responsiveHandler.dart';
+
+import '../dialogs/dialogDeleteAccount.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -54,7 +58,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                 child: Row(
                   children: [
                     userphoto,
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 20),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -64,7 +68,19 @@ class _SettingsScreen extends State<SettingsScreen> {
                         ),
                         const SizedBox(height: 10),
                         OutlinedButton.icon(
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) =>
+                                          const dialogChangeDisplayName())
+                                  .then((value) {
+                                setState(() {
+                                  displayName = FirebaseAuth
+                                      .instance.currentUser!.displayName;
+                                });
+                              });
+                            },
                             icon: const Icon(Icons.edit),
                             label: const Text("Changer de nom public")),
                       ],
@@ -98,6 +114,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                                 TextButton(
                                   onPressed: () {
                                     FirebaseAuth.instance.signOut();
+                                    Navigator.pop(context);
                                   },
                                   child: const Text("Déconnexion"),
                                 ),
@@ -113,12 +130,22 @@ class _SettingsScreen extends State<SettingsScreen> {
                   ListTile(
                     leading: const Icon(Icons.password),
                     title: const Text("Changer de mot de passe"),
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (context) => const dialogChangePassword());
+                    },
                   ),
                   ListTile(
                     leading: const Icon(Icons.delete),
                     title: const Text("Supprimer mon compte"),
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (context) => const dialogDeleteAccount());
+                    },
                   ),
                   ListTile(
                     leading: const Icon(Icons.help),

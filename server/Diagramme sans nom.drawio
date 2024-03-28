@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-03-27T15:21:53.181Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="f1vba3r2SU2e5yhYm0qg" version="24.1.0" type="github">
+<mxfile host="app.diagrams.net" modified="2024-03-28T08:30:55.741Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="_vpCRYq7OmfhoBe6A6c9" version="24.2.0" type="github">
   <diagram name="Page-1" id="jhAAQiRTMC3WOToZxg92">
     <mxGraphModel dx="2741" dy="3328" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -390,7 +390,7 @@
         <mxCell id="wuqC6jIEuIp08qezgk6B-140" value="33 : Vous vous êtes bloqué mutuellement" style="html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="670" y="1490" width="141" height="45" as="geometry" />
         </mxCell>
-        <mxCell id="wuqC6jIEuIp08qezgk6B-142" value="&lt;div align=&quot;left&quot;&gt;POST : actionType : &lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;-add : pour envoyer une demande d&#39;ami&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- block : pour bloquer&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- accept : pour accepter la demande d&#39;ami si il y en a une &lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- refuse&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- deblock&lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="html=1;whiteSpace=wrap;align=left;" parent="1" vertex="1">
+        <mxCell id="wuqC6jIEuIp08qezgk6B-142" value="&lt;div align=&quot;left&quot;&gt;POST : actionType : &lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;-add : pour envoyer une demande d&#39;ami&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- block : pour bloquer&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- accept : pour accepter la demande d&#39;ami si il y en a une &lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- refuse&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;- deblock&lt;br&gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;/div&gt;" style="html=1;whiteSpace=wrap;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="269" y="1180" width="141" height="150" as="geometry" />
         </mxCell>
         <mxCell id="wuqC6jIEuIp08qezgk6B-147" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;dashPattern=8 8;" parent="1" source="wuqC6jIEuIp08qezgk6B-144" target="wuqC6jIEuIp08qezgk6B-145" edge="1">

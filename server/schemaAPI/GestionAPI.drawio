@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-03-28T13:50:25.499Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="IjkkCoqlXSuls8MM5z_H" version="24.2.0" type="github">
+<mxfile host="app.diagrams.net" modified="2024-03-29T12:27:36.272Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0" etag="edyj_5Q9mJ0lcj-nOrfP" version="24.2.1" type="github">
   <diagram name="Page-1" id="jhAAQiRTMC3WOToZxg92">
-    <mxGraphModel dx="1541" dy="3328" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2501" dy="3097" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -810,6 +810,9 @@
         </mxCell>
         <mxCell id="OTO5J8Rj9auJWufEF8lf-12" value="commentCreatedAt CURRENT_TIMESTAMP" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="OTO5J8Rj9auJWufEF8lf-8" vertex="1">
           <mxGeometry y="120" width="250.5" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hBJk5oqWR7Cfd2Q2wVhh-1" value="TODO mettre des données par défauts" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-100" y="-955" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

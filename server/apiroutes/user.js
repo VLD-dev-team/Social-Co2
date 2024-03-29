@@ -284,7 +284,10 @@ router.route('/activities')
             }
             return res.status(200).json(response)
         } else {
-            const response = []
+            const response = {
+                activities : [],
+                phrase : "",
+            }
             return res.status(200).json(response);
         }
     });

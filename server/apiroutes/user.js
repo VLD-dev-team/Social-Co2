@@ -51,6 +51,7 @@ router.route('/')
                 }
             return res.status(200).json(response);
         } else {
+            // TODO: initialiser les données par défaut
             // Il y a du avoir une erreur côté serveur
             const response = {
                 error : true,

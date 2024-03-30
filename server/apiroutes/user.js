@@ -52,13 +52,33 @@ router.route('/')
             return res.status(200).json(response);
         } else {
             // TODO: initialiser les données par défaut
-            // Il y a du avoir une erreur côté serveur
-            const response = {
-                error : true,
-                error_message : 'Internal Server Error',
-                error_code : 2
-            }
+
+            // On calcul le score de base avec les paramètres de l'utilisateurs
+            const newscore = activityCalculator.passiveScore(activityCalculator.multiplier(false, 1, 50, false, 1, "gas"),5000)
+            const multiplier = activityCalculator.multiplier(false, 1, 50, false, 1, "gas")
+            // Maintenant, q'on a vérifié le typage, on peut creer notre utilisateur avec les différents paramètres associés
+
+            const sqlQuery = `INSERT INTO users (userID, score, recycl, nb_inhabitants, area, garden, multiplier, car, hybrid, heating) VALUES ( ? , ? , ? , ? , ? , ? , ?, ?, ?, ?) ;`;
+            const sqlResult = await executeQuery(sqlQuery, [userID, parseInt(newscore) , false, 1, 50, false, multiplier, 2, false, "gas"]);
+
+            if (sqlResult.affectedRows > 0){
+                // On active la fonction d'envoie d'email toutes les 24 heures
+                sendNotificationDaily(userID)
+                // Création d'un objet avec les données d'authentification et le score
+                const response = {
+                    userId : userID,
+                    score: 5000,
+                    message : 'User is defined',
+                }
+                return res.status(200).json(response);
+            } else {
+                const response = {
+                    error: true,
+                    error_message: 'Internal Server Error',
+                    error_code: 2
+                };
             return res.status(500).json(response);
+            }
         }
     })
     .put(async (req, res) => {

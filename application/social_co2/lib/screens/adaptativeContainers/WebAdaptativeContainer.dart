@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Importation des écrans
-import 'package:social_co2/screens/homeScreen/ActivitiesScreen.dart';
-import 'package:social_co2/screens/homeScreen/HomeScreen.dart';
-import 'package:social_co2/screens/homeScreen/LeaderBoardScreen.dart';
-import 'package:social_co2/screens/homeScreen/SettingsScreen.dart';
+import 'package:social_co2/screens/mainScreens/ActivitiesScreen.dart';
+import 'package:social_co2/screens/mainScreens/HomeScreen.dart';
+import 'package:social_co2/screens/mainScreens/LeaderBoardScreen.dart';
+import 'package:social_co2/screens/mainScreens/MessagesScreen.dart';
+import 'package:social_co2/screens/mainScreens/SearchScreen.dart';
+import 'package:social_co2/screens/mainScreens/SettingsScreen.dart';
 
 // Importation des styles et des providers pour le menu/drawer
 import 'package:social_co2/styles/webDrawersStyle.dart';
@@ -131,12 +133,16 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
               // On affiche l'écran correspondant
               case 1:
                 return const HomeScreen(); // ACCUEIL
+              case 2:
+                return const SearchScreen(); // RECHERCHE
               case 3:
-                return const ActivityScreen();
+                return const ActivityScreen(); // ACTIVITÉS
               case 4:
-                return const LeaderBoardScreeen();
+                return const LeaderBoardScreeen(); // CLASSEMENT
+              case 5:
+                return const MessagesScreen(); // MESSAGES
               case 6:
-                return const SettingsScreen();
+                return const SettingsScreen(); // PARAMÈTRES
               default:
                 return const HomeScreen(); // ACCUEIL
             }

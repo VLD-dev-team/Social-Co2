@@ -16,8 +16,11 @@ class requestService {
       headers.addAll(additionnalHeaders);
 
       final response = await http.get(url, headers: headers);
+      print(response.body);
       data = json.decode(response.body);
+      print(data);
     } catch (err) {
+      print(data);
       data = {"error": true, "error_message": err.toString()};
     }
     return data;

@@ -9,7 +9,6 @@ final List<List> drawerEntries = <List>[
   ["Classement", Icons.leaderboard_outlined],
   ["Messages", Icons.message_outlined],
   ["Paramètres", Icons.settings_outlined],
-  ["Aide", Icons.help_outline],
 ];
 
 // Fond dégradé du menu

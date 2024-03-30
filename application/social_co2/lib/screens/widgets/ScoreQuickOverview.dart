@@ -68,11 +68,11 @@ class SQOLeftColumn extends StatelessWidget {
         children: [
           Container(
             decoration: secondaryCardInnerShadow,
-            child: (!Provider.of<UserActivitiesProvider>(context).isLoading)
+            child: (!Provider.of<UserActivitiesProvider>(context, listen: true).isLoading)
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children:
-                        (Provider.of<UserActivitiesProvider>(context).error ==
+                        (Provider.of<UserActivitiesProvider>(context, listen: true).error ==
                                 '')
                             ? const [
                                 Card(
@@ -153,7 +153,7 @@ class SQOLeftColumn extends StatelessWidget {
                                         "Lorem IPSUjejzfzefnjzfnjdfkjdfnkjdfgnkjdfgnkdjfgnkjdfgkdjfngkjdfngkjdfngkjdfngkdfjngkdfjgnkdfjgnkdjfgnkdfjgkdfjgkdjfgnkdfsjgksdjfgnkdfjgndfjkgndkjfs"),
                                   ),
                                 ),
-                              ]
+                              ] 
                             : [
                                 Center(
                                   child: Padding(
@@ -265,14 +265,14 @@ class SQORightColumn extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 5, horizontal: 10),
                                 child:
-                                    (!Provider.of<UserSCO2DataProvider>(context)
+                                    (!Provider.of<UserSCO2DataProvider>(context, listen: true)
                                                 .isLoading &&
                                             Provider.of<UserSCO2DataProvider>(
-                                                        context)
+                                                        context, listen: true)
                                                     .error !=
                                                 "")
                                         ? Text(
-                                            '- ${Provider.of<UserSCO2DataProvider>(context).CurrentUserScore.toString()} SCO -',
+                                            '- ${Provider.of<UserSCO2DataProvider>(context, listen: true).CurrentUserScore.toString()} SCO -',
                                             style:
                                                 const TextStyle(fontSize: 25),
                                           )
@@ -292,7 +292,7 @@ class SQORightColumn extends StatelessWidget {
                       decoration: tertiaryCard,
                       child: Padding(
                         padding: const EdgeInsets.all(15),
-                        child: (Provider.of<UserSCO2DataProvider>(context)
+                        child: (Provider.of<UserSCO2DataProvider>(context, listen: true)
                                     .error ==
                                 "")
                             ? Row(

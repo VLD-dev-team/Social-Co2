@@ -34,10 +34,9 @@ class UserActivitiesProvider extends ChangeNotifier {
 
     // On effectue la requette
     final data = await requestService().get(endpoint, headers);
-    print(data);
 
     // On vérifie l'absence d'erreurs
-    if (data["error"]) {
+    if (!(data["error"] == null) && data["error"]) {
       try {
         error = 'error: ${data["error_message"].toString()}';
       } catch (e) {
@@ -56,6 +55,7 @@ class UserActivitiesProvider extends ChangeNotifier {
     // Liste d'activités
     List<SCO2activity> parsingList = [];
     for (var i = 0; i < data['activities']; i++) {
+      print(data[i]);
       parsingList.add(SCO2activity.fromJSON(data[i]));
     }
     userActivitiesPerDays.update(parsedDate, (value) => parsingList);

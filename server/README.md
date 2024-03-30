@@ -132,7 +132,7 @@ CREATE TABLE activities (
   PRIMARY KEY (activityID)
 );
 
-CREATE TABLE reccurentActivities (
+CREATE TABLE recurrentActivities (
   activityID INT AUTO_INCREMENT,
   userID varchar(255),
   activityType VARCHAR(255),
@@ -181,7 +181,7 @@ CREATE TABLE conversations (
   convCreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   convLastMessage INT,
   PRIMARY KEY (convID)
-)
+);
 
 CREATE TABLE messages (
   messageID INT AUTO_INCREMENT,
@@ -211,7 +211,7 @@ CREATE TABLE posts (
 CREATE TABLE likes(
   postID int,
   userID varchar(255)
-)
+);
 
 CREATE TABLE comments(
   userID varchar(255),

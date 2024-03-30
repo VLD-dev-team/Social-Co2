@@ -4,8 +4,8 @@ const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
 const admin = require('firebase-admin');
 
-router.route('/*')
-    .all((req, res, next) => verifyAuthToken(req, res, next));
+// router.route('/*')
+//     .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/world')
     .get(async (req, res) => {
@@ -32,7 +32,7 @@ router.route('/world')
             const leaderboardResult = await executeQuery(getLeaderboardQuery);
 
             // Construction de la réponse avec les informations demandées
-            const response = await Promise.all(leaderboardResult.map(async (user) => {
+            const leaderboard = await Promise.all(leaderboardResult.map(async (user) => {
                 const userData = await admin.auth().getUser(user.userID);
                 return {
                     id: userData.uid,
@@ -41,6 +41,12 @@ router.route('/world')
                     score: user.score
                 };
             }));
+
+            const response = {
+                leaderboard : leaderboard,
+                status : 200,
+                message: "leaderboard load succesfull"
+            }
 
             return res.status(200).json(response);
         } catch (error) {
@@ -104,7 +110,7 @@ router.route('/friends')
             const leaderboardResult = await executeQuery(getLeaderboardQuery, [friendIDs]);
 
             // Construction de la réponse avec les informations demandées
-            const response = await Promise.all(leaderboardResult.map(async (user) => {
+            const leaderboard = await Promise.all(leaderboardResult.map(async (user) => {
             const userData = await admin.auth().getUser(user.userID);
                 return {
                     id: userData.uid,
@@ -113,6 +119,12 @@ router.route('/friends')
                     score: user.score
                 };
             }));
+
+            const response = {
+                leaderboard : leaderboard,
+                status : 200,
+                message: "leaderboard load succesfull"
+            }
 
             return res.status(200).json(response);
         } catch (error) {

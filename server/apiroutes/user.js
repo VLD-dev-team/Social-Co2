@@ -37,6 +37,7 @@ router.route('/')
                     userId : userID,
                     uid: authUser.uid,
                     email: authUser.email,
+                    name: authUser.displayName,
                     dateCreation: authUser.metadata.creationTime,
                     derniereConnexion: authUser.metadata.lastSignInTime,
                     score: sqlResult[0].score,
@@ -59,7 +60,7 @@ router.route('/')
             // Maintenant, q'on a vérifié le typage, on peut creer notre utilisateur avec les différents paramètres associés
 
             const sqlQuery = `INSERT INTO users (userID, score, recycl, nb_inhabitants, area, garden, multiplier, car, hybrid, heating) VALUES ( ? , ? , ? , ? , ? , ? , ?, ?, ?, ?) ;`;
-            const sqlResult = await executeQuery(sqlQuery, [userID, parseInt(newscore) , false, 1, 50, false, multiplier, 2, false, "gas"]);
+            const sqlResult = await executeQuery(sqlQuery, [userID, parseInt(newscore) , false, 1, 50, false, multiplier, 2, 0, "gas"]);
 
             if (sqlResult.affectedRows > 0){
                 // On active la fonction d'envoie d'email toutes les 24 heures
@@ -67,7 +68,20 @@ router.route('/')
                 // Création d'un objet avec les données d'authentification et le score
                 const response = {
                     userId : userID,
-                    score: 5000,
+                    score: parseInt(newscore),
+                    uid: authUser.uid,
+                    email: authUser.email,
+                    name: authUser.displayName,
+                    dateCreation: authUser.metadata.creationTime,
+                    derniereConnexion: authUser.metadata.lastSignInTime,
+                    recycl : false,
+                    nb_inhabitants : 1,
+                    area : 50,
+                    garden : false,
+                    multiplier : multiplier,
+                    car : 2,
+                    hybrid : 0,
+                    heating : "gas",
                     message : 'User is defined',
                 }
                 return res.status(200).json(response);
@@ -263,7 +277,7 @@ router.route('/')
              // Création d'un objet avec les données d'authentification et le score
             const response = {
                 userId : userID,
-                score: 5000,
+                score: parseInt(newscore),
                 message : 'User is defined',
             }
             return res.status(200).json(response);
@@ -344,7 +358,7 @@ router.route('/notifications')
         } else {
             const response = {
                 error : true,
-                error_message : 'Internal Server Error',
+                error_message : 'No notifications',
                 error_code : 2
             }
             return res.status(500).json(response);

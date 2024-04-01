@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:social_co2/providers/IndexProvider.dart';
 import 'package:social_co2/providers/LeaderboardProvider.dart';
 import 'package:social_co2/providers/MakePostProvider.dart';
+import 'package:social_co2/providers/SearchProvider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/providers/UserSCO2DataProvider.dart';
 
@@ -113,8 +114,11 @@ class HomeScreen extends StatelessWidget {
             create: (_) =>
                 MakePostProvider()), // Provider qui permet de poster des données
         ListenableProvider<LeaderBoardProvider>(
-            create: (_) => 
+            create: (_) =>
                 LeaderBoardProvider()), //  Provider qui permet d'obtenir les leaderboards
+        ListenableProvider<SearchProvider>(
+            create: (_) =>
+                SearchProvider()), // Provider qui permet d'effectuer la recherche d'utilisateur
       ],
       builder: (context, child) {
         if (kIsWeb) {

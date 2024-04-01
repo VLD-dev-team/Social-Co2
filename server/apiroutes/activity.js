@@ -5,9 +5,9 @@ const verifyAuthToken = require('../utils/requireAuth.js');
 const admin = require('firebase-admin');
 const activityCalculator = require('../utils/activityCalculator.js')
 
-router.route('/*')
-    .all((req, res, next) => verifyAuthToken(req, res, next));
-    // Connection verification
+// router.route('/*')
+//     .all((req, res, next) => verifyAuthToken(req, res, next));
+//     // Connection verification
 
 router.route('/')
     .get(async (req, res) => {
@@ -69,9 +69,11 @@ router.route('/')
         // Retrieve necessary data for activity creation
 
         const userID = req.headers.userid;
-        const activityType = req.body.activityType; // See below
+        const activityType = req.body.activityType;
         const activityName = req.body.activityName;
         const activityTimestamp = req.body.activityTimestamp;
+
+        console.log(activityType)
         
         // Initialize variable to 0
         let activityCO2Impact = 0;

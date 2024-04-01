@@ -34,10 +34,19 @@ router.route('/world')
             // Construction de la réponse avec les informations demandées
             const leaderboard = await Promise.all(leaderboardResult.map(async (user) => {
                 const userData = await admin.auth().getUser(user.userID);
+                let surname = userData.displayName;
+                let photoURL = userData.photoURL;
+                if (typeof userData.displayName !== "string"){
+                    surname = "undefined"
+                }
+                if (typeof userData.photoURL !== "string"){
+                    photoURL = "undefined"
+                }
+
                 return {
                     id: userData.uid,
-                    name: userData.displayName,
-                    photoURL: userData.photoURL,
+                    name: surname,
+                    photoURL: photoURL,
                     score: user.score
                 };
             }));
@@ -112,10 +121,18 @@ router.route('/friends')
             // Construction de la réponse avec les informations demandées
             const leaderboard = await Promise.all(leaderboardResult.map(async (user) => {
             const userData = await admin.auth().getUser(user.userID);
+            let surname = userData.displayName;
+                let photoURL = userData.photoURL;
+                if (typeof userData.displayName !== "string"){
+                    surname = "undefined"
+                }
+                if (typeof userData.photoURL !== "string"){
+                    photoURL = "undefined"
+                }
                 return {
                     id: userData.uid,
-                    name: userData.displayName,
-                    photoURL: userData.photoURL,
+                    name: surname,
+                    photoURL: photoURL,
                     score: user.score
                 };
             }));

@@ -32,12 +32,17 @@ router.route('/')
         const sqlResult = await executeQuery(sqlQuery, [userID]);
 
         if (sqlResult.length > 0) {
+            let surname = authUser.displayName
             // Création d'un objet avec les données d'authentification et le score
+            if (typeof authUser.displayName !== "string"){
+                surname = "undefined"
+            }
+
             const response = {
                     userId : userID,
                     uid: authUser.uid,
                     email: authUser.email,
-                    name: authUser.displayName,
+                    name: surname,
                     dateCreation: authUser.metadata.creationTime,
                     derniereConnexion: authUser.metadata.lastSignInTime,
                     score: sqlResult[0].score,
@@ -66,12 +71,18 @@ router.route('/')
                 // On active la fonction d'envoie d'email toutes les 24 heures
                 sendNotificationDaily(userID)
                 // Création d'un objet avec les données d'authentification et le score
+                let surname = authUser.displayName
+                // Création d'un objet avec les données d'authentification et le score
+                if (typeof authUser.displayName !== "string"){
+                    surname = "undefined"
+                }
+            
                 const response = {
                     userId : userID,
                     score: parseInt(newscore),
                     uid: authUser.uid,
                     email: authUser.email,
-                    name: authUser.displayName,
+                    name: surname,
                     dateCreation: authUser.metadata.creationTime,
                     derniereConnexion: authUser.metadata.lastSignInTime,
                     recycl : false,

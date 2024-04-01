@@ -15,6 +15,7 @@
     * Socket.io
     * Pourquoi avoir utiliser ce procédé ?
 * Documentation de l'API
+* Test avec postman
 
 
 
@@ -700,3 +701,6 @@ Pour plus d'informations, voir le fichier `GestionAPI.drawio`
 -- Utilisation de la route /messages --
 
 * GET : Charger les 40 derniers messages partir d'un index 
+
+## Test avec postman
+

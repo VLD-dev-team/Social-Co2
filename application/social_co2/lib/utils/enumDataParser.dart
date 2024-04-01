@@ -38,13 +38,13 @@ String getHeatingModeLabelFromEnum(HeatingModes mode) {
 
 /* Conversion taille de la voiture */
 
-CarSizes getCarSizeFromString(String data) {
+CarSizes getCarSizeFromInt(int data) {
   switch (data) {
-    case "small":
+    case 1:
       return CarSizes.small;
-    case "mid":
+    case 2:
       return CarSizes.mid;
-    case "big":
+    case 3:
       return CarSizes.big;
     default:
       return CarSizes.mid;

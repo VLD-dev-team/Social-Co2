@@ -51,14 +51,28 @@ class UserActivitiesProvider extends ChangeNotifier {
 
     // Si pas d'erreur on enregistre les données temporairement
     // Phrase de récap
-    userRecapPhrasePerDays.update(parsedDate, (value) => data['phrase']);
+    String? phrase = data['phrase'];
+    if (phrase == null || phrase == "") {
+      phrase = "Pas d'activité pour ce jour.";
+    }
+    userRecapPhrasePerDays.update(
+      parsedDate,
+      (value) => phrase!,
+      ifAbsent: () => phrase!,
+    );
     // Liste d'activités
     List<SCO2activity> parsingList = [];
-    for (var i = 0; i < data['activities']; i++) {
+    for (var i = 0; i < data['activities'].length; i++) {
       print(data[i]);
       parsingList.add(SCO2activity.fromJSON(data[i]));
     }
-    userActivitiesPerDays.update(parsedDate, (value) => parsingList);
+    userActivitiesPerDays.update(
+      parsedDate,
+      (value) => parsingList,
+      ifAbsent: () => parsingList,
+    );
+
+    print(userRecapPhrasePerDays.keys.toString());
 
     // On renvoie les données aux widgets et à l'appel de la fonction
     isLoading = false;
@@ -106,7 +120,7 @@ class UserActivitiesProvider extends ChangeNotifier {
   Future<SCO2activity> postBuildActivity(String buildType) async {
     final String time = '${DateTime.now().hour}:${DateTime.now().minute}';
     final SCO2activity activity = SCO2activity(
-      activityType: 'build',
+      activityType: 'renovation',
       activityName: 'Bricolage de $time',
       activityTimestamp: DateTime.now(),
       activityBuild: buildType,
@@ -120,7 +134,7 @@ class UserActivitiesProvider extends ChangeNotifier {
       String vehicule, double distance) async {
     final String time = '${DateTime.now().hour}:${DateTime.now().minute}';
     final SCO2activity activity = SCO2activity(
-      activityType: 'route',
+      activityType: 'trip',
       activityName: 'Trajet de $time',
       activityTimestamp: DateTime.now(),
       activityVehicule: vehicule,

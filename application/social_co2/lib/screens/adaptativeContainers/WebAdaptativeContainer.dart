@@ -29,9 +29,17 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
   void initState() {
     super.initState();
 
+    // controller de la date courante
+    DateTime today =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    // controller de la date d'hier
+    DateTime yesterday = today.subtract(const Duration(days: 1));
+
     // Obtention des informations necessaire au lancement de l'écran d'accueil depuis le serveur
     Provider.of<UserActivitiesProvider>(context, listen: false)
-        .getCurrentUserActivitiesByDate(DateTime.now());
+        .getCurrentUserActivitiesByDate(today);
+    Provider.of<UserActivitiesProvider>(context, listen: false)
+        .getCurrentUserActivitiesByDate(yesterday);
     Provider.of<UserSCO2DataProvider>(context, listen: false).getUserSCO2Data();
   }
 

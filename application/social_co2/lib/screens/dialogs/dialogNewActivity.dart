@@ -13,12 +13,6 @@ class newActivityDialog extends StatefulWidget {
 }
 
 class _newActivityDialog extends State<newActivityDialog> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   // Variable du menu actuellement affiché
   String _currentMenu = "main";
 
@@ -110,7 +104,7 @@ class _newActivityDialog extends State<newActivityDialog> {
                           ), // On affiche le menu selectionné ou main si le dialog vient d'apparaitre
               ),
               actions: [
-                if (_currentMenu == "route" && !value.isPosting)
+                if (_currentMenu == "trip" && !value.isPosting)
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 10, bottom: 20, left: 20, right: 20),
@@ -138,9 +132,9 @@ class _newActivityDialog extends State<newActivityDialog> {
         return mealList();
       case "purchase":
         return purchaseList();
-      case "build":
+      case "renovation":
         return buildList();
-      case "route":
+      case "trip":
         return routeMenu();
       default:
         return mainList();
@@ -155,7 +149,7 @@ class _newActivityDialog extends State<newActivityDialog> {
         var activity = activeActivityTypes[index];
         return ListTile(
           onTap: () {
-            if (activity['type'] == 'cleanInbox') {
+            if (activity['type'] == 'mail') {
               Provider.of<UserActivitiesProvider>(context, listen: false)
                   .postEmailActivity();
             } else {

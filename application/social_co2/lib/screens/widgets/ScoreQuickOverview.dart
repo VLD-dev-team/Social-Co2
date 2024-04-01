@@ -62,155 +62,161 @@ class SQOLeftColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TableCell(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            decoration: secondaryCardInnerShadow,
-            child: (!Provider.of<UserActivitiesProvider>(context, listen: true).isLoading)
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                        (Provider.of<UserActivitiesProvider>(context, listen: true).error ==
-                                '')
-                            ? const [
-                                Card(
-                                    margin: EdgeInsets.all(10.0),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 10),
-                                      child: Text(
-                                        "Aujourdhui",
-                                        style: TextStyle(fontSize: 25),
-                                      ),
-                                    )),
-                                Card(
-                                  margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                                  color: primaryCardColor,
+    // controller de la date courante
+    DateTime today =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    // controller de la date d'hier
+    DateTime yesterday = today.subtract(const Duration(days: 1));
+
+    return Consumer<UserActivitiesProvider>(
+      builder: (context, value, child) => TableCell(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              decoration: secondaryCardInnerShadow,
+              child: (!value.isLoading)
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: (value.error == '')
+                          ? [
+                              const Card(
+                                  margin: EdgeInsets.all(10.0),
                                   child: Padding(
-                                    padding: EdgeInsets.all(10.0),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
                                     child: Text(
-                                        "Lorem IPSUjejzfzefnjzfnjdfkjdfnkjdfgnkjdfgnkdjfgnkjdfgkdjfngkjdfngkjdfngkjdfngkdfjngkdfjgnkdfjgnkdjfgnkdfjgkdfjgkdjfgnkdfsjgksdjfgnkdfjgndfjkgndkjfs"),
+                                      "Aujourdhui",
+                                      style: TextStyle(fontSize: 25),
+                                    ),
+                                  )),
+                              Card(
+                                margin:
+                                    const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                color: primaryCardColor,
+                                child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(
+                                        '${value.userRecapPhrasePerDays[today]}')),
+                              ),
+                            ]
+                          : [
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Text(
+                                    'Une erreur est survenue\n${value.error}',
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
-                              ]
-                            : [
-                                Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20),
-                                    child: Text(
-                                      'Une erreur est survenue\n${Provider.of<UserActivitiesProvider>(context).error}',
-                                      style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                )
-                              ])
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                      )
-                    ],
-                  ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Container(
-            decoration: secondaryCardInnerShadow,
-            child: (!Provider.of<UserActivitiesProvider>(context).isLoading)
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                        (Provider.of<UserActivitiesProvider>(context).error ==
-                                '')
-                            ? const [
-                                Card(
-                                    margin: EdgeInsets.all(10.0),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 10),
-                                      child: Text(
-                                        "Hier",
-                                        style: TextStyle(fontSize: 25),
-                                      ),
-                                    )),
-                                Card(
-                                  margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                                  color: primaryCardColor,
-                                  child: Padding(
-                                    padding: EdgeInsets.all(10.0),
-                                    child: Text(
-                                        "Lorem IPSUjejzfzefnjzfnjdfkjdfnkjdfgnkjdfgnkdjfgnkjdfgkdjfngkjdfngkjdfngkjdfngkdfjngkdfjgnkdfjgnkdjfgnkdfjgkdfjgkdjfgnkdfsjgksdjfgnkdfjgndfjkgndkjfs"),
-                                  ),
-                                ),
-                              ] 
-                            : [
-                                Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20),
-                                    child: Text(
-                                      'Une erreur est survenue\n${Provider.of<UserActivitiesProvider>(context).error}',
-                                      style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                )
-                              ])
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.all(20),
-                        child: CircularProgressIndicator(
-                          color: Colors.grey,
-                        ),
-                      )
-                    ],
-                  ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Center(
-              child: FilledButton.icon(
-                  style: const ButtonStyle(
-                      padding: MaterialStatePropertyAll(
-                          EdgeInsets.symmetric(vertical: 20, horizontal: 15)),
-                      backgroundColor: MaterialStatePropertyAll(Colors.white)),
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => const newActivityDialog());
-                  },
-                  icon: const Icon(
-                    Icons.add,
-                    color: Colors.black,
-                  ),
-                  label: const Text(
-                    "Ajouter une activité",
-                    style: TextStyle(color: Colors.black),
-                  )),
+                              )
+                            ])
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.all(20),
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      ],
+                    ),
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-        ],
+            const SizedBox(
+              height: 15,
+            ),
+            Container(
+              decoration: secondaryCardInnerShadow,
+              child: (!value.isLoading)
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: (value.error == '')
+                          ? [
+                              const Card(
+                                  margin: EdgeInsets.all(10.0),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    child: Text(
+                                      "Hier",
+                                      style: TextStyle(fontSize: 25),
+                                    ),
+                                  )),
+                              Card(
+                                margin:
+                                    const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                                color: primaryCardColor,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                      '${value.userRecapPhrasePerDays[yesterday]}'),
+                                ),
+                              ),
+                            ]
+                          : [
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Text(
+                                    'Une erreur est survenue\n${value.error}',
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              )
+                            ])
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.all(20),
+                          child: CircularProgressIndicator(
+                            color: Colors.grey,
+                          ),
+                        )
+                      ],
+                    ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Center(
+                child: FilledButton.icon(
+                    style: const ButtonStyle(
+                        padding: MaterialStatePropertyAll(
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 15)),
+                        backgroundColor:
+                            MaterialStatePropertyAll(Colors.white)),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => const newActivityDialog());
+                    },
+                    icon: const Icon(
+                      Icons.add,
+                      color: Colors.black,
+                    ),
+                    label: const Text(
+                      "Ajouter une activité",
+                      style: TextStyle(color: Colors.black),
+                    )),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -264,22 +270,23 @@ class SQORightColumn extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 5, horizontal: 10),
-                                child:
-                                    (!Provider.of<UserSCO2DataProvider>(context, listen: true)
-                                                .isLoading &&
-                                            Provider.of<UserSCO2DataProvider>(
-                                                        context, listen: true)
-                                                    .error !=
-                                                "")
-                                        ? Text(
-                                            '- ${Provider.of<UserSCO2DataProvider>(context, listen: true).CurrentUserScore.toString()} SCO -',
-                                            style:
-                                                const TextStyle(fontSize: 25),
-                                          )
-                                        : const Text(
-                                            '- **** SCO -',
-                                            style: TextStyle(fontSize: 25),
-                                          ),
+                                child: (!Provider.of<UserSCO2DataProvider>(
+                                                context,
+                                                listen: true)
+                                            .isLoading &&
+                                        Provider.of<UserSCO2DataProvider>(
+                                                    context,
+                                                    listen: true)
+                                                .error !=
+                                            "")
+                                    ? Text(
+                                        '- ${Provider.of<UserSCO2DataProvider>(context, listen: true).CurrentUserScore.toString()} SCO -',
+                                        style: const TextStyle(fontSize: 25),
+                                      )
+                                    : const Text(
+                                        '- **** SCO -',
+                                        style: TextStyle(fontSize: 25),
+                                      ),
                               ))
                         ],
                       ),
@@ -292,7 +299,8 @@ class SQORightColumn extends StatelessWidget {
                       decoration: tertiaryCard,
                       child: Padding(
                         padding: const EdgeInsets.all(15),
-                        child: (Provider.of<UserSCO2DataProvider>(context, listen: true)
+                        child: (Provider.of<UserSCO2DataProvider>(context,
+                                        listen: true)
                                     .error ==
                                 "")
                             ? Row(

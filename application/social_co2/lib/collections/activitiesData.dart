@@ -14,19 +14,19 @@ List<Map<String, dynamic>> activeActivityTypes = [
     "next": true
   },
   {
-    "type": "build",
+    "type": "renovation",
     "label": "Bricolage",
     "icon": const Icon(Icons.build, color: Colors.black),
     "next": true
   },
   {
-    "type": "route",
+    "type": "trip",
     "label": "Trajet",
     "icon": const Icon(Icons.route, color: Colors.black),
     "next": true
   },
   {
-    "type": "cleanInbox",
+    "type": "mail",
     "label": "Vider sa boite email",
     "icon": const Icon(Icons.delete_forever, color: Colors.black),
     "next": false
@@ -36,26 +36,27 @@ List<Map<String, dynamic>> activeActivityTypes = [
 List<Map<String, dynamic>> meals = [
   {"type": "vegetarien", "label": "Végétarien"},
   {
-    "type": "oilyfish",
+    "type": "fatty_fish",
     "label":
         "Poisson gras (Maquereau, Sardine, Saumon, Anchois, Hareng, Truite, Anguille fumée, thon)"
   },
   {
-    "type": "whitefish",
+    "type": "white_fish",
     "label":
         "Poisson Blanc (Cabillaud, Merlu, Colin, Mérou, Lotte, Sole, Dorade, Grenadier)"
   },
   {"type": "chicken", "label": "Poulet"},
   {"type": "beef", "label": "Boeuf"},
-  {"type": "other", "label": "Autre viande"}
+  {"type": "other_meat", "label": "Autre viande"}
 ];
 
 List<Map<String, dynamic>> purchases = [
+  // TODO: Voir avec luka pour le reconditionné ou non
   {"type": "newclothes", "label": "Vêtements 1ère main"},
   {"type": "reusedclothes", "label": "Vêtements 2nd main"},
-  {"type": "homeappliance", "label": "Éléctroménager"},
+  {"type": "applicance", "label": "Éléctroménager"},
   {"type": "computer", "label": "Ordinateur"},
-  {"type": "smartphone", "label": "Téléphone"}
+  {"type": "phone", "label": "Téléphone"}
 ];
 
 List<Map<String, dynamic>> builds = [
@@ -76,7 +77,7 @@ List<Map<String, dynamic>> availableVehicles = [
     )
   },
   {
-    "type": "electriccar",
+    "type": "electric_car",
     "label": "Voiture éléctrique",
     "icon": const Icon(
       Icons.electric_car,
@@ -115,16 +116,16 @@ List<Map<String, dynamic>> availableVehicles = [
       color: Colors.black,
     )
   },
-  {
+  /*   {
     "type": "rer",
     "label": "RER",
     "icon": const Icon(
       Icons.directions_railway,
       color: Colors.black,
     )
-  },
+  }, */
   {
-    "type": "highspeedtrain",
+    "type": "high_speed_train",
     "label": "TGV",
     "icon": const Icon(
       Icons.train,
@@ -132,7 +133,7 @@ List<Map<String, dynamic>> availableVehicles = [
     )
   },
   {
-    "type": "walking",
+    "type": "on_foot",
     "label": "À pied",
     "icon": const Icon(
       Icons.directions_walk,
@@ -140,7 +141,7 @@ List<Map<String, dynamic>> availableVehicles = [
     )
   },
   {
-    "type": "bicycle",
+    "type": "bike",
     "label": "Vélo",
     "icon": const Icon(
       Icons.pedal_bike,
@@ -148,7 +149,7 @@ List<Map<String, dynamic>> availableVehicles = [
     )
   },
   {
-    "type": "electricbike",
+    "type": "electric_bike_or_scooter",
     "label": "Vélo Elec.",
     "icon": const Icon(
       Icons.electric_bike,

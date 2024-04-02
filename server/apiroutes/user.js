@@ -35,7 +35,7 @@ router.route('/')
             let surname = authUser.displayName
             // Création d'un objet avec les données d'authentification et le score
             if (typeof authUser.displayName !== "string"){
-                surname = "undefined"
+                surname = null
             }
 
             const response = {
@@ -74,7 +74,7 @@ router.route('/')
                 let surname = authUser.displayName
                 // Création d'un objet avec les données d'authentification et le score
                 if (typeof authUser.displayName !== "string"){
-                    surname = "undefined"
+                    surname = null
                 }
             
                 const response = {

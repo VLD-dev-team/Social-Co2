@@ -37,7 +37,7 @@ router.route('/world')
                 let surname = userData.displayName;
                 let photoURL = userData.photoURL;
                 if (typeof userData.displayName !== "string"){
-                    surname = "undefined"
+                    surname = null
                 }
                 if (typeof userData.photoURL !== "string"){
                     photoURL = "undefined"
@@ -124,7 +124,7 @@ router.route('/friends')
             let surname = userData.displayName;
                 let photoURL = userData.photoURL;
                 if (typeof userData.displayName !== "string"){
-                    surname = "undefined"
+                    surname = null
                 }
                 if (typeof userData.photoURL !== "string"){
                     photoURL = "undefined"

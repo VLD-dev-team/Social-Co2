@@ -51,7 +51,6 @@ List<Map<String, dynamic>> meals = [
 ];
 
 List<Map<String, dynamic>> purchases = [
-  // TODO: Voir avec luka pour le reconditionné ou non
   {"type": "newclothes", "label": "Vêtements 1ère main"},
   {"type": "reusedclothes", "label": "Vêtements 2nd main"},
   {"type": "applicance", "label": "Éléctroménager"},

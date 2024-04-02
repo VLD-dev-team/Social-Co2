@@ -156,6 +156,7 @@ class UserActivitiesProvider extends ChangeNotifier {
     // On construit les headers et le body de la requette
     final body = activity.toJson();
     final headers = {'authorization': '$token', 'userid': '$userID'};
+    print(body);
 
     // On effectue la requette
     const endpoint = "activity";

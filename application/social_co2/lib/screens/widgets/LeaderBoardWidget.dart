@@ -3,28 +3,87 @@ import 'package:provider/provider.dart';
 import 'package:social_co2/providers/LeaderboardProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
+class LeaderBoardWidget extends StatefulWidget {
+  const LeaderBoardWidget({Key? key}) : super(key: key);
 
-class LeaderBoardWidget extends StatelessWidget {
-  const LeaderBoardWidget({super.key});
+  @override
+  State<LeaderBoardWidget> createState() => _LeaderBoardWidgetState();
+}
+
+class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
+  String selectedIcon = 'world';
+  
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      height: 300,
+      height: 600,
       decoration: primaryCard,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Card(
-            margin: EdgeInsets.all(10.0),
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              child: Center(
-                child: Text(
-                  "Leaderboard",
-                  style: TextStyle(fontSize: 25),
+          const SizedBox(
+            width: 250,
+            child: Card(
+              margin: EdgeInsets.all(10.0),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                child: Center(
+                  child: Text(
+                    "Leaderboard",
+                    style: TextStyle(fontSize: 25),
+                  ),
                 ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 100,
+            child: Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedIcon = 'world';
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(2), // Ajoute de l'espace autour de l'icône
+                      decoration: BoxDecoration(
+                        color: selectedIcon == 'world' ? const Color.fromARGB(100, 150, 150, 150) : Colors.transparent, // Fond gris si sélectionné
+                        borderRadius: BorderRadius.circular(100), // Bord arrondi
+                      ),
+                      child: const Icon(
+                        Icons.public_rounded,
+                        size: 30,
+                        color: Colors.black, // Couleur de l'icône
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedIcon = 'friends';
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(2), // Ajoute de l'espace autour de l'icône
+                      decoration: BoxDecoration(
+                        color: selectedIcon == 'friends' ?  const Color.fromARGB(100, 150, 150, 150) : Colors.transparent, // Fond gris si sélectionné
+                        borderRadius: BorderRadius.circular(100), // Bord arrondi
+                      ),
+                      child: const Icon(
+                        Icons.people_alt_rounded,
+                        size: 30,
+                        color: Colors.black,
+                    ),
+                  ),
+                  ),
+                ]
               ),
             ),
           ),
@@ -40,7 +99,7 @@ class LeaderBoardWidget extends StatelessWidget {
             } else {
               if (value.error == "") {        //gestion de l'erreur
                 return SizedBox(
-                  height: 200,
+                  height: 460,
                   child: ListView.builder(
                       itemCount: 10,
                       itemBuilder: ((context, index) {
@@ -71,10 +130,16 @@ class LeaderBoardWidget extends StatelessWidget {
                                         size: 40,
                                         ),          //affichage icone utilisateur
                                     ),
-                                    Expanded(child: Center(child: Text(
-                                      value.leaderBoardFriends.leaderBoardData[index]['username'].toString(),
-                                      style: TextStyle(fontSize:25 ),
-                                      ))),  //affichage pseudo utilisateur                           //TODO : remplacer par vraies valeurs
+                                     Expanded(
+                                      child: Center(
+                                        child: 
+                                        
+                                        Text(
+                                      "Username$selectedIcon",                                         //value.leaderBoardFriends.leaderBoardData[index]['username'].toString()
+                                      style: const TextStyle(fontSize:25 ),
+                                      )
+                                      )
+                                      ),  //affichage pseudo utilisateur                           //TODO : remplacer par vraies valeurs
                                     Text('${index + 5000 }',
                                     style: const TextStyle(fontSize:25 ),),  
                                   ],

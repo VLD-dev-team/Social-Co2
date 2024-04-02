@@ -416,8 +416,9 @@ router.route('/search')
         const usersRef = admin.firestore().collection('users');
 
         try {
+            // TODO: faire la recherche par nom public également => UserID trop complexe à taper et chercher
             // Effectuer une requête pour récupérer les utilisateurs dont l'ID contient la recherche
-            const querySnapshot = await usersRef.where('userID', '>=', idSearch)
+            const querySnapshot = await usersRef.where('userID', '>=', idSearch) // Pourquoi des comparateur de grandeur ?
                                                 .where('userID', '<', idSearch + '\uf8ff')
                                                 .get();
 
@@ -433,15 +434,11 @@ router.route('/search')
                 users.push(user);
             });
 
-            // Vérifier si des utilisateurs ont été trouvés
-            if (users.length > 0) {
-                return res.status(200).json(users);
-            } else {
-                const response = {
-                    message: "Aucun utilisateur trouvé"
-                };
-                return res.status(200).json(response);
-            }
+            // Renvoyer les résultats
+            return res.status(200).json({
+                query: idSearch,
+                results: users
+            });
         } catch (error) {
             console.error('Error searching for users:', error);
             return res.status(500).json({ error: 'Internal Server Error' });

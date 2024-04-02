@@ -34,7 +34,8 @@ const activity = {
       "carpooling": 55
   },
   "article_emission": {
-      "clothing": 10,
+      "newclothes": 10,
+      "reusedclothes": 10,
       "appliances": 300,
       "computer": 150,
       "phone": 40

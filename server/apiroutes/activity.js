@@ -79,7 +79,7 @@ router.route('/')
         let activityCO2Impact = 0;
         // Calculate impact on score based on chosen activity type
         if (activityType == "trip"){
-            let vehicle = req.body.vehicle
+            let vehicle = req.body.activityVehicule
             if (vehicle == 'car'){
                 const sqlQuery = 'SELECT car, hybrid FROM users WHERE userID = ? '
                 const sqlResult = await executeQuery(sqlQuery, [userID])
@@ -101,20 +101,23 @@ router.route('/')
                     }
                 }
             }
-            const distance = req.body.distance
+            const distance = req.body.activityDistance
             activityCO2Impact = activityCalculator.newTrip(vehicle, distance)
         } else if (activityType == "purchase"){
-            const article = req.body.article
-            const condition = req.body.condition
+            const article = req.body.activityPurchase
+            let condition = false
+            if (article == "reusedclothes"){
+                condition = true
+            };
             activityCO2Impact = activityCalculator.newPurchase(article, condition)
         } else if (activityType == "meal"){
-            const food = req.body.food
+            const food = req.body.activityMealIngredients
             activityCO2Impact = activityCalculator.newMeal(food)
         } else if (activityType == "renovation"){
-            const furniture = req.body.furniture
+            const furniture = req.body.activityBuild
             activityCO2Impact = activityCalculator.renovation(furniture)
         } else if (activityType == "mail"){
-            const mail_test = req.body.mail
+            const mail_test = true
             activityCO2Impact = activityCalculator.inbox(mail_test)
         }else{
             const response = {

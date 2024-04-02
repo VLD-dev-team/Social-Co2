@@ -22,10 +22,6 @@ class _CardMoreInformations extends State<CardMoreInformations> {
       TextEditingController(); // Controlleur pour connaitre le nombre de m² de la maison
   HeatingModes? _selectedHeatingMode =
       HeatingModes.gaz; // Mode de chauffage selectionné
-  final heatersCountController =
-      TextEditingController(); // Controlleur pour connaitre le nombre de chauffage du domicile
-  final buildingDateController =
-      TextEditingController(); // Controlleur pour connaitre la date de construction/rénovation du batiment
   bool garden = false; // Jardin ou non
   bool recycling = true; // Recyclage ou non
   CarSizes? _selectedCarSize = CarSizes.mid; // Taille de véhicule selectionné
@@ -42,14 +38,6 @@ class _CardMoreInformations extends State<CardMoreInformations> {
             .toString());
     _selectedHeatingMode =
         Provider.of<UserSCO2DataProvider>(context, listen: false).heatMode;
-    heatersCountController.value = TextEditingValue(
-        text: Provider.of<UserSCO2DataProvider>(context, listen: false)
-            .heatersCount
-            .toString());
-    buildingDateController.value = TextEditingValue(
-        text: Provider.of<UserSCO2DataProvider>(context, listen: false)
-            .buildingDate
-            .toString());
     garden = Provider.of<UserSCO2DataProvider>(context, listen: false).garden;
     recycling =
         Provider.of<UserSCO2DataProvider>(context, listen: false).recycling;
@@ -182,43 +170,6 @@ class _CardMoreInformations extends State<CardMoreInformations> {
                           )
                         ],
                       )),
-                  Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 10),
-                      decoration: primaryCard,
-                      child: ListTile(
-                          title: const Text("Nombre de chauffage : "),
-                          trailing: SizedBox(
-                              width: 60,
-                              child: TextField(
-                                  controller: heatersCountController,
-                                  onChanged: (value) {
-                                    // Si la valeur du textfield change, on indique que cette valeur n'a pas été sauvegardé
-                                    setState(() {
-                                      saved = false;
-                                    });
-                                  },
-                                  textAlign: TextAlign.center,
-                                  keyboardType: TextInputType.number)))),
-                  Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 10),
-                      decoration: primaryCard,
-                      child: ListTile(
-                          title: const Text(
-                              "Date de construction du batiments (ou date de rénovation): "),
-                          trailing: SizedBox(
-                              width: 60,
-                              child: TextField(
-                                  controller: buildingDateController,
-                                  onChanged: (value) {
-                                    // Si la valeur du textfield change, on indique que cette valeur n'a pas été sauvegardé
-                                    setState(() {
-                                      saved = false;
-                                    });
-                                  },
-                                  textAlign: TextAlign.center,
-                                  keyboardType: TextInputType.number)))),
                   Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 10),
@@ -426,14 +377,12 @@ class _CardMoreInformations extends State<CardMoreInformations> {
 
   Map<String, dynamic> createJson() {
     return {
-      'surface': surfaceFieldController.text.toString(),
-      'heatingMode': getHeatingModeLabelFromEnum(_selectedHeatingMode!),
-      'heatingCount': heatersCountController.text.toString(),
-      'buildingDate': buildingDateController.text.toString(),
-      'potager': garden,
+      'area': surfaceFieldController.text.toString(),
+      'heating': getHeatingModeLabelFromEnum(_selectedHeatingMode!),
+      'garden': garden,
       'recycl': recycling,
-      'carSize': getCarSizeLabelFromEnum(_selectedCarSize!),
-      'hybride': isCarHybrid,
+      'car': getCarSizeLabelFromEnum(_selectedCarSize!),
+      'hybrid': isCarHybrid,
     };
   }
 }

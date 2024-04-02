@@ -4,15 +4,15 @@ import 'package:social_co2/collections/MoreInformationsData.dart';
 
 HeatingModes getHeatingModeFromString(String data) {
   switch (data) {
-    case "pellet":
+    case "wood_pellet":
       return HeatingModes.pellet;
-    case "electrique":
+    case "electric":
       return HeatingModes.electrique;
-    case "poele a bois":
+    case "wood_stove":
       return HeatingModes.bois;
-    case "gaz":
+    case "gas":
       return HeatingModes.gaz;
-    case "fioul":
+    case "fuel_oil":
       return HeatingModes.fioul;
     default:
       return HeatingModes.electrique;
@@ -22,17 +22,17 @@ HeatingModes getHeatingModeFromString(String data) {
 String getHeatingModeLabelFromEnum(HeatingModes mode) {
   switch (mode) {
     case HeatingModes.pellet:
-      return "pellet";
+      return "wood_pellet";
     case HeatingModes.electrique:
-      return "electrique";
+      return "electric";
     case HeatingModes.bois:
-      return "poele a bois";
+      return "wood_stove";
     case HeatingModes.gaz:
-      return "gaz";
+      return "gas";
     case HeatingModes.fioul:
-      return "fioul";
+      return "fuel_oil";
     default:
-      return "electrique";
+      return "electric";
   }
 }
 
@@ -51,15 +51,15 @@ CarSizes getCarSizeFromInt(int data) {
   }
 }
 
-String getCarSizeLabelFromEnum(CarSizes size) {
+int getCarSizeLabelFromEnum(CarSizes size) {
   switch (size) {
     case CarSizes.big:
-      return "big";
+      return 1;
     case CarSizes.mid:
-      return "mid";
+      return 2;
     case CarSizes.small:
-      return "small";
+      return 3;
     default:
-      return "mid";
+      return 2;
   }
 }

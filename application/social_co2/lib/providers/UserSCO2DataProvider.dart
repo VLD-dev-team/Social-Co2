@@ -12,8 +12,6 @@ class UserSCO2DataProvider extends ChangeNotifier {
   // Données liées au multiplicateur
   double homeSurface = 150; // Surface du domicile
   HeatingModes heatMode = HeatingModes.electrique; // Type de chauffage
-  int heatersCount = 3; // Nombre de chauffage
-  int buildingDate = 1875; // Date de construction/rénovation du batiment
   bool garden = true; // Possède un jardin ou non
   bool recycling = true; // Recycle ou non
   CarSizes carSize = CarSizes.mid; // Taille de la voiture
@@ -53,7 +51,6 @@ class UserSCO2DataProvider extends ChangeNotifier {
       "authorization": '$authToken',
       'userid': '$userID',
     });
-    print('USERSCO2DATAPROVIDER1 : $data');
 
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
@@ -71,20 +68,17 @@ class UserSCO2DataProvider extends ChangeNotifier {
     }
 
     // Si pas d'erreur on met à jour le score pour toute l'appli et on met à jour le provider
-    CurrentUserScore = int.parse(data["score"]);
+    CurrentUserScore = data["score"];
     CurrentUserScoreScale = calcUserScoreScale();
 
     // On met à jour les variables liés au multiplicateur
     homeSurface = data['area']; // Surface du domicile
     heatMode = getHeatingModeFromString(data['heating']); // Type de chauffage
-    heatersCount =
-        data['heatingCount']; // Nombre de chauffage TODO: Ou c'est dans l'api
-    buildingDate = data[
-        'buildingDate']; // Date de construction/rénovation du batiment TODO: Ou c'est dans l'api
     garden = (data['garden'] == 1) ? true : false; // Possède un jardin ou non
     recycling = (data['recycl'] == 1) ? true : false; // Recycle ou non
-    carSize = getCarSizeFromInt(int.parse(data['car'])); // Taille de la voiture
+    carSize = getCarSizeFromInt(data['car']); // Taille de la voiture
     isCarHybrid = (data['hybrid'] == 1) ? true : false;
+    // TODO: ajouter le nombre d'habitant
 
     // On met à jour les données d'état du provider
     error = "";

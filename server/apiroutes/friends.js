@@ -441,7 +441,12 @@ router.route('/search')
             });
         } catch (error) {
             console.error('Error searching for users:', error);
-            return res.status(500).json({ error: 'Internal Server Error' });
+            const response = {
+                error : true,
+                error_message : 'Internal Server Error',
+                error_code : 2
+            };
+            return res.status(500).json(response); 
         }
     });
 

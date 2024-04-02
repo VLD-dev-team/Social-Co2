@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/providers/MakePostProvider.dart';
@@ -15,6 +16,10 @@ class dialogPostActivities extends StatefulWidget {
 class _dialogPostActivitiesState extends State<dialogPostActivities> {
   @override
   Widget build(BuildContext context) {
+    // controller de la date courante
+    DateTime selectedDate =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+
     return ChangeNotifierProvider(
         create: (_) => MakePostProvider(),
         builder: (context, child) =>
@@ -27,10 +32,35 @@ class _dialogPostActivitiesState extends State<dialogPostActivities> {
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const IconButton(
-                      disabledColor: Colors.transparent,
-                      onPressed: null,
-                      icon: Icon(Icons.arrow_back),
+                    ChangeNotifierProvider(
+                      create: (_) => UserActivitiesProvider(),
+                      builder: (context, child) => IconButton(
+                        icon: const Icon(Icons.calendar_month),
+                        disabledColor: Colors.transparent,
+                        onPressed: () => showDatePicker(
+                                context: context,
+                                initialDate: (FirebaseAuth.instance.currentUser!
+                                            .metadata.creationTime ==
+                                        null)
+                                    ? DateTime(2024)
+                                    : FirebaseAuth.instance.currentUser!
+                                        .metadata.creationTime!,
+                                firstDate: DateTime(2024),
+                                lastDate: DateTime.now())
+                            .then(
+                          (value) {
+                            if (value != null) {
+                              setState(() {
+                                selectedDate = value;
+                                Provider.of<UserActivitiesProvider>(context,
+                                        listen: false)
+                                    .getCurrentUserActivitiesByDate(
+                                        selectedDate);
+                              });
+                            }
+                          },
+                        ),
+                      ),
                     ),
                     Center(
                         child: Container(
@@ -66,13 +96,25 @@ class _dialogPostActivitiesState extends State<dialogPostActivities> {
                               create: (_) => UserActivitiesProvider(),
                               builder: (context, child) =>
                                   Consumer<UserActivitiesProvider>(
-                                      builder: (context, value2, child) =>
-                                          ActivitiesList(
-                                              activities:
-                                                  value2.userActivitiesPerDays[
-                                                      DateTime.now()],
-                                              multiSelection: true,
-                                              error: value2.error)))
+                                      builder: (context, value2, child) {
+                                    if (value2.isLoading) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(
+                                            color: Colors.black),
+                                      );
+                                    } else if (value2.error != "") {
+                                      return Center(
+                                        child: Text("Erreur: ${value2.error}"),
+                                      );
+                                    } else {
+                                      return ActivitiesList(
+                                          activities:
+                                              value2.userActivitiesPerDays[
+                                                  selectedDate],
+                                          multiSelection: true,
+                                          error: value2.error);
+                                    }
+                                  }))
                           : Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,

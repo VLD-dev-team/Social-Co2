@@ -20,12 +20,13 @@ class ActivitiesList extends StatelessWidget {
   Widget build(BuildContext context) {
     activities ??= []; // Si activities est null, alors on crée une liste vide
 
-    if (activities == []) {
+    if (activities!.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: const [
           Icon(Icons.check_circle_outline),
+          SizedBox(height: 5),
           Text("Aucun élément enregistré pour cette journée.")
         ],
       );

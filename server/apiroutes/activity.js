@@ -72,8 +72,6 @@ router.route('/')
         const activityType = req.body.activityType;
         const activityName = req.body.activityName;
         const activityTimestamp = req.body.activityTimestamp;
-
-        console.log(activityType)
         
         // Initialize variable to 0
         let activityCO2Impact = 0;

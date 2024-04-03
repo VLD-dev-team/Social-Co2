@@ -57,8 +57,6 @@ router.route('/')
                 }
             return res.status(200).json(response);
         } else {
-            // TODO: initialiser les données par défaut
-
             // On calcul le score de base avec les paramètres de l'utilisateurs
             const newscore = activityCalculator.passiveScore(activityCalculator.multiplier(false, 1, 50, false, 1, "gas"),5000)
             const multiplier = activityCalculator.multiplier(false, 1, 50, false, 1, "gas")

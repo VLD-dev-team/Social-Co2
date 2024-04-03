@@ -412,41 +412,41 @@ router.route('/search')
         const userID = req.headers.userid;
         const idSearch = req.query.idSearch;
 
-        // Obtenir une référence à la collection d'utilisateurs dans Firebase
-        const usersRef = admin.firestore().collection('users');
-
         try {
-            // TODO: faire la recherche par nom public également => UserID trop complexe à taper et chercher
-            // Effectuer une requête pour récupérer les utilisateurs dont l'ID contient la recherche
-            const querySnapshot = await usersRef.where('userID', '>=', idSearch) // Pourquoi des comparateur de grandeur ?
-                                                .where('userID', '<', idSearch + '\uf8ff')
-                                                .get();
+            const listUsers = [];
+            const listAllUsers = await admin.auth().listUsers();
 
-            // Construire la réponse
-            const users = [];
-            querySnapshot.forEach((doc) => {
-                const userData = doc.data();
-                const user = {
-                    userID: userData.userID,
-                    userName: userData.userName,
-                    userProfilePhoto: userData.userProfilePhoto
-                };
-                users.push(user);
+            listAllUsers.users.forEach(userRecord => {
+                // On vérifie si idSearch correspond à un userID
+                if (userRecord.uid === idSearch) {
+                    const user = {
+                        name: userRecord.displayName,
+                        uid: userRecord.uid
+                    };
+                    listUsers.push(user);
+                }
+                // On vérifie  si idSearch correspond à un nom d'utilisateur (début du nom)
+                else if (userRecord.displayName.startsWith(idSearch)) {
+                    const user = {
+                        name: userRecord.displayName,
+                        uid: userRecord.uid
+                    };
+                    listUsers.push(user);
+                }
             });
 
-            // Renvoyer les résultats
             return res.status(200).json({
                 query: idSearch,
-                results: users
+                results: listUsers
             });
         } catch (error) {
             console.error('Error searching for users:', error);
             const response = {
-                error : true,
-                error_message : 'Internal Server Error',
-                error_code : 2
+                error: true,
+                error_message: 'Internal Server Error',
+                error_code: 2
             };
-            return res.status(500).json(response); 
+            return res.status(500).json(response);
         }
     });
 

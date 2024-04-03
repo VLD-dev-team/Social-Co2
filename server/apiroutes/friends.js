@@ -24,14 +24,14 @@ router.route('/')
 
             let friends = [];
 
-            if (actionType === "request send") {
+            if (actionType === "request_send") {
                 // Requête pour obtenir les amis dont la demande d'amitié a été envoyée
                 const getFriendsQuery = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID2 WHERE userID1 = ? AND friendshipStatus = "21" ;`;
                 const friends1 = await executeQuery(getFriendsQuery, [userID]);
                 const getFriendsQuery2 = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID1 WHERE userID2 = ? AND friendshipStatus = "12" ;`;
                 const friends2 = await executeQuery(getFriendsQuery2, [userID]);
                 friends = friends1.concat(friends2);
-            } else if (actionType === "request receive") {
+            } else if (actionType === "request_receive") {
                 // Requête pour obtenir les amis en attente
                 const getFriendsQuery = `SELECT * FROM friends WHERE userID1 = ? AND friendshipStatus = "12" ;`;
                 const friends1 = await executeQuery(getFriendsQuery, [userID]);
@@ -432,13 +432,7 @@ router.route('/search')
                         uid: userRecord.uid,
                         photoURL : photoURL
                     };
-
-                    const sqlFriend = `SELECT * FROM friends WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;`;
-                    const sqlFriendResult = await executeQuery(sqlFriend, [userID, userRecord.uid, userRecord.uid, userID]);
-                    // Dans le cas où il y a déjà une relation
-                    if (sqlFriendResult.length == 0){
-                        listUsers.push(user);
-                    }
+                    listUsers.push(user);
                 }
                 // On vérifie  si idSearch correspond à un nom d'utilisateur (début du nom)
                 else if (userRecord.displayName!==undefined && userRecord.displayName.startsWith(idSearch) && userRecord.uid != userID) {
@@ -455,15 +449,25 @@ router.route('/search')
                         uid: userRecord.uid,
                         photoURL : photoURL
                     };
-                    const sqlFriend = `SELECT * FROM friends WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;`;
-                    const sqlFriendResult = await executeQuery(sqlFriend, [userID, userRecord.uid, userRecord.uid, userID]);
-                    // Dans le cas où il y a déjà une relation
-                    if (sqlFriendResult.length == 0){
-                        listUsers.push(user);
-                    }
+                    listUsers.push(user);
                 }
             });
-
+            const sqlFriend2 = `SELECT userID2 FROM friends WHERE userID1 = ? ;`;
+            const sqlFriendResult2 = await executeQuery(sqlFriend2, [userID]);
+            const sqlFriend1 = `SELECT userID1 FROM friends WHERE userID2 = ? ;`;
+            const sqlFriendResult1 = await executeQuery(sqlFriend1, [userID]);
+            for (user in listUsers){
+                if (sqlFriendResult2.includes(user["uid"])){
+                    const research = (element) => element = user
+                    const index = listUsers.findIndex(research)
+                    listUsers.splice(index,1)
+                }
+                if (sqlFriendResult1.includes(user["uid"])){
+                    const research = (element) => element = user
+                    const index = listUsers.findIndex(research)
+                    listUsers.splice(index,1)
+                }
+            }
             return res.status(200).json({
                 query: idSearch,
                 results: listUsers

@@ -9,5 +9,13 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.9.1",
     "socket.io": "^4.7.4"
+  },
+  "name": "server",
+  "description": "## Sommaire",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "node app.js"
   }
 }

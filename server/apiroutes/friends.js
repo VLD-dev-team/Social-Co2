@@ -66,7 +66,10 @@ router.route('/')
         });
             const users = await Promise.all(usersPromises);
     
-            return res.status(200).json(users);
+            const response = {
+                results : users
+            }
+            return res.status(200).json(response);
         } catch (error) {
             console.error('Error retrieving friends:', error);
             const response = {

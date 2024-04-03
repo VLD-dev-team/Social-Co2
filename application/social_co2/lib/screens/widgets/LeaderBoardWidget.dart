@@ -6,49 +6,48 @@ import 'package:social_co2/utils/responsiveHandler.dart';
 
 class LeaderBoardWidget extends StatefulWidget {
   final int indexAffichage; // Ajout d'un paramètre pour l'index d'affichage
-  const LeaderBoardWidget({Key? key, required this.indexAffichage}) : super(key: key);
+  const LeaderBoardWidget({Key? key, required this.indexAffichage}) : super(key: key); //on indique que la variable indexAffichage est requise pour construire le widget
 
   @override
   State<LeaderBoardWidget> createState() => _LeaderBoardWidgetState();
 }
 
 class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
-  String selectedIcon = 'world';
+  String selectedIcon = 'world'; //On crée une variable pour afficher le classement monde ou des amis en la mettant sur monde par défaut
 
 
   @override
   Widget build(BuildContext context) {
-    // Utilisation d'un switch pour gérer les différents affichages basés sur indexAffichage
-    switch (widget.indexAffichage) {
+    switch (widget.indexAffichage) {      //en fonnction de la valeur de indexAffichage, fournie à l'appel du widget, on renverra le widget correspondant
       case 1:
-        return buildAffichagePourIndex1(); // Affichage pour l'index 1
+        return buildAffichagePourIndex1(); // Affichage pour l'index 1, petit sur HomeScreen
       case 2:
-        return buildAffichagePourIndex2(); // Affichage pour l'index 2
+        return buildAffichagePourIndex2(); // Affichage pour l'index 2, moyen en format portrait sur LeaderBoardScreen
       case 3:
-        return buildAffichagePourIndex3(); // Affichage pour l'index 3
+        return buildAffichagePourIndex3(); // Affichage pour l'index 3, grand sur LeadderBoardScreen
       default:
-        return buildAffichageParDefaut(); // Affichage par défaut si aucun index ou index non géré
+        return buildAffichageParDefaut(); // Affichage par défaut si aucun index ou index non géré, renvoie une erreur
     }
   }
 
   Widget buildAffichagePourIndex1() {
     // contenu spécifique pour l'index 1
     return Container(
-      width: double.maxFinite,
-      height: 600,
-      decoration: primaryCard,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      width: double.maxFinite,    //largeur du widget
+      height: 600,              //hauteur du widget
+      decoration: primaryCard,    //style du widget
+      child: Column(            //On déclare un format colmun pour pouvoir mettre plusieurs widget les uns sur les autres
+        crossAxisAlignment: CrossAxisAlignment.center, //On centre les widgets dans la colonne
         children: [
-          const SizedBox(
-            width: 250,
-            child: Card(
-              margin: EdgeInsets.all(10.0),
+          const SizedBox(         //widget qui permet d'adapter la taille
+            width: 250,         //largeur de la sizedbox
+            child: Card(          //Widget Card dans le widget SizedBox qui contiendra le titre
+              margin: EdgeInsets.all(10.0),  
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 child: Center(
                   child: Text(
-                    "Leaderboard",
+                    "Leaderboard",    //titre
                     style: TextStyle(fontSize: 25),
                   ),
                 ),
@@ -58,14 +57,14 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
           SizedBox(
             width: 100,
             child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)), //arrondir les bords de la Card
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
+                  GestureDetector(  //permet de detecter quand l'utilisateur clic sur l'icone monde
                     onTap: () {
                       setState(() {
-                        selectedIcon = 'world';
+                        selectedIcon = 'world'; //Dans ce cas on donne la valeur world au selectedIcon
                       });
                     },
                     child: Container(
@@ -81,10 +80,10 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                       ),
                     ),
                   ),
-                  GestureDetector(
+                  GestureDetector( //permet de detecter quand l'utilisateur clic sur l'icone amis
                     onTap: () {
                       setState(() {
-                        selectedIcon = 'friends';
+                        selectedIcon = 'friends';  //Dans ce cas on donne la valeur friends au selectedIcon
                       });
                     },
                     child: Container(
@@ -105,17 +104,17 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
             ),
           ),
           SizedBox(
-            child: selectedIcon=="world"? 
+            child: selectedIcon=="world"?  //on teste la condition 
             const Card(child: Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text("Monde",style: TextStyle(fontSize: 25),),
+              child: Text("Monde",style: TextStyle(fontSize: 25),), //si elle est vraie on affiche World
             ),) 
             : const Card(child: Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text("Amis",style: TextStyle(fontSize: 25),),
+              child: Text("Amis",style: TextStyle(fontSize: 25),), //Sinon on affiche Amis
             ),),
           ),
-          Consumer<LeaderBoardProvider>(
+          Consumer<LeaderBoardProvider>(            //permet d'importer les données que nous fourni le provider
               builder: ((context, value, child) {
 
                 
@@ -125,11 +124,11 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                 child: LinearProgressIndicator(),
               );
             } else {
-              if (value.error == "") {        //gestion de l'erreur
+              if (value.error == "") {        //s'il n'y a pas d'erreur on affiche la liste (le classement)
                 return SizedBox(
                   height: 420,
                   child: ListView.builder(
-                      itemCount: 10,
+                      itemCount: 10,      //Nombre de lignes dans le classement
                       itemBuilder: ((context, index) {
                         return Container(
                           margin: const EdgeInsets.all(2),
@@ -137,27 +136,27 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                           child: Card(
                             child: Container(
                               decoration: secondaryCardInnerShadow,
-                              child: ListTile(
-                                leading: CircleAvatar(
+                              child: ListTile(            //le widget ListTile décrit la construction d'une ligne de la liste, et se répéte le nombre d'itemCount
+                                leading: CircleAvatar(               //Affiche un rond qui contient le classement
                                   backgroundColor: Colors.white,
-                                  child: Text('${index + 1}e',
+                                  child: Text('${index + 1}e', //classement
                                   style: TextStyle(
                                     fontSize: 20,
                                     color: 
                                       index == 0 ? const Color.fromRGBO(255, 170, 43, 1) 
-                                      : index == 1 ? const Color.fromRGBO(217, 217, 217, 1) 
+                                      : index == 1 ? const Color.fromRGBO(217, 217, 217, 1)       //couleur du classement
                                       : index ==2 ? const Color.fromRGBO(255, 107, 0, 1)
                                       : Colors.black),
-                                  ),     //affichage postion classement
+                                  ), 
                                 ),
                                 title: Row(
                                   children: [
-                                    const CircleAvatar(
+                                    const CircleAvatar(         //affiche un rond qui contient la photo de profil de l'utilisateur
                                       backgroundColor: Color.fromRGBO(157, 188, 150, 1),
                                       child: Icon(
-                                        Icons.account_circle_outlined,
+                                        Icons.account_circle_outlined,          //TODO : à remplacer par la photo de profil
                                         size: 40,
-                                        ),          //affichage icone utilisateur
+                                        ),    
                                     ),
                                      Expanded(
                                       child: Center(
@@ -179,9 +178,9 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                         );
                       })),
                 );
-              } else {
+              } else { //gestion de l'erreur
                 return SizedBox(
-                  child: Text(value.error),
+                  child: Text(value.error), //si il y'a une erreur on renvoie l'erreur
                 );
               }
             }
@@ -191,8 +190,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
     );
   }
 
-  Widget buildAffichagePourIndex2() {
-    // contenu spécifique pour l'index 2
+  Widget buildAffichagePourIndex2() { //affichage pour l'index 2
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Container(
@@ -337,7 +335,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                                 const CircleAvatar(
                                   backgroundColor: Color.fromRGBO(157, 188, 150, 1),
                                   child: Icon(
-                                    Icons.account_circle_outlined,
+                                    Icons.account_circle_outlined,   //TODO à remplacer
                                     size: 40,
                                   ),
                                 ),
@@ -376,11 +374,11 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
 
   }
 
-  Widget buildAffichagePourIndex3() {
+  Widget buildAffichagePourIndex3() { //affichage pour l'index 3
   return Padding(
     padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
     child: Container(
-      width: MediaQuery.of(context).size.width - 340,
+      width: MediaQuery.of(context).size.width - 340,  //on prend la largeur de la page - la largeur du burger
       decoration: primaryCard,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -406,10 +404,10 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
               margin: const EdgeInsets.all(10.0),
               child: Row(
                 children: [
-                  listLeaderbaord("Monde", MediaQuery.of(context).size.width / 2 - getDrawerWidth(context) / 2 - 40),
+                  listLeaderbaord("Monde", MediaQuery.of(context).size.width / 2 - getDrawerWidth(context) / 2 - 40), //ici on appelle le widget listLeaderBoard qui nous fournira le classement, avec comme paramètre le type de classement et la largeur
                   const VerticalDivider(
                     color: Colors.white,
-                    width: 20,
+                    width: 20,                  //barre blanche entre les 2 classements
                     thickness: 10,
                   ),
                   listLeaderbaord("Amis", MediaQuery.of(context).size.width / 2 - getDrawerWidth(context) / 2 - 40),

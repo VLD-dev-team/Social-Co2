@@ -418,7 +418,7 @@ router.route('/search')
 
             listAllUsers.users.forEach(userRecord => {
                 // On vérifie si idSearch correspond à un userID
-                if (userRecord.uid.startsWith(idSearch)) {
+                if (userRecord.uid.startsWith(idSearch) && userRecord.uid != userID) {
                     surname = userRecord.displayName ;
                     photoURL = userRecord.photoURL;
                     if (typeof userRecord.displayName !== "string"){
@@ -435,7 +435,7 @@ router.route('/search')
                     listUsers.push(user);
                 }
                 // On vérifie  si idSearch correspond à un nom d'utilisateur (début du nom)
-                else if (userRecord.displayName!==undefined && userRecord.displayName.startsWith(idSearch)) {
+                else if (userRecord.displayName!==undefined && userRecord.displayName.startsWith(idSearch) && userRecord.uid != userID) {
                     surname = userRecord.displayName ;
                     photoURL = userRecord.photoURL;
                     if (typeof userRecord.displayName !== "string"){

@@ -419,17 +419,35 @@ router.route('/search')
             listAllUsers.users.forEach(userRecord => {
                 // On vérifie si idSearch correspond à un userID
                 if (userRecord.uid.startsWith(idSearch)) {
+                    surname = userRecord.displayName ;
+                    photoURL = userRecord.photoURL;
+                    if (typeof userRecord.displayName !== "string"){
+                        surname = null
+                    }
+                    if (typeof userRecord.photoURL !== "string"){
+                        photoURL = null
+                    }
                     const user = {
-                        name: userRecord.displayName,
-                        uid: userRecord.uid
+                        name: surname,
+                        uid: userRecord.uid,
+                        photoURL : photoURL
                     };
                     listUsers.push(user);
                 }
                 // On vérifie  si idSearch correspond à un nom d'utilisateur (début du nom)
                 else if (userRecord.displayName!==undefined && userRecord.displayName.startsWith(idSearch)) {
+                    surname = userRecord.displayName ;
+                    photoURL = userRecord.photoURL;
+                    if (typeof userRecord.displayName !== "string"){
+                        surname = null
+                    }
+                    if (typeof userRecord.photoURL !== "string"){
+                        photoURL = null
+                    }
                     const user = {
-                        name: userRecord.displayName,
-                        uid: userRecord.uid
+                        name: surname,
+                        uid: userRecord.uid,
+                        photoURL : photoURL
                     };
                     listUsers.push(user);
                 }

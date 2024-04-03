@@ -40,7 +40,7 @@ router.route('/world')
                     surname = null
                 }
                 if (typeof userData.photoURL !== "string"){
-                    photoURL = "undefined"
+                    photoURL = null
                 }
 
                 return {
@@ -127,7 +127,7 @@ router.route('/friends')
                     surname = null
                 }
                 if (typeof userData.photoURL !== "string"){
-                    photoURL = "undefined"
+                    photoURL = null
                 }
                 return {
                     id: userData.uid,

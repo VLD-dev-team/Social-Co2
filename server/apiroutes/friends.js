@@ -4,8 +4,8 @@ const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
 const admin = require('firebase-admin');
 
-router.route('/*')
-    .all((req, res, next) => verifyAuthToken(req, res, next));
+// router.route('/*')
+//     .all((req, res, next) => verifyAuthToken(req, res, next));
     
 router.route('/')
     .get(async (req, res) => {
@@ -418,7 +418,7 @@ router.route('/search')
 
             listAllUsers.users.forEach(userRecord => {
                 // On vérifie si idSearch correspond à un userID
-                if (userRecord.uid === idSearch) {
+                if (userRecord.uid.startsWith(idSearch)) {
                     const user = {
                         name: userRecord.displayName,
                         uid: userRecord.uid
@@ -426,7 +426,7 @@ router.route('/search')
                     listUsers.push(user);
                 }
                 // On vérifie  si idSearch correspond à un nom d'utilisateur (début du nom)
-                else if (userRecord.displayName.startsWith(idSearch)) {
+                else if (userRecord.displayName!==undefined && userRecord.displayName.startsWith(idSearch)) {
                     const user = {
                         name: userRecord.displayName,
                         uid: userRecord.uid

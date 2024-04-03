@@ -194,7 +194,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
   Widget buildAffichagePourIndex2() {
     // contenu spécifique pour l'index 2
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       child: Container(
         width: double.maxFinite,
         height: MediaQuery.of(context).size.height,
@@ -378,7 +378,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
 
   Widget buildAffichagePourIndex3() {
   return Padding(
-    padding: const EdgeInsets.all(20.0),
+    padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
     child: Container(
       width: MediaQuery.of(context).size.width - 340,
       decoration: primaryCard,

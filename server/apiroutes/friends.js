@@ -416,7 +416,7 @@ router.route('/search')
             const listUsers = [];
             const listAllUsers = await admin.auth().listUsers();
 
-            listAllUsers.users.forEach(userRecord => {
+            listAllUsers.users.forEach(async userRecord => {
                 // On vérifie si idSearch correspond à un userID
                 if (userRecord.uid.startsWith(idSearch) && userRecord.uid != userID) {
                     surname = userRecord.displayName ;
@@ -432,7 +432,13 @@ router.route('/search')
                         uid: userRecord.uid,
                         photoURL : photoURL
                     };
-                    listUsers.push(user);
+
+                    const sqlFriend = `SELECT * FROM friends WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;`;
+                    const sqlFriendResult = await executeQuery(sqlFriend, [userID, userRecord.uid, userRecord.uid, userID]);
+                    // Dans le cas où il y a déjà une relation
+                    if (sqlFriendResult.length == 0){
+                        listUsers.push(user);
+                    }
                 }
                 // On vérifie  si idSearch correspond à un nom d'utilisateur (début du nom)
                 else if (userRecord.displayName!==undefined && userRecord.displayName.startsWith(idSearch) && userRecord.uid != userID) {
@@ -449,7 +455,12 @@ router.route('/search')
                         uid: userRecord.uid,
                         photoURL : photoURL
                     };
-                    listUsers.push(user);
+                    const sqlFriend = `SELECT * FROM friends WHERE (userID1 = ? AND userID2 = ?) OR (userID1 = ? AND userID2 = ?) ;`;
+                    const sqlFriendResult = await executeQuery(sqlFriend, [userID, userRecord.uid, userRecord.uid, userID]);
+                    // Dans le cas où il y a déjà une relation
+                    if (sqlFriendResult.length == 0){
+                        listUsers.push(user);
+                    }
                 }
             });
 

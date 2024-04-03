@@ -16,6 +16,7 @@ class UserSCO2DataProvider extends ChangeNotifier {
   bool recycling = true; // Recycle ou non
   CarSizes carSize = CarSizes.mid; // Taille de la voiture
   bool isCarHybrid = false; // Motorisation hybride ou non de la voiture
+  int nb_inhabitants = 1; // Nombre d'habitant du domicile
 
   // Données du statut du provider sur les requettes
   bool isLoading = false;
@@ -78,7 +79,7 @@ class UserSCO2DataProvider extends ChangeNotifier {
     recycling = (data['recycl'] == 1) ? true : false; // Recycle ou non
     carSize = getCarSizeFromInt(data['car']); // Taille de la voiture
     isCarHybrid = (data['hybrid'] == 1) ? true : false;
-    // TODO: ajouter le nombre d'habitant
+    nb_inhabitants = data['nb_inhabitants'];
 
     // On met à jour les données d'état du provider
     error = "";

@@ -87,7 +87,7 @@ class _SearchCardState extends State<SearchCard> {
                             itemBuilder: (context, index) {
                               final result =
                                   SearchProviderValues.searchResults[index];
-                              return ResultTile(result);
+                              return resultTile(result);
                             },
                             separatorBuilder: (context, index) =>
                                 const SizedBox(height: 5),
@@ -104,5 +104,31 @@ class _SearchCardState extends State<SearchCard> {
     );
   }
 
-  ListTile ResultTile(result) => ListTile(title: result['name']);
+  ListTile resultTile(result) {
+    result['name'] ??= "Nom inconnu";
+    return ListTile(
+      title: Text(result['name']),
+      subtitle: Text('ID : ${result['uid']}'),
+      leading: SizedBox(
+        width: 45,
+        height: 45,
+        child: CircleAvatar(
+          radius: 360,
+          backgroundImage: (result['photoURL'] == null)
+              ? null
+              : NetworkImage('${result['photoURL']}'),
+          backgroundColor: Colors.green,
+          child: (result['photoURL'] == null)
+              ? const Icon(Icons.account_box)
+              : null,
+        ),
+      ),
+      trailing: Consumer(
+        builder: (context, value, child) => OutlinedButton.icon(
+            onPressed: () {},
+            icon: const Icon(Icons.person_add),
+            label: const Text("Demander en ami(e)")),
+      ),
+    );
+  }
 }

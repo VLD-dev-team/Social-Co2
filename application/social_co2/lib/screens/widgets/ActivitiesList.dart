@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_co2/classes/activity/activity.dart';
+import 'package:social_co2/classes/activity.dart';
 import 'package:social_co2/collections/activitiesData.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';

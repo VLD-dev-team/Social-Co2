@@ -26,6 +26,8 @@ class _CardMoreInformations extends State<CardMoreInformations> {
   bool recycling = true; // Recyclage ou non
   CarSizes? _selectedCarSize = CarSizes.mid; // Taille de véhicule selectionné
   bool isCarHybrid = false; // Voiture hybride ou non
+  final nb_inhabitantsController =
+      TextEditingController(); // Nombre d'habitant de l'habitation
 
   @override
   void initState() {
@@ -45,6 +47,10 @@ class _CardMoreInformations extends State<CardMoreInformations> {
         Provider.of<UserSCO2DataProvider>(context, listen: false).carSize;
     isCarHybrid =
         Provider.of<UserSCO2DataProvider>(context, listen: false).isCarHybrid;
+    nb_inhabitantsController.value = TextEditingValue(
+        text: Provider.of<UserSCO2DataProvider>(context, listen: false)
+            .nb_inhabitants
+            .toString());
   }
 
   @override
@@ -82,32 +88,34 @@ class _CardMoreInformations extends State<CardMoreInformations> {
                   Consumer<UserSCO2DataProvider>(
                     builder: (context, value, child) {
                       return Visibility(
+                          visible: (value.error != ""),
                           child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10),
-                        decoration: primaryCard,
-                        child: ListTile(
-                          iconColor: Colors.red,
-                          textColor: Colors.red,
-                          leading: const Icon(Icons.error),
-                          title: const Text(
-                              "Une erreur est survenue lors de l'obtention/envoi des données."),
-                          subtitle: Text(value.error.toString()),
-                          trailing: (value.isLoading)
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.red,
-                                  ))
-                              : IconButton(
-                                  onPressed: () {
-                                    Provider.of<UserSCO2DataProvider>(context,
-                                            listen: false)
-                                        .getUserSCO2Data();
-                                  },
-                                  icon: const Icon(Icons.refresh)),
-                        ),
-                      ));
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            decoration: primaryCard,
+                            child: ListTile(
+                              iconColor: Colors.red,
+                              textColor: Colors.red,
+                              leading: const Icon(Icons.error),
+                              title: const Text(
+                                  "Une erreur est survenue lors de l'obtention/envoi des données."),
+                              subtitle: Text(value.error.toString()),
+                              trailing: (value.isLoading)
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.red,
+                                      ))
+                                  : IconButton(
+                                      onPressed: () {
+                                        Provider.of<UserSCO2DataProvider>(
+                                                context,
+                                                listen: false)
+                                            .getUserSCO2Data();
+                                      },
+                                      icon: const Icon(Icons.refresh)),
+                            ),
+                          ));
                     },
                   ),
                   Container(
@@ -220,6 +228,26 @@ class _CardMoreInformations extends State<CardMoreInformations> {
                                       });
                                     }))),
                       )),
+                  Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      decoration: primaryCard,
+                      child: ListTile(
+                          title: const Text(
+                              "Nombre de personnes résidants chez vous : "),
+                          subtitle: const Text("Vous compris."),
+                          trailing: SizedBox(
+                              width: 60,
+                              child: TextField(
+                                  controller: surfaceFieldController,
+                                  onChanged: (value) {
+                                    // Si la valeur du textfield change, on indique que cette valeur n'a pas été sauvegardé
+                                    setState(() {
+                                      saved = false;
+                                    });
+                                  },
+                                  textAlign: TextAlign.center,
+                                  keyboardType: TextInputType.number)))),
                   const SizedBox(
                     height: 20,
                   ),
@@ -377,12 +405,13 @@ class _CardMoreInformations extends State<CardMoreInformations> {
 
   Map<String, dynamic> createJson() {
     return {
-      'area': surfaceFieldController.text.toString(),
+      'area': surfaceFieldController.text,
       'heating': getHeatingModeLabelFromEnum(_selectedHeatingMode!),
       'garden': garden,
       'recycl': recycling,
       'car': getCarSizeLabelFromEnum(_selectedCarSize!),
       'hybrid': isCarHybrid,
+      'nb_inhabitants': nb_inhabitantsController.text.toString(),
     };
   }
 }

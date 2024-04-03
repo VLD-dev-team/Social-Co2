@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:social_co2/classes/activity/activity.dart';
+import 'package:social_co2/classes/activity.dart';
 import 'package:social_co2/collections/activitiesData.dart';
 import 'package:social_co2/main.dart';
 import 'package:social_co2/utils/requestsService.dart';

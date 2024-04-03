@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: const [
-                                  Expanded(child: LeaderBoardWidget()),
+                                  Expanded(child: LeaderBoardWidget(indexAffichage: 1,)),
                                   Expanded(child: ReccurentActivities())
                                 ],
                               ),
@@ -75,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: const [
-                          LeaderBoardWidget(),
+                          LeaderBoardWidget(indexAffichage: 1,),
                           ReccurentActivities(),
                         ]),
                   )),

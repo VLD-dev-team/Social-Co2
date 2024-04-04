@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:social_co2/providers/FriendshipsProvider.dart';
 import 'package:social_co2/providers/SearchProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
@@ -17,6 +18,8 @@ class _SearchCardState extends State<SearchCard> {
       TextEditingController(); // controller du champ de recherche
   bool resultsVisible = false; // Variable de visibilité des résultats
   Timer? _debounce; // Timer du debouncer pour le champ de recherche
+  List sended =
+      []; // Map qui enregistre temporairement quelle demande ont été envoyés dans la liste de résultats
 
   @override
   void dispose() {
@@ -123,9 +126,40 @@ class _SearchCardState extends State<SearchCard> {
               : null,
         ),
       ),
-      trailing: Consumer(
+      trailing: Consumer<FriendshipsProvider>(
         builder: (context, value, child) => OutlinedButton.icon(
-            onPressed: () {},
+            onPressed: (sended.contains(result['uid']))
+                ? () {
+                    setState(() {
+                      sended.add(result['uid']);
+                    });
+                    value
+                        .sendFriendRequest(result['uid'])
+                        .then((value) => null)
+                        .catchError((error) {
+                      setState(() {
+                        sended.remove(result['uid']);
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          showCloseIcon: true,
+                          closeIconColor: Colors.white,
+                          content: Text(
+                            "Erreur lors de l'envoie de la demande : $error",
+                            style: const TextStyle(fontSize: 15),
+                          ),
+                          duration: const Duration(milliseconds: 3000),
+                          padding: const EdgeInsets.all(20),
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      );
+                    });
+                  }
+                : null,
             icon: const Icon(Icons.person_add),
             label: const Text("Demander en ami(e)")),
       ),

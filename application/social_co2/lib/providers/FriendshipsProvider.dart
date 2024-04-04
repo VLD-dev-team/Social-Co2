@@ -86,47 +86,47 @@ class FriendshipsProvider extends ChangeNotifier {
     return list;
   }
 
-  Future<bool> sendFriendRequest(String userID) async {
-    var status = false;
+  Future<String> sendFriendRequest(String userID) async {
+    var status = "";
     await requestAction("add", userID)
         .then((value) => status = value)
         .catchError((err) => error = err);
     return status;
   }
 
-  Future<bool> blockUser(String userID) async {
-    var status = false;
+  Future<String> blockUser(String userID) async {
+    var status = "";
     await requestAction("block", userID)
         .then((value) => status = value)
         .catchError((err) => error = err);
     return status;
   }
 
-  Future<bool> unlockUser(String userID) async {
-    var status = false;
+  Future<String> unlockUser(String userID) async {
+    var status = "";
     await requestAction("deblock", userID)
         .then((value) => status = value)
         .catchError((err) => error = err);
     return status;
   }
 
-  Future<bool> acceptFriendRequest(String userID) async {
-    var status = false;
+  Future<String> acceptFriendRequest(String userID) async {
+    var status = "";
     await requestAction("accept", userID)
         .then((value) => status = value)
         .catchError((err) => error = err);
     return status;
   }
 
-  Future<bool> refuseFriendRequest(String userID) async {
-    var status = false;
+  Future<String> refuseFriendRequest(String userID) async {
+    var status = "";
     await requestAction("refuse", userID)
         .then((value) => status = value)
         .catchError((err) => error = err);
     return status;
   }
 
-  Future<bool> requestAction(actionType, userID) async {
+  Future<String> requestAction(actionType, userID) async {
     // On initialise la liste et le provider
     error = "";
     loading = true;
@@ -154,14 +154,15 @@ class FriendshipsProvider extends ChangeNotifier {
 
       loading = false;
       notifyListeners();
-      return false;
+      return "";
     }
 
-    // TODO: retourner le message
+    // On obtient le message du serveur
+    final message = '${data['message']}';
 
     // On termine la requette
     loading = false;
     notifyListeners();
-    return true;
+    return message;
   }
 }

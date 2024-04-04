@@ -12,22 +12,25 @@ class LeaderBoardScreeen extends StatelessWidget {
     ResponsiveFormats responsiveFormat = whichResponsiveFormat(context);
     int drawerWidth = getDrawerWidth(context);
 
-    if (drawerWidth==60) {  //Si la largeur de l'écran est petite
+    if (drawerWidth == 60) {
+      //Si la largeur de l'écran est petite
       return Container(
-  width: MediaQuery.of(context).size.width-drawerWidth, // Largeur de l'écran
-  height: MediaQuery.of(context).size.height, // Hauteur de l'écran
-  decoration: homeScreenBackground,
-  child: const LeaderBoardWidget(indexAffichage: 2,),
-);    
-                                                                                  //gestion du responsive
-    } else if(drawerWidth==300) {  //si la largeur d'écran est grande
+        width: MediaQuery.of(context).size.width -
+            drawerWidth, // Largeur de l'écran
+        height: MediaQuery.of(context).size.height, // Hauteur de l'écran
+        decoration: homeScreenBackground,
+        child: const LeaderBoardWidget(
+          indexAffichage: 2,
+        ),
+      );
+      //gestion du responsive
+    } else if (drawerWidth == 300) {
+      //si la largeur d'écran est grande
       return Container(
-        decoration : homeScreenBackground ,
-        child :const LeaderBoardWidget(indexAffichage: 3)
-        );
-    }
-    else{
+          decoration: homeScreenBackground,
+          child: const LeaderBoardWidget(indexAffichage: 3));
+    } else {
       return const Text("Erreur affichage");
     }
-}
+  }
 }

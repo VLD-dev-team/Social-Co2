@@ -129,7 +129,8 @@ class _SearchCardState extends State<SearchCard> {
       trailing: Consumer<FriendshipsProvider>(
         builder: (context, value, child) => OutlinedButton.icon(
             onPressed: (sended.contains(result['uid']))
-                ? () {
+                ? null
+                : () {
                     setState(() {
                       sended.add(result['uid']);
                     });
@@ -158,8 +159,7 @@ class _SearchCardState extends State<SearchCard> {
                         ),
                       );
                     });
-                  }
-                : null,
+                  },
             icon: const Icon(Icons.person_add),
             label: const Text("Demander en ami(e)")),
       ),

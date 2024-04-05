@@ -67,7 +67,7 @@ class Sco2 extends StatelessWidget {
     return MaterialApp(
       title: appName,
       theme: ThemeData(
-        //useMaterial3: true,
+        useMaterial3: false,
         primarySwatch: Colors.green,
         textTheme: GoogleFonts.readexProTextTheme(),
       ),

@@ -39,11 +39,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.16.0
   firebase_core: ^2.24.2
-  google_sign_in_dartio: ^0.2.2+1
+  google_sign_in_dartio: ^0.3.0
   google_sign_in: ^6.1.6
-  google_fonts: ^4.0.4
+  google_fonts: ^6.2.1
   provider: ^6.1.1
-  http: ^0.13.6
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -54,7 +54,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.2
   test: ^1.22.0
 
 # For information on the generic Dart part of this file, see the

@@ -10,18 +10,17 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Variables necessaires au responsive
-    ResponsiveFormats responsiveFormat = whichResponsiveFormat(context);
     int drawerWidth = getDrawerWidth(context);
 
     return Container(
-        height: double.infinity,
+        height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width -
             drawerWidth, // On défini la largeur du conteneur pour qu'il prenne tout l'espace à droite du drawer sur le web
         decoration: homeScreenBackground,
-        child: Column(
+        child: const Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.max,
-          children: const [SearchCard(), SocialRelationViewer()],
+          children: [SearchCard(), Expanded(child: SocialRelationViewer())],
         ));
   }
 }

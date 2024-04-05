@@ -4,9 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 // Importation des providers requis
 import 'package:provider/provider.dart';
-import 'package:social_co2/providers/IndexProvider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
-import 'package:social_co2/providers/UserSCO2DataProvider.dart';
 
 // Importation des widgets
 import 'package:social_co2/screens/widgets/CardActivityList.dart';
@@ -80,8 +78,8 @@ class _ActivityScreen extends State<ActivityScreen> {
                     ]))
                   ],
                 ))
-            : Row(
-                children: const [
+            : const Row(
+                children: [
                   Expanded(child: CardActivitiesList()),
                   Expanded(child: CardMoreInformations())
                 ],

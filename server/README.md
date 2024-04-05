@@ -16,6 +16,8 @@
     * Pourquoi avoir utiliser ce procédé ?
 * Documentation de l'API
 * Test avec postman
+* Ressources supplémentaires
+
 
 
 
@@ -704,3 +706,12 @@ Pour plus d'informations, voir le fichier `GestionAPI.drawio`
 
 ## Test avec postman
 
+Pour tester notre **API**, j'ai opté pour le logiciel Postman qui permet de faire des requêtes directement au serveur avec les différentes clés en paramètres : HEADERS, BODY, PARAMS, QUERY ...
+
+J'ai donc pu tester toutes les routes en : GET, POST, DELETE & PUT pour voir si tout fonctionnait.
+
+Postman est une excellente alternative au test serveur via le web qui est beaucoup plus long. De plus celui-ci affiche bien la réponse donnée par le serveur soit la plupart du temps le JSON.
+
+## Ressources supplémentaires
+
+Dans le dossier `schemaAPI` se trouve une schematisation de notre API. La schematisation à jour est celle qui se nomme : `GestionAPI.drawio`. Celle qui se nomme `API.drawio` est le brouillon de notre API. Le fichier doit être ouvert avec le site ou logiciel drawio.

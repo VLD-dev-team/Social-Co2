@@ -80,6 +80,8 @@ class FriendshipsProvider extends ChangeNotifier {
       }
     }
 
+    print(data);
+
     // On termine la requette
     loading = false;
     notifyListeners();

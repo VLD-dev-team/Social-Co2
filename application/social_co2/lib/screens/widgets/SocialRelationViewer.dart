@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/classes/SCO2user.dart';
+import 'package:social_co2/collections/friendshipsData.dart';
 import 'package:social_co2/providers/FriendshipsProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
@@ -26,21 +27,47 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
 
   @override
   Widget build(BuildContext context) {
+    String selectedList = availablesUsersList[0]['type'];
+
     return Consumer<FriendshipsProvider>(
       builder: (context, friendshipsValues, child) => Container(
         margin: const EdgeInsets.only(top: 0, bottom: 10, left: 10, right: 10),
         decoration: primaryCard,
         child: Column(
           children: [
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 60,
+              child: Center(
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          100)), //arrondir les bords de la Card
+                  child: Wrap(children: [
+                    // Pour toute les options possible, on génére le widget
+                    for (var element in availablesUsersList)
+                      IconButton(
+                        selectedIcon: Icon(
+                          element['icon'],
+                          color: Colors.green,
+                        ),
+                        isSelected: (selectedList == element['type']),
+                        onPressed: () {
+                          setState(() {
+                            selectedList = element['type'];
+                          });
+                        },
+                        icon: Icon(element['icon']),
+                      ),
+                  ]),
+                ),
+              ),
             ),
             Expanded(
               child: SizedBox(
                 height: double.infinity,
                 child: (friendshipsValues.loading)
                     ? const Center(child: CircularProgressIndicator())
-                    : listUser(friendshipsValues.friends, "friends"),
+                    : listUser(friendshipsValues.pendingRequests, selectedList),
               ),
             )
           ],
@@ -50,10 +77,23 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
   }
 
   ListView listUser(List<SCO2user> list, String actionType) {
-    return ListView.separated(
-        itemBuilder: (context, index) => userTile(list[index], actionType),
-        separatorBuilder: (context, index) => const SizedBox(height: 5),
-        itemCount: list.length);
+    if (list.isEmpty) {
+      return ListView(
+        children: [
+          SizedBox(height: 50),
+          Icon(Icons.check_circle_outline),
+          SizedBox(height: 5),
+          Text(
+              "Aucun élément à afficher. $actionType", // TODO: enlever actiontype
+              textAlign: TextAlign.center)
+        ],
+      );
+    } else {
+      return ListView.separated(
+          itemBuilder: (context, index) => userTile(list[index], actionType),
+          separatorBuilder: (context, index) => const SizedBox(height: 5),
+          itemCount: list.length);
+    }
   }
 
   ListTile userTile(SCO2user user, String actionType) {

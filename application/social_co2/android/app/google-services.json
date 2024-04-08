@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "741858065565",
+    "project_id": "social-co2",
+    "storage_bucket": "social-co2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741858065565:android:4a92fbb0e0846d4f22a874",
+        "android_client_info": {
+          "package_name": "com.example.social_co2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741858065565-17f32upi8c40crbi1bg68e5v7au24sbo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.social_co2",
+            "certificate_hash": "78f99421feaf76e0fafa83360ff983a51ab570ed"
+          }
+        },
+        {
+          "client_id": "741858065565-c6flb27i9du2l9qp31hj025l9scomiqp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1UAFvblz_8xylYI911ktu4aGV8qEz1MU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "741858065565-c6flb27i9du2l9qp31hj025l9scomiqp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "741858065565-nr3mk7l8t7asrmh06ljf6iuoe3aj0r67.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.socialCo2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

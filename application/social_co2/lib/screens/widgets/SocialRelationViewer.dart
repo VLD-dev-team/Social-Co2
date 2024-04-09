@@ -13,10 +13,10 @@ class SocialRelationViewer extends StatefulWidget {
 }
 
 class _SocialRelationViewerState extends State<SocialRelationViewer> {
+  String selectedList = availablesUsersList[0]['type'];
+
   @override
   Widget build(BuildContext context) {
-    String selectedList = availablesUsersList[0]['type'];
-
     return Consumer<FriendshipsProvider>(
       builder: (context, friendshipsValues, child) => Container(
         margin: const EdgeInsets.only(top: 0, bottom: 10, left: 10, right: 10),
@@ -33,18 +33,26 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
                   child: Wrap(children: [
                     // Pour toute les options possible, on génére le widget
                     for (var element in availablesUsersList)
-                      IconButton(
-                        selectedIcon: Icon(
-                          element['icon'],
-                          color: Colors.green,
+                      CircleAvatar(
+                        backgroundColor: (selectedList == element['type'])
+                            ? const Color.fromARGB(100, 150, 150, 150)
+                            : Colors.transparent,
+                        child: IconButton(
+                          selectedIcon: Icon(
+                            element['icon'],
+                            color: Colors.green,
+                          ),
+                          isSelected: (selectedList == element['type']),
+                          onPressed: () {
+                            setState(() {
+                              selectedList = element['type'];
+                            });
+                          },
+                          icon: Icon(
+                            element['icon'],
+                            color: Colors.black,
+                          ),
                         ),
-                        isSelected: (selectedList == element['type']),
-                        onPressed: () {
-                          setState(() {
-                            selectedList = element['type'];
-                          });
-                        },
-                        icon: Icon(element['icon']),
                       ),
                   ]),
                 ),

@@ -103,6 +103,8 @@ router.route('/')
             // - accept : pour accepter la demande d'ami si il y en a une
             // - refuse : pour refuser une demande d'ami
             // - deblock : pour débloquer un ami
+            // - delete : pour supprimer un ami
+            // - undo : pour annuler une demande
             
             // Pour ajouter un ami
             if (actionType == "add"){
@@ -288,7 +290,7 @@ router.route('/')
                     const sqlResult = await executeQuery(sqlQuery, [userID, friendID]);
                     if (sqlResult.affectedRows > 0){
                         const response = {
-                            message : "user accept succesfully",
+                            message : "user refuse succesfully",
                             status : 200
                         }
                         return res.status(200).json(response)
@@ -311,7 +313,7 @@ router.route('/')
                         const sqlResult = await executeQuery(sqlQuery, [friendID, userID]);
                         if (sqlResult.affectedRows > 0){
                             const response = {
-                                message : "user accept succesfully",
+                                message : "user refuse succesfully",
                                 status : 200
                             }
                             return res.status(200).json(response)
@@ -371,7 +373,7 @@ router.route('/')
                         // Si la MAJ a bien été effectué alors l'utilisateur a bien été bloqué
                         if (sqlResult.affectedRows > 0){
                             const response = {
-                                message : "User block successfuly",
+                                message : "User deblock successfuly",
                                 status : 200,
                             }
                             return res.status(200).json(response);
@@ -394,6 +396,116 @@ router.route('/')
                         return res.status(404).json(response);
                     }
                 } 
+            }
+            if (actionType == "delete"){
+                const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND friendshipStatus = "22" ;`;
+                const sqlFriendResult = await executeQuery(sqlFriend, [userID, friendID]);
+                // Si jamais une relation est bien existante alors on met à jour la table friends
+                if (sqlFriendResult.length > 0){
+                    const sqlQuery = `DELETE FROM friends WHERE userID1 = ? AND userID2 = ? ;`;
+                    const sqlResult = await executeQuery(sqlQuery, [userID, friendID]);
+                    if (sqlResult.affectedRows > 0){
+                        const response = {
+                            message : "user delete succesfully",
+                            status : 200
+                        }
+                        return res.status(200).json(response)
+                    }else{
+                        const response = {
+                            error: true,
+                            error_message: 'Internal Server Error',
+                            error_code: 2
+                        };
+                        return res.status(500).json(response);
+                    }
+
+
+                } else {
+                    const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND friendshipStatus = "22" ;`;
+                    const sqlFriendResult = await executeQuery(sqlFriend, [friendID, userID]);
+                    // Si jamais une relation est bien existante alors on met à jour la table friends
+                    if (sqlFriendResult.length > 0){
+                        const sqlQuery = `DELETE FROM friends WHERE userID1 = ? AND userID2 = ? ;`;
+                        const sqlResult = await executeQuery(sqlQuery, [friendID, userID]);
+                        if (sqlResult.affectedRows > 0){
+                            const response = {
+                                message : "user delete succesfully",
+                                status : 200
+                            }
+                            return res.status(200).json(response)
+                        }else{
+                            const response = {
+                                error: true,
+                                error_message: 'Internal Server Error',
+                                error_code: 2
+                            };
+                            return res.status(500).json(response);
+                        }
+                    } else {
+                        // Aucune relation trouvé
+                        const response = {
+                            error: true,
+                            error_message: 'Friendship not found',
+                            error_code: 28
+                        };
+                        return res.status(404).json(response);
+                    } 
+                }
+            }
+            if (actionType == "undo"){
+                const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND friendshipStatus = "21" ;`;
+                const sqlFriendResult = await executeQuery(sqlFriend, [userID, friendID]);
+                // Si jamais une relation est bien existante alors on met à jour la table friends
+                if (sqlFriendResult.length > 0){
+                    const sqlQuery = `DELETE FROM friends WHERE userID1 = ? AND userID2 = ? ;`;
+                    const sqlResult = await executeQuery(sqlQuery, [userID, friendID]);
+                    if (sqlResult.affectedRows > 0){
+                        const response = {
+                            message : "user undo succesfully",
+                            status : 200
+                        }
+                        return res.status(200).json(response)
+                    }else{
+                        const response = {
+                            error: true,
+                            error_message: 'Internal Server Error',
+                            error_code: 2
+                        };
+                        return res.status(500).json(response);
+                    }
+
+
+                } else {
+                    const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND friendshipStatus = "21" ;`;
+                    const sqlFriendResult = await executeQuery(sqlFriend, [friendID, userID]);
+                    // Si jamais une relation est bien existante alors on met à jour la table friends
+                    if (sqlFriendResult.length > 0){
+                        const sqlQuery = `DELETE FROM friends WHERE userID1 = ? AND userID2 = ? ;`;
+                        const sqlResult = await executeQuery(sqlQuery, [friendID, userID]);
+                        if (sqlResult.affectedRows > 0){
+                            const response = {
+                                message : "user undo succesfully",
+                                status : 200
+                            }
+                            return res.status(200).json(response)
+                        }else{
+                            const response = {
+                                error: true,
+                                error_message: 'Internal Server Error',
+                                error_code: 2
+                            };
+                            return res.status(500).json(response);
+                        }
+                    } else {
+                        // Aucune relation trouvé
+                        const response = {
+                            error: true,
+                            error_message: 'Friendship not found',
+                            error_code: 28
+                        };
+                        return res.status(404).json(response);
+                    } 
+                }
             }
             const response = {
                 error: true,

@@ -92,6 +92,39 @@ class FriendshipsProvider extends ChangeNotifier {
     }
 
     print(data);
+    // TODO : enlever en prod
+    list.addAll([
+      SCO2user(
+        userID: "2",
+        displayName: "USER",
+        avatarURL: null,
+      ),
+      SCO2user(
+        userID: "2",
+        displayName: "USER",
+        avatarURL: null,
+      ),
+      SCO2user(
+        userID: "2",
+        displayName: "USER",
+        avatarURL: null,
+      ),
+      SCO2user(
+        userID: "2",
+        displayName: "USER",
+        avatarURL: null,
+      ),
+      SCO2user(
+        userID: "2",
+        displayName: "USER",
+        avatarURL: null,
+      ),
+      SCO2user(
+        userID: "2",
+        displayName: "USER",
+        avatarURL: null,
+      ),
+    ]);
 
     // On termine la requette
     loading = false;
@@ -138,6 +171,46 @@ class FriendshipsProvider extends ChangeNotifier {
         .catchError((err) => error = err);
     return status;
   }
+
+  /*  Future<String> deleteFriend(String userID) async {
+    // On initialise la liste et le provider
+    error = "";
+    loading = true;
+    notifyListeners();
+
+    // On récupère le token de connexion
+    final authToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+    final userID = FirebaseAuth.instance.currentUser!.uid;
+
+    // On fait la requette au server
+    final data = await requestService()
+        .delete("friends?actionType=$actionType&friendid=$userID", {
+      "authorization": '$authToken',
+      'userid': '$userID',
+    }, {});
+
+    // On analyse la réponse du server
+    // En cas d'erreur, on renvoie erreur aux widgets
+    if (data["error"] == true) {
+      try {
+        error = 'error: ${data["error_message"].toString()}';
+      } catch (e) {
+        error = "error: unknown error";
+      }
+
+      loading = false;
+      notifyListeners();
+      return "";
+    }
+
+    // On obtient le message du serveur
+    final message = '${data['message']}';
+
+    // On termine la requette
+    loading = false;
+    notifyListeners();
+    return message;
+  } */ // TODO: terminer cette fonction
 
   Future<String> requestAction(actionType, userID) async {
     // On initialise la liste et le provider

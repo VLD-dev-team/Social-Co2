@@ -13,7 +13,7 @@ class SocialRelationViewer extends StatefulWidget {
 }
 
 class _SocialRelationViewerState extends State<SocialRelationViewer> {
-  String selectedList = availablesUsersList[0]['type'];
+  Map selectedList = availablesUsersList[0];
 
   @override
   Widget build(BuildContext context) {
@@ -25,37 +25,44 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
           children: [
             SizedBox(
               height: 60,
-              child: Center(
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          100)), //arrondir les bords de la Card
-                  child: Wrap(children: [
-                    // Pour toute les options possible, on génére le widget
-                    for (var element in availablesUsersList)
-                      CircleAvatar(
-                        backgroundColor: (selectedList == element['type'])
-                            ? const Color.fromARGB(100, 150, 150, 150)
-                            : Colors.transparent,
-                        child: IconButton(
-                          selectedIcon: Icon(
-                            element['icon'],
-                            color: Colors.green,
-                          ),
-                          isSelected: (selectedList == element['type']),
-                          onPressed: () {
-                            setState(() {
-                              selectedList = element['type'];
-                            });
-                          },
-                          icon: Icon(
-                            element['icon'],
-                            color: Colors.black,
+              child: Row(
+                children: [
+                  Card(
+                    child: Text(selectedList['type']),
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            100)), //arrondir les bords de la Card
+                    child: Wrap(children: [
+                      // Pour toute les options possible, on génére le widget
+                      for (var element in availablesUsersList)
+                        CircleAvatar(
+                          backgroundColor:
+                              (selectedList['type'] == element['type'])
+                                  ? const Color.fromARGB(100, 150, 150, 150)
+                                  : Colors.transparent,
+                          child: IconButton(
+                            selectedIcon: Icon(
+                              element['icon'],
+                              color: Colors.green,
+                            ),
+                            isSelected:
+                                (selectedList['type'] == element['type']),
+                            onPressed: () {
+                              setState(() {
+                                selectedList['type'] = element['type'];
+                              });
+                            },
+                            icon: Icon(
+                              element['icon'],
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                      ),
-                  ]),
-                ),
+                    ]),
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -63,7 +70,11 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
                 height: double.infinity,
                 child: (friendshipsValues.loading)
                     ? const Center(child: CircularProgressIndicator())
-                    : listUser(friendshipsValues.pendingRequests, selectedList),
+                    : listUser(
+                        getListFromActionType(
+                            friendshipsValues, selectedList['type']),
+                        selectedList['type'],
+                        friendshipsValues),
               ),
             )
           ],
@@ -72,27 +83,42 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
     );
   }
 
-  ListView listUser(List<SCO2user> list, String actionType) {
+  List<SCO2user> getListFromActionType(
+      FriendshipsProvider provider, String actionType) {
+    switch (actionType) {
+      case 'friendRequests':
+        return provider.friendRequests;
+      case 'blockedUsers':
+        return provider.blockedUsers;
+      case 'pendingRequests':
+        return provider.pendingRequests;
+      default:
+        return provider.friends;
+    }
+  }
+
+  ListView listUser(List<SCO2user> list, String actionType,
+      FriendshipsProvider providerData) {
     if (list.isEmpty) {
       return ListView(
-        children: [
+        children: const [
           SizedBox(height: 50),
           Icon(Icons.check_circle_outline),
           SizedBox(height: 5),
-          Text(
-              "Aucun élément à afficher. $actionType", // TODO: enlever actiontype
-              textAlign: TextAlign.center)
+          Text("Aucun élément à afficher.", textAlign: TextAlign.center)
         ],
       );
     } else {
       return ListView.separated(
-          itemBuilder: (context, index) => userTile(list[index], actionType),
+          itemBuilder: (context, index) =>
+              userTile(list[index], actionType, providerData),
           separatorBuilder: (context, index) => const SizedBox(height: 5),
           itemCount: list.length);
     }
   }
 
-  ListTile userTile(SCO2user user, String actionType) {
+  ListTile userTile(
+      SCO2user user, String actionType, FriendshipsProvider providerData) {
     return ListTile(
       title: Text('${user.displayName}'),
       subtitle: Text(user.userID),
@@ -108,6 +134,41 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
           child:
               (user.avatarURL == null) ? const Icon(Icons.account_box) : null,
         ),
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (actionType == 'friends')
+            IconButton.filled(
+                onPressed: () {
+                  // TODO: intégrer les boutons
+                },
+                icon: const Icon(
+                  Icons.person_remove,
+                  color: Colors.black,
+                )),
+          if (actionType == 'friendRequests')
+            IconButton.filled(
+                onPressed: () {},
+                icon: const Icon(Icons.check, color: Colors.green)),
+          if (actionType == 'friendRequests')
+            IconButton.filled(
+                onPressed: () {},
+                icon: const Icon(Icons.close, color: Colors.red)),
+          if (actionType == 'friendRequests' || actionType == 'friends')
+            IconButton.filled(
+                onPressed: () {},
+                icon: const Icon(Icons.block,
+                    color: Color.fromARGB(255, 204, 14, 0))),
+          if (actionType == 'pendingRequests')
+            IconButton.filled(
+                onPressed: () {},
+                icon: const Icon(Icons.close, color: Colors.red)),
+          if (actionType == 'blockedUsers')
+            IconButton.filled(
+                onPressed: () {},
+                icon: const Icon(Icons.check, color: Colors.green)),
+        ],
       ),
     );
   }

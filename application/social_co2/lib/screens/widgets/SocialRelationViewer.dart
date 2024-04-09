@@ -23,12 +23,20 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
         decoration: primaryCard,
         child: Column(
           children: [
-            SizedBox(
-              height: 60,
+            Container(
+              margin: const EdgeInsets.all(5),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Card(
-                    child: Text(selectedList['type']),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      child: Text(
+                        selectedList['name'],
+                        style: const TextStyle(fontSize: 25),
+                      ),
+                    ),
                   ),
                   Card(
                     shape: RoundedRectangleBorder(
@@ -51,7 +59,7 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
                                 (selectedList['type'] == element['type']),
                             onPressed: () {
                               setState(() {
-                                selectedList['type'] = element['type'];
+                                selectedList = element;
                               });
                             },
                             icon: Icon(
@@ -138,35 +146,45 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (actionType == 'friends')
+          /*   if (actionType == 'friends')
             IconButton.filled(
                 onPressed: () {
-                  // TODO: intégrer les boutons
+                  providerData.
                 },
                 icon: const Icon(
                   Icons.person_remove,
                   color: Colors.black,
-                )),
+                )), */
           if (actionType == 'friendRequests')
             IconButton.filled(
-                onPressed: () {},
+                onPressed: () {
+                  providerData.acceptFriendRequest(user.userID);
+                },
                 icon: const Icon(Icons.check, color: Colors.green)),
           if (actionType == 'friendRequests')
             IconButton.filled(
-                onPressed: () {},
+                onPressed: () {
+                  providerData.refuseFriendRequest(user.userID);
+                },
                 icon: const Icon(Icons.close, color: Colors.red)),
           if (actionType == 'friendRequests' || actionType == 'friends')
             IconButton.filled(
-                onPressed: () {},
+                onPressed: () {
+                  providerData.blockUser(user.userID);
+                },
                 icon: const Icon(Icons.block,
                     color: Color.fromARGB(255, 204, 14, 0))),
           if (actionType == 'pendingRequests')
             IconButton.filled(
-                onPressed: () {},
+                onPressed: () {
+                  // TODO: pending request non annulable dans l'api
+                },
                 icon: const Icon(Icons.close, color: Colors.red)),
           if (actionType == 'blockedUsers')
             IconButton.filled(
-                onPressed: () {},
+                onPressed: () {
+                  providerData.blockUser(user.userID);
+                },
                 icon: const Icon(Icons.check, color: Colors.green)),
         ],
       ),

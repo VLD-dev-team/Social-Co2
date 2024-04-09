@@ -17,7 +17,7 @@ class LeaderBoardProvider extends ChangeNotifier {
 
   Future<void> initData() async {
     getLeaderBoard('world');
-    getLeaderBoard('friend');
+    getLeaderBoard('friends');
   }
 
   Future<LeaderBoard> getLeaderBoard(String leaderBoardType) async {

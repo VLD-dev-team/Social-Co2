@@ -22,6 +22,14 @@ class UserSCO2DataProvider extends ChangeNotifier {
   bool isLoading = false;
   String error = "";
 
+  UserSCO2DataProvider() {
+    initData();
+  }
+
+  Future<void> initData() async {
+    getUserSCO2Data();
+  }
+
   // Cette fonction calcule le classement du score sur une echelle de 1 à 5 pour le widget de l'écran d'accueil
   int calcUserScoreScale() {
     var scale = 0;

@@ -17,6 +17,22 @@ class UserActivitiesProvider extends ChangeNotifier {
   bool isPosting = false;
   String error = "";
 
+  UserActivitiesProvider() {
+    initData();
+  }
+
+  Future<void> initData() async {
+    // controller de la date courante
+    DateTime today =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    // controller de la date d'hier
+    DateTime yesterday = today.subtract(const Duration(days: 1));
+
+    // Obtention des informations necessaire au lancement de l'écran d'accueil depuis le serveur
+    getCurrentUserActivitiesByDate(today);
+    getCurrentUserActivitiesByDate(yesterday);
+  }
+
   Future<List<SCO2activity>> getCurrentUserActivitiesByDate(
       DateTime date) async {
     error = "";

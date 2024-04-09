@@ -26,6 +26,12 @@ class WebAdaptativeContainer extends StatefulWidget {
 
 class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
   @override
+  void initState() {
+    super.initState();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     ResponsiveFormats responsive_format = whichResponsiveFormat(context);
 

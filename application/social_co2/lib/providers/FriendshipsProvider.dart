@@ -13,6 +13,17 @@ class FriendshipsProvider extends ChangeNotifier {
   List<SCO2user> pendingRequests = []; // Demandes d'amitiés sortantes
   List<SCO2user> blockedUsers = []; // bloqués par l'utilisateur courant
 
+  FriendshipsProvider() {
+    initData();
+  }
+
+  Future<void> initData() async {
+    getFriends();
+    getPendingRequests();
+    getBlockedUsers();
+    getFriendRequests();
+  }
+
   Future<List<SCO2user>> getFriends() async {
     await getListOfUsers("friends")
         .then((value) => friends = value)

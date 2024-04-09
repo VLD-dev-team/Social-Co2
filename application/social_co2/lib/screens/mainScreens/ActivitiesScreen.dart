@@ -23,7 +23,8 @@ class ActivityScreen extends StatefulWidget {
 }
 
 class _ActivityScreen extends State<ActivityScreen> {
-  @override
+  // TODO: voir si il ne faudra pas remettre cette initialisation à l'avenir
+/*   @override
   void initState() {
     super.initState();
 
@@ -32,7 +33,7 @@ class _ActivityScreen extends State<ActivityScreen> {
     DateTime today = DateTime(now.year, now.month, now.day);
     Provider.of<UserActivitiesProvider>(context, listen: false)
         .getCurrentUserActivitiesByDate(today);
-  }
+  } */
 
   @override
   Widget build(BuildContext context) {

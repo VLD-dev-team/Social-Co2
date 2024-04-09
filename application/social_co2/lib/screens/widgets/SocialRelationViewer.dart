@@ -14,18 +14,6 @@ class SocialRelationViewer extends StatefulWidget {
 
 class _SocialRelationViewerState extends State<SocialRelationViewer> {
   @override
-  void initState() {
-    super.initState();
-
-    Provider.of<FriendshipsProvider>(context, listen: false).getFriends();
-    Provider.of<FriendshipsProvider>(context, listen: false)
-        .getPendingRequests();
-    Provider.of<FriendshipsProvider>(context, listen: false).getBlockedUsers();
-    Provider.of<FriendshipsProvider>(context, listen: false)
-        .getFriendRequests();
-  }
-
-  @override
   Widget build(BuildContext context) {
     String selectedList = availablesUsersList[0]['type'];
 

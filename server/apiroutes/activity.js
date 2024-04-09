@@ -154,14 +154,6 @@ router.route('/')
             }
             return res.status(400).json(response);
         }
-        if (isNaN(activityPollutionImpact)) {
-            const response = {
-                    error : true,
-                    error_message : 'Invalid activityPollutionImpact',
-                    error_code : 16
-            }
-            return res.status(400).json(response);
-        }
         if (typeof activityName !== 'string') {
             const response = {
                     error : true,

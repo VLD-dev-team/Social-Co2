@@ -86,8 +86,8 @@ router.route('/')
 
             // On recupère les données nécessaires
             const userID = req.headers.userid;
-            const actionType = req.query.actionType;
-            const friendID = req.query.friendid;
+            const actionType = req.body.actionType;
+            const friendID = req.body.friendid;
             // Vérification du typage
             if (typeof actionType !== 'string' || typeof userID !== 'string') {
                 const response = {

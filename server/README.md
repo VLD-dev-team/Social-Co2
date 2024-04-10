@@ -160,7 +160,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE friends (
-  friendshipID INT,
+  friendshipID INT AUTO_INCREMENT,
   userID1 VARCHAR(255),
   userID2 VARCHAR(255),
   friendshipStatus VARCHAR(255),

@@ -88,8 +88,11 @@ router.route('/')
             const userID = req.headers.userid;
             const actionType = req.body.actionType;
             const friendID = req.body.friendid;
+
+            console.log(friendID)
+            console.log(userID)
             // Vérification du typage
-            if (typeof actionType !== 'string' || typeof userID !== 'string') {
+            if (typeof actionType !== 'string' || typeof userID !== 'string' || typeof friendID !== 'string') {
                 const response = {
                     error: true,
                     error_message: 'Invalid Data',

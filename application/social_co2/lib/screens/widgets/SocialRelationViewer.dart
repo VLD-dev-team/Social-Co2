@@ -146,15 +146,15 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          /*   if (actionType == 'friends')
+          if (actionType == 'friends')
             IconButton.filled(
                 onPressed: () {
-                  providerData.
+                  providerData.deleteFriend(user.userID);
                 },
                 icon: const Icon(
                   Icons.person_remove,
                   color: Colors.black,
-                )), */
+                )),
           if (actionType == 'friendRequests')
             IconButton.filled(
                 onPressed: () {
@@ -177,7 +177,7 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
           if (actionType == 'pendingRequests')
             IconButton.filled(
                 onPressed: () {
-                  // TODO: pending request non annulable dans l'api
+                  providerData.undoPendingRequest(user.userID);
                 },
                 icon: const Icon(Icons.close, color: Colors.red)),
           if (actionType == 'blockedUsers')

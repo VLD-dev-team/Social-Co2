@@ -464,8 +464,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                     listLeaderbaord(
                         "Monde",
                         MediaQuery.of(context).size.width / 2 -
-                            getDrawerWidth(context) / 2 -
-                            40), //ici on appelle le widget listLeaderBoard qui nous fournira le classement, avec comme paramètre le type de classement et la largeur
+                            getDrawerWidth(context) / 2 - 40), //ici on appelle le widget listLeaderBoard qui nous fournira le classement, avec comme paramètre le type de classement et la largeur
                     const VerticalDivider(
                       color: Colors.white,
                       width: 20, //barre blanche entre les 2 classements
@@ -473,9 +472,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                     ),
                     listLeaderbaord(
                         "Amis",
-                        MediaQuery.of(context).size.width / 2 -
-                            getDrawerWidth(context) / 2 -
-                            40),
+                        MediaQuery.of(context).size.width / 2 - getDrawerWidth(context) / 2 - 40),
                   ],
                 ),
               ),

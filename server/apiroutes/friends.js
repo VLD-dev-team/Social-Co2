@@ -56,7 +56,7 @@ router.route('/')
 
             // Récupération des informations utilisateur à partir de Firebase
             const usersPromises = friends.map(async (friend) => {
-                const friendID = friend.userID1 === userID ? friend.userID2 : friend.userID1;
+                const friendID = (friend.userID1 === userID) ? friend.userID2 : friend.userID1;
                 const userRecord = await admin.auth().getUser(friendID);
                 return {
                     userID: userRecord.uid,

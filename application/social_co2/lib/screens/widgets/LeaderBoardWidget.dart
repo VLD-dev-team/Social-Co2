@@ -35,7 +35,6 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
     }
   }
 
-
   Widget buildAffichagePourIndex1() {
     // contenu spécifique pour l'index 1
     return Container(
@@ -160,11 +159,12 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                 return SizedBox(
                   height: 420,
                   child: ListView.builder(
-                      itemCount: selectedIcon == "world" 
-                        ? (value.leaderBoardWorld.leaderBoardData.length < 30 
-                            ? value.leaderBoardWorld.leaderBoardData.length 
-                            : 30)
-                        : value.leaderBoardFriends.leaderBoardData.length, //Nombre de lignes dans le classement, en plafonnant a 30 le nombre de lignes du classement mondial
+                      itemCount: selectedIcon == "world"
+                          ? (value.leaderBoardWorld.leaderBoardData.length < 30
+                              ? value.leaderBoardWorld.leaderBoardData.length
+                              : 30)
+                          : value.leaderBoardFriends.leaderBoardData
+                              .length, //Nombre de lignes dans le classement, en plafonnant a 30 le nombre de lignes du classement mondial
                       itemBuilder: ((context, index) {
                         return Container(
                           margin: const EdgeInsets.all(2),
@@ -201,18 +201,40 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                                     CircleAvatar(
                                       //affiche un rond qui contient la photo de profil de l'utilisateur
                                       backgroundImage: NetworkImage(
-                                        selectedIcon=="friends" ? value.leaderBoardFriends.leaderBoardData[index]["photoURL"] : value.leaderBoardWorld.leaderBoardData[index]["photoURL"],
+                                        selectedIcon == "friends"
+                                            ? value
+                                                .leaderBoardFriends
+                                                .leaderBoardData[index]
+                                                    ["photoURL"]
+                                                .toString()
+                                            : value
+                                                .leaderBoardWorld
+                                                .leaderBoardData[index]
+                                                    ["photoURL"]
+                                                .toString(),
                                         scale: 40,
                                       ),
                                     ),
                                     Expanded(
                                         child: Center(
                                             child: Text(
-                                      selectedIcon=="friends" ? value.leaderBoardFriends.leaderBoardData[index]['name'].toString() : value.leaderBoardWorld.leaderBoardData[index]['name'].toString() ,
+                                      selectedIcon == "friends"
+                                          ? value.leaderBoardFriends
+                                              .leaderBoardData[index]['name']
+                                              .toString()
+                                          : value.leaderBoardWorld
+                                              .leaderBoardData[index]['name']
+                                              .toString(),
                                       style: const TextStyle(fontSize: 25),
                                     ))), //affichage pseudo utilisateur
-                                    Text(selectedIcon=="friends" ? value.leaderBoardFriends.leaderBoardData[index]['score'].toString() : value.leaderBoardWorld.leaderBoardData[index]['score'].toString() ,
-                                      
+                                    Text(
+                                      selectedIcon == "friends"
+                                          ? value.leaderBoardFriends
+                                              .leaderBoardData[index]['score']
+                                              .toString()
+                                          : value.leaderBoardWorld
+                                              .leaderBoardData[index]['score']
+                                              .toString(),
                                       style: const TextStyle(fontSize: 25),
                                     ),
                                   ],
@@ -356,11 +378,15 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                           );
                         } else if (value.error == "") {
                           return ListView.builder(
-                            itemCount: selectedIcon == "world" 
-                                ? (value.leaderBoardWorld.leaderBoardData.length < 30 
-                                    ? value.leaderBoardWorld.leaderBoardData.length 
+                            itemCount: selectedIcon == "world"
+                                ? (value.leaderBoardWorld.leaderBoardData
+                                            .length <
+                                        30
+                                    ? value
+                                        .leaderBoardWorld.leaderBoardData.length
                                     : 30)
-                                : value.leaderBoardFriends.leaderBoardData.length,
+                                : value
+                                    .leaderBoardFriends.leaderBoardData.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 margin: const EdgeInsets.all(2),
@@ -392,21 +418,47 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                                         children: [
                                           CircleAvatar(
                                             backgroundImage: NetworkImage(
-                                                selectedIcon=="friends" ? value.leaderBoardFriends.leaderBoardData[index]["photoURL"] : value.leaderBoardWorld.leaderBoardData[index]["photoURL"],
-                                                scale: 40,
+                                              selectedIcon == "friends"
+                                                  ? value.leaderBoardFriends
+                                                          .leaderBoardData[
+                                                      index]["photoURL"]
+                                                  : value.leaderBoardWorld
+                                                          .leaderBoardData[
+                                                      index]["photoURL"],
+                                              scale: 40,
                                             ),
                                           ),
                                           Expanded(
                                             child: Center(
                                               child: Text(
-                                                selectedIcon=="friends" ? value.leaderBoardFriends.leaderBoardData[index]['name'].toString() : value.leaderBoardWorld.leaderBoardData[index]['name'].toString() ,
+                                                selectedIcon == "friends"
+                                                    ? value
+                                                        .leaderBoardFriends
+                                                        .leaderBoardData[index]
+                                                            ['name']
+                                                        .toString()
+                                                    : value
+                                                        .leaderBoardWorld
+                                                        .leaderBoardData[index]
+                                                            ['name']
+                                                        .toString(),
                                                 style: const TextStyle(
                                                     fontSize: 25),
                                               ),
                                             ),
                                           ),
                                           Text(
-                                            selectedIcon=="friends" ? value.leaderBoardFriends.leaderBoardData[index]['score'].toString() : value.leaderBoardWorld.leaderBoardData[index]['score'].toString() ,
+                                            selectedIcon == "friends"
+                                                ? value
+                                                    .leaderBoardFriends
+                                                    .leaderBoardData[index]
+                                                        ['score']
+                                                    .toString()
+                                                : value
+                                                    .leaderBoardWorld
+                                                    .leaderBoardData[index]
+                                                        ['score']
+                                                    .toString(),
                                             style:
                                                 const TextStyle(fontSize: 25),
                                           ),
@@ -468,7 +520,8 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                     listLeaderbaord(
                         "Monde",
                         MediaQuery.of(context).size.width / 2 -
-                            getDrawerWidth(context) / 2 - 40), //ici on appelle le widget listLeaderBoard qui nous fournira le classement, avec comme paramètre le type de classement et la largeur
+                            getDrawerWidth(context) / 2 -
+                            40), //ici on appelle le widget listLeaderBoard qui nous fournira le classement, avec comme paramètre le type de classement et la largeur
                     const VerticalDivider(
                       color: Colors.white,
                       width: 20, //barre blanche entre les 2 classements
@@ -476,7 +529,9 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                     ),
                     listLeaderbaord(
                         "Amis",
-                        MediaQuery.of(context).size.width / 2 - getDrawerWidth(context) / 2 - 40),
+                        MediaQuery.of(context).size.width / 2 -
+                            getDrawerWidth(context) / 2 -
+                            40),
                   ],
                 ),
               ),
@@ -526,11 +581,11 @@ Widget listLeaderbaord(String title, double width) {
                 );
               } else if (value.error == "") {
                 return ListView.builder(
-                  itemCount: title == "Monde" 
-                        ? (value.leaderBoardWorld.leaderBoardData.length < 30 
-                            ? value.leaderBoardWorld.leaderBoardData.length 
-                            : 30)
-                        : value.leaderBoardFriends.leaderBoardData.length,
+                  itemCount: title == "Monde"
+                      ? (value.leaderBoardWorld.leaderBoardData.length < 30
+                          ? value.leaderBoardWorld.leaderBoardData.length
+                          : 30)
+                      : value.leaderBoardFriends.leaderBoardData.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin: const EdgeInsets.all(2),
@@ -561,20 +616,36 @@ Widget listLeaderbaord(String title, double width) {
                               children: [
                                 CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                        title=="Amis" ? value.leaderBoardFriends.leaderBoardData[index]["photoURL"] : value.leaderBoardWorld.leaderBoardData[index]["photoURL"],
-                                        scale: 40,
-                                      ),
+                                    title == "Amis"
+                                        ? value.leaderBoardFriends
+                                            .leaderBoardData[index]["photoURL"]
+                                        : value.leaderBoardWorld
+                                            .leaderBoardData[index]["photoURL"],
+                                    scale: 40,
+                                  ),
                                 ),
                                 Expanded(
                                   child: Center(
                                     child: Text(
-                                      title=="Amis" ? value.leaderBoardFriends.leaderBoardData[index]['name'].toString() : value.leaderBoardWorld.leaderBoardData[index]['name'].toString() ,
+                                      title == "Amis"
+                                          ? value.leaderBoardFriends
+                                              .leaderBoardData[index]['name']
+                                              .toString()
+                                          : value.leaderBoardWorld
+                                              .leaderBoardData[index]['name']
+                                              .toString(),
                                       style: const TextStyle(fontSize: 25),
                                     ),
                                   ),
                                 ),
                                 Text(
-                                  title=="Amis" ? value.leaderBoardFriends.leaderBoardData[index]['score'].toString() : value.leaderBoardWorld.leaderBoardData[index]['score'].toString() ,
+                                  title == "Amis"
+                                      ? value.leaderBoardFriends
+                                          .leaderBoardData[index]['score']
+                                          .toString()
+                                      : value.leaderBoardWorld
+                                          .leaderBoardData[index]['score']
+                                          .toString(),
                                   style: const TextStyle(fontSize: 25),
                                 ),
                               ],

@@ -11,9 +11,14 @@ class LeaderBoardProvider extends ChangeNotifier {
   LeaderBoard leaderBoardFriends =
       LeaderBoard(leaderBoardType: "friends", leaderBoardData: []);
 
-  get localLeaderBoardType => null;
+  LeaderBoardProvider() {
+    initData();
+  }
 
-  
+  Future<void> initData() async {
+    getLeaderBoard('world');
+    getLeaderBoard('friends');
+  }
 
   Future<LeaderBoard> getLeaderBoard(String leaderBoardType) async {
     isLoading = true;
@@ -51,8 +56,11 @@ class LeaderBoardProvider extends ChangeNotifier {
     try {
       if (leaderBoardType == "world") {
         leaderBoardWorld = LeaderBoard.fromJSON(data);
+        leaderBoardWorld.leaderBoardType = leaderBoardType;
       } else {
+        data['leaderboardType'] = "friends";
         leaderBoardFriends = LeaderBoard.fromJSON(data);
+        leaderBoardFriends.leaderBoardType = leaderBoardType;
       }
     } catch (e) {
       error = e.toString();

@@ -1,16 +1,15 @@
 class LeaderBoard {
-  String leaderBoardType;
-  List<Map<String, dynamic>> leaderBoardData;
+  String? leaderBoardType;
+  List<dynamic> leaderBoardData;
 
   LeaderBoard({
-    required this.leaderBoardType,
+    this.leaderBoardType,
     required this.leaderBoardData,
   });
 
   factory LeaderBoard.fromJSON(Map<String, dynamic> json) {
     return LeaderBoard(
-      leaderBoardType: json["leaderBoardType"], 
-      leaderBoardData: json["leaderBoardData"],
+      leaderBoardData: json["leaderboard"],
     );
   }
 }

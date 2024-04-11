@@ -54,17 +54,29 @@ router.route('/')
                 friends = friends1.concat(friends2);
             }
 
+            console.log(friends)
+
             // Récupération des informations utilisateur à partir de Firebase
             const usersPromises = friends.map(async (friend) => {
-                const friendID = friend.userID1 === userID ? friend.userID2 : friend.userID1;
+                console.log(friend.userID)
+                const friendID = friend.userID
                 const userRecord = await admin.auth().getUser(friendID);
+                let name = userRecord.displayName;
+                let photoURL = userRecord.photoURL;
+                if (typeof userRecord.displayName !== "string"){
+                    name = null
+                }
+                if (typeof userRecord.photoURL !== "string"){
+                    photoURL = null
+                }
                 return {
                     userID: userRecord.uid,
-                    name: userRecord.displayName,
-                    photoURL: userRecord.photoURL
+                    name: name,
+                    photoURL: photoURL
                 };
         });
             const users = await Promise.all(usersPromises);
+
     
             const response = {
                 results : users
@@ -89,8 +101,6 @@ router.route('/')
             const actionType = req.body.actionType;
             const friendID = req.body.friendid;
 
-            console.log(friendID)
-            console.log(userID)
             // Vérification du typage
             if (typeof actionType !== 'string' || typeof userID !== 'string' || typeof friendID !== 'string') {
                 const response = {

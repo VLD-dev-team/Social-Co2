@@ -324,6 +324,7 @@ class _CardMoreInformations extends State<CardMoreInformations> {
               onPressed: () {
                 setState(() {
                   final Map<String, dynamic> data = createJson();
+                  print(data);
                   Provider.of<UserSCO2DataProvider>(context, listen: false)
                       .updateUserSCO2Data(data)
                       .then((value) => {saved = true});
@@ -407,7 +408,7 @@ class _CardMoreInformations extends State<CardMoreInformations> {
       'recycl': recycling,
       'car': getCarSizeLabelFromEnum(_selectedCarSize!),
       'hybrid': isCarHybrid,
-      'nb_inhabitants': nb_inhabitantsController.text.toString(),
+      'nb_inhabitants': nb_inhabitantsController.text,
     };
   }
 }

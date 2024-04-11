@@ -19,9 +19,9 @@ class FriendshipsProvider extends ChangeNotifier {
 
   Future<void> initData() async {
     getFriends();
+    getFriendRequests();
     getPendingRequests();
     getBlockedUsers();
-    getFriendRequests();
   }
 
   Future<List<SCO2user>> getFriends() async {
@@ -29,7 +29,9 @@ class FriendshipsProvider extends ChangeNotifier {
         .then((value) => friends = value)
         .catchError((err) {
       error = err.toString();
+      return Future(() => friends);
     });
+    notifyListeners();
     return friends;
   }
 
@@ -38,7 +40,9 @@ class FriendshipsProvider extends ChangeNotifier {
         .then((value) => friendRequests = value)
         .catchError((err) {
       error = err.toString();
+      return Future(() => friendRequests);
     });
+    notifyListeners();
     return friendRequests;
   }
 
@@ -47,7 +51,9 @@ class FriendshipsProvider extends ChangeNotifier {
         .then((value) => pendingRequests = value)
         .catchError((err) {
       error = err.toString();
+      return Future(() => pendingRequests);
     });
+    notifyListeners();
     return pendingRequests;
   }
 
@@ -56,7 +62,9 @@ class FriendshipsProvider extends ChangeNotifier {
         .then((value) => blockedUsers = value)
         .catchError((err) {
       error = err.toString();
+      return Future(() => blockedUsers);
     });
+    notifyListeners();
     return blockedUsers;
   }
 
@@ -74,7 +82,7 @@ class FriendshipsProvider extends ChangeNotifier {
     // On fait la requette au server
     final data = await requestService().get("friends?actionType=$actionType", {
       "authorization": '$authToken',
-      'userid': '$userID',
+      'userid': userID,
     });
 
     // On analyse la réponse du server
@@ -176,7 +184,7 @@ class FriendshipsProvider extends ChangeNotifier {
       "friends",
       {
         "authorization": '$authToken',
-        'userid': '$myuserID',
+        'userid': myuserID,
       },
       {
         "actionType": actionType.toString(),
@@ -200,8 +208,6 @@ class FriendshipsProvider extends ChangeNotifier {
 
     // On obtient le message du serveur
     final message = '${data['message']}';
-    print(message);
-    print(data);
 
     // On termine la requette
     loading = false;

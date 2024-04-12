@@ -4,8 +4,8 @@ const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
 const admin = require('firebase-admin');
 
-router.route('/*')
-    .all((req, res, next) => verifyAuthToken(req, res, next));
+// router.route('/*')
+//     .all((req, res, next) => verifyAuthToken(req, res, next));
     
 router.route('/')
     .get(async (req, res) => {
@@ -57,31 +57,40 @@ router.route('/')
             console.log(friends)
 
             // Récupération des informations utilisateur à partir de Firebase
-            const usersPromises = friends.map(async (friend) => {
-                console.log(friend.userID)
-                const friendID = friend.userID
-                const userRecord = await admin.auth().getUser(friendID);
-                let name = userRecord.displayName;
-                let photoURL = userRecord.photoURL;
-                if (typeof userRecord.displayName !== "string"){
-                    name = null
-                }
-                if (typeof userRecord.photoURL !== "string"){
-                    photoURL = null
-                }
-                return {
-                    uid: userRecord.uid,
-                    name: name,
-                    photoURL: photoURL
-                };
-        });
-            const users = await Promise.all(usersPromises);
+            if (friends.length > 0 ){
+                const usersPromises = friends.map(async (friend) => {
+                    const friendID = friend.userID
+                    const userRecord = await admin.auth().getUser(friendID);
+                    let name = userRecord.displayName;
+                    let photoURL = userRecord.photoURL;
+                    if (typeof userRecord.displayName !== "string"){
+                        name = null
+                    }
+                    if (typeof userRecord.photoURL !== "string"){
+                        photoURL = null
+                    }
+                    return {
+                        uid: userRecord.uid,
+                        name: name,
+                        photoURL: photoURL
+                    };
+            });
+                const users = await Promise.all(usersPromises);
+                console.log("users : ", users)
 
-    
-            const response = {
-                results : users
+                const response = {
+                    results : users
+                }
+                return res.status(200).json(response);
+            } else {
+                const users = friends
+                console.log("users : ", users)
+
+                const response = {
+                    results : users
+                }
+                return res.status(200).json(response);
             }
-            return res.status(200).json(response);
         } catch (error) {
             console.error('Error retrieving friends:', error);
             const response = {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/providers/LeaderboardProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
@@ -158,7 +159,12 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                 return SizedBox(
                   height: 420,
                   child: ListView.builder(
-                      itemCount: 10, //Nombre de lignes dans le classement
+                      itemCount: selectedIcon == "world"
+                          ? (value.leaderBoardWorld.leaderBoardData.length < 30
+                              ? value.leaderBoardWorld.leaderBoardData.length
+                              : 30)
+                          : value.leaderBoardFriends.leaderBoardData
+                              .length, //Nombre de lignes dans le classement, en plafonnant a 30 le nombre de lignes du classement mondial
                       itemBuilder: ((context, index) {
                         return Container(
                           margin: const EdgeInsets.all(2),
@@ -192,24 +198,43 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                                 ),
                                 title: Row(
                                   children: [
-                                    const CircleAvatar(
+                                    CircleAvatar(
                                       //affiche un rond qui contient la photo de profil de l'utilisateur
-                                      backgroundColor:
-                                          Color.fromRGBO(157, 188, 150, 1),
-                                      child: Icon(
-                                        Icons
-                                            .account_circle_outlined, //TODO : à remplacer par la photo de profil
-                                        size: 40,
+                                      backgroundImage: NetworkImage(
+                                        selectedIcon == "friends"
+                                            ? value
+                                                .leaderBoardFriends
+                                                .leaderBoardData[index]
+                                                    ["photoURL"]
+                                                .toString()
+                                            : value
+                                                .leaderBoardWorld
+                                                .leaderBoardData[index]
+                                                    ["photoURL"]
+                                                .toString(),
+                                        scale: 40,
                                       ),
                                     ),
                                     Expanded(
                                         child: Center(
                                             child: Text(
-                                      "Username$selectedIcon", //value.leaderBoardFriends.leaderBoardData[index]['username'].toString()
+                                      selectedIcon == "friends"
+                                          ? value.leaderBoardFriends
+                                              .leaderBoardData[index]['name']
+                                              .toString()
+                                          : value.leaderBoardWorld
+                                              .leaderBoardData[index]['name']
+                                              .toString(),
                                       style: const TextStyle(fontSize: 25),
-                                    ))), //affichage pseudo utilisateur                           //TODO : remplacer par vraies valeurs
+                                    ))), //affichage pseudo utilisateur
                                     Text(
-                                      '${index + 5000}',
+                                      selectedIcon == "friends"
+                                          ? value.leaderBoardFriends
+                                              .leaderBoardData[index]['score']
+                                              .toString()
+                                          : value.leaderBoardWorld
+                                              .leaderBoardData[index]['score']
+                                              .toString(),
                                       style: const TextStyle(fontSize: 25),
                                     ),
                                   ],
@@ -353,7 +378,15 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                           );
                         } else if (value.error == "") {
                           return ListView.builder(
-                            itemCount: 30,
+                            itemCount: selectedIcon == "world"
+                                ? (value.leaderBoardWorld.leaderBoardData
+                                            .length <
+                                        30
+                                    ? value
+                                        .leaderBoardWorld.leaderBoardData.length
+                                    : 30)
+                                : value
+                                    .leaderBoardFriends.leaderBoardData.length,
                             itemBuilder: (context, index) {
                               return Container(
                                 margin: const EdgeInsets.all(2),
@@ -383,26 +416,49 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                                       ),
                                       title: Row(
                                         children: [
-                                          const CircleAvatar(
-                                            backgroundColor: Color.fromRGBO(
-                                                157, 188, 150, 1),
-                                            child: Icon(
-                                              Icons
-                                                  .account_circle_outlined, //TODO à remplacer
-                                              size: 40,
+                                          CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                              selectedIcon == "friends"
+                                                  ? value.leaderBoardFriends
+                                                          .leaderBoardData[
+                                                      index]["photoURL"]
+                                                  : value.leaderBoardWorld
+                                                          .leaderBoardData[
+                                                      index]["photoURL"],
+                                              scale: 40,
                                             ),
                                           ),
                                           Expanded(
                                             child: Center(
                                               child: Text(
-                                                "Username$selectedIcon", // TODO a remplacer
+                                                selectedIcon == "friends"
+                                                    ? value
+                                                        .leaderBoardFriends
+                                                        .leaderBoardData[index]
+                                                            ['name']
+                                                        .toString()
+                                                    : value
+                                                        .leaderBoardWorld
+                                                        .leaderBoardData[index]
+                                                            ['name']
+                                                        .toString(),
                                                 style: const TextStyle(
                                                     fontSize: 25),
                                               ),
                                             ),
                                           ),
                                           Text(
-                                            '${index + 5000}',
+                                            selectedIcon == "friends"
+                                                ? value
+                                                    .leaderBoardFriends
+                                                    .leaderBoardData[index]
+                                                        ['score']
+                                                    .toString()
+                                                : value
+                                                    .leaderBoardWorld
+                                                    .leaderBoardData[index]
+                                                        ['score']
+                                                    .toString(),
                                             style:
                                                 const TextStyle(fontSize: 25),
                                           ),
@@ -525,7 +581,11 @@ Widget listLeaderbaord(String title, double width) {
                 );
               } else if (value.error == "") {
                 return ListView.builder(
-                  itemCount: 30,
+                  itemCount: title == "Monde"
+                      ? (value.leaderBoardWorld.leaderBoardData.length < 30
+                          ? value.leaderBoardWorld.leaderBoardData.length
+                          : 30)
+                      : value.leaderBoardFriends.leaderBoardData.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin: const EdgeInsets.all(2),
@@ -554,24 +614,38 @@ Widget listLeaderbaord(String title, double width) {
                             ),
                             title: Row(
                               children: [
-                                const CircleAvatar(
-                                  backgroundColor:
-                                      Color.fromRGBO(157, 188, 150, 1),
-                                  child: Icon(
-                                    Icons.account_circle_outlined,
-                                    size: 40,
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    title == "Amis"
+                                        ? value.leaderBoardFriends
+                                            .leaderBoardData[index]["photoURL"]
+                                        : value.leaderBoardWorld
+                                            .leaderBoardData[index]["photoURL"],
+                                    scale: 40,
                                   ),
                                 ),
                                 Expanded(
                                   child: Center(
                                     child: Text(
-                                      "Username$title", // TODO a remplacer
+                                      title == "Amis"
+                                          ? value.leaderBoardFriends
+                                              .leaderBoardData[index]['name']
+                                              .toString()
+                                          : value.leaderBoardWorld
+                                              .leaderBoardData[index]['name']
+                                              .toString(),
                                       style: const TextStyle(fontSize: 25),
                                     ),
                                   ),
                                 ),
                                 Text(
-                                  '${index + 5000}',
+                                  title == "Amis"
+                                      ? value.leaderBoardFriends
+                                          .leaderBoardData[index]['score']
+                                          .toString()
+                                      : value.leaderBoardWorld
+                                          .leaderBoardData[index]['score']
+                                          .toString(),
                                   style: const TextStyle(fontSize: 25),
                                 ),
                               ],

@@ -8,8 +8,6 @@ class SearchProvider extends ChangeNotifier {
   String error = "";
 
   Future<List<dynamic>> search(query) async {
-    print("Recherche lancé pour $query");
-
     // On récupère le token de connexion
     final authToken = await FirebaseAuth.instance.currentUser!.getIdToken();
     final userID = FirebaseAuth.instance.currentUser!.uid;

@@ -34,7 +34,7 @@ List<Map<String, dynamic>> activeActivityTypes = [
 ];
 
 List<Map<String, dynamic>> meals = [
-  {"type": "vegetarien", "label": "Végétarien"},
+  {"type": "vegetarian", "label": "Végétarien"},
   {
     "type": "fatty_fish",
     "label":

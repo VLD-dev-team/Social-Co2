@@ -86,9 +86,9 @@ class _CardMoreInformations extends State<CardMoreInformations> {
               child: ListView(
                 children: [
                   Consumer<UserSCO2DataProvider>(
-                    builder: (context, value, child) {
+                    builder: (context, PROVIDERVALUE, child) {
                       return Visibility(
-                          visible: (value.error != ""),
+                          visible: (PROVIDERVALUE.error != ""),
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 10),
                             decoration: primaryCard,
@@ -98,8 +98,8 @@ class _CardMoreInformations extends State<CardMoreInformations> {
                               leading: const Icon(Icons.error),
                               title: const Text(
                                   "Une erreur est survenue lors de l'obtention/envoi des données."),
-                              subtitle: Text(value.error.toString()),
-                              trailing: (value.isLoading)
+                              subtitle: Text(PROVIDERVALUE.error.toString()),
+                              trailing: (PROVIDERVALUE.isLoading)
                                   ? const SizedBox(
                                       width: 20,
                                       height: 20,
@@ -108,10 +108,7 @@ class _CardMoreInformations extends State<CardMoreInformations> {
                                       ))
                                   : IconButton(
                                       onPressed: () {
-                                        Provider.of<UserSCO2DataProvider>(
-                                                context,
-                                                listen: false)
-                                            .getUserSCO2Data();
+                                        PROVIDERVALUE.getUserSCO2Data();
                                       },
                                       icon: const Icon(Icons.refresh)),
                             ),
@@ -121,10 +118,10 @@ class _CardMoreInformations extends State<CardMoreInformations> {
                   Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 10),
-                      child: ListTile(
-                        title: const Text("Maison"),
+                      child: const ListTile(
+                        title: Text("Maison"),
                         subtitle: Wrap(
-                          children: const [
+                          children: [
                             Text(
                                 "Informations sur votre lieu de vie principal.")
                           ],
@@ -254,10 +251,10 @@ class _CardMoreInformations extends State<CardMoreInformations> {
                   Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 10),
-                      child: ListTile(
-                        title: const Text("Voiture personnelle"),
+                      child: const ListTile(
+                        title: Text("Voiture personnelle"),
                         subtitle: Wrap(
-                          children: const [
+                          children: [
                             Text(
                                 "Si votre voiture principale est 100% éléctrique, cette section est facultative")
                           ],
@@ -411,7 +408,7 @@ class _CardMoreInformations extends State<CardMoreInformations> {
       'recycl': recycling,
       'car': getCarSizeLabelFromEnum(_selectedCarSize!),
       'hybrid': isCarHybrid,
-      'nb_inhabitants': nb_inhabitantsController.text.toString(),
+      'nb_inhabitants': nb_inhabitantsController.text,
     };
   }
 }

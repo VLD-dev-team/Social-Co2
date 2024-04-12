@@ -136,7 +136,10 @@ class _SearchCardState extends State<SearchCard> {
                     });
                     value
                         .sendFriendRequest(result['uid'])
-                        .then((value) => null)
+                        .then((value) => Provider.of<FriendshipsProvider>(
+                                context,
+                                listen: false)
+                            .refreshData())
                         .catchError((error) {
                       setState(() {
                         sended.remove(result['uid']);

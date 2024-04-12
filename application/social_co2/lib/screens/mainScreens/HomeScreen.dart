@@ -46,12 +46,15 @@ class HomeScreen extends StatelessWidget {
                       // On intégre les widgets de droite en dessous du recap du score sur les plus petits écrans
                       (responsiveFormat == ResponsiveFormats.mid ||
                               responsiveFormat == ResponsiveFormats.small)
-                          ? Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Expanded(child: LeaderBoardWidget(indexAffichage: 1,)),
+                                children: [
+                                  Expanded(
+                                      child: LeaderBoardWidget(
+                                    indexAffichage: 1,
+                                  )),
                                   Expanded(child: ReccurentActivities())
                                 ],
                               ),
@@ -70,12 +73,14 @@ class HomeScreen extends StatelessWidget {
                     .large) // On insére les widgets de la colonne de droite si l'écran est large
               SizedBox(
                   width: (MediaQuery.of(context).size.width - drawerWidth) / 3,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10, right: 10),
+                  child: const Padding(
+                    padding: EdgeInsets.only(top: 10, right: 10),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          LeaderBoardWidget(indexAffichage: 1,),
+                        children: [
+                          LeaderBoardWidget(
+                            indexAffichage: 1,
+                          ),
                           ReccurentActivities(),
                         ]),
                   )),

@@ -13,31 +13,58 @@ class FriendshipsProvider extends ChangeNotifier {
   List<SCO2user> pendingRequests = []; // Demandes d'amitiés sortantes
   List<SCO2user> blockedUsers = []; // bloqués par l'utilisateur courant
 
+  FriendshipsProvider() {
+    refreshData();
+  }
+
+  Future<void> refreshData() async {
+    getFriends();
+    getFriendRequests();
+    getPendingRequests();
+    getBlockedUsers();
+  }
+
   Future<List<SCO2user>> getFriends() async {
     await getListOfUsers("friends")
         .then((value) => friends = value)
-        .catchError((err) => error = err);
+        .catchError((err) {
+      error = err.toString();
+      return Future(() => friends);
+    });
+    notifyListeners();
     return friends;
   }
 
   Future<List<SCO2user>> getFriendRequests() async {
     await getListOfUsers("request_receive")
         .then((value) => friendRequests = value)
-        .catchError((err) => error = err);
+        .catchError((err) {
+      error = err.toString();
+      return Future(() => friendRequests);
+    });
+    notifyListeners();
     return friendRequests;
   }
 
   Future<List<SCO2user>> getPendingRequests() async {
     await getListOfUsers("request_send")
         .then((value) => pendingRequests = value)
-        .catchError((err) => error = err);
+        .catchError((err) {
+      error = err.toString();
+      return Future(() => pendingRequests);
+    });
+    notifyListeners();
     return pendingRequests;
   }
 
   Future<List<SCO2user>> getBlockedUsers() async {
     await getListOfUsers("block")
         .then((value) => blockedUsers = value)
-        .catchError((err) => error = err);
+        .catchError((err) {
+      error = err.toString();
+      return Future(() => blockedUsers);
+    });
+    notifyListeners();
     return blockedUsers;
   }
 
@@ -55,7 +82,7 @@ class FriendshipsProvider extends ChangeNotifier {
     // On fait la requette au server
     final data = await requestService().get("friends?actionType=$actionType", {
       "authorization": '$authToken',
-      'userid': '$userID',
+      'userid': userID,
     });
 
     // On analyse la réponse du server
@@ -126,6 +153,22 @@ class FriendshipsProvider extends ChangeNotifier {
     return status;
   }
 
+  Future<String> deleteFriend(String userID) async {
+    var status = "";
+    await requestAction("delete", userID)
+        .then((value) => status = value)
+        .catchError((err) => error = err);
+    return status;
+  }
+
+  Future<String> undoPendingRequest(String userID) async {
+    var status = "";
+    await requestAction("undo", userID)
+        .then((value) => status = value)
+        .catchError((err) => error = err);
+    return status;
+  }
+
   Future<String> requestAction(actionType, userID) async {
     // On initialise la liste et le provider
     error = "";
@@ -134,14 +177,20 @@ class FriendshipsProvider extends ChangeNotifier {
 
     // On récupère le token de connexion
     final authToken = await FirebaseAuth.instance.currentUser!.getIdToken();
-    final userID = FirebaseAuth.instance.currentUser!.uid;
+    final myuserID = FirebaseAuth.instance.currentUser!.uid;
 
     // On fait la requette au server
-    final data = await requestService()
-        .post("friends?actionType=$actionType&friendid=$userID", {
-      "authorization": '$authToken',
-      'userid': '$userID',
-    }, {});
+    final data = await requestService().post(
+      "friends",
+      {
+        "authorization": '$authToken',
+        'userid': myuserID,
+      },
+      {
+        "actionType": actionType.toString(),
+        "friendid": userID.toString(),
+      },
+    );
 
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
@@ -159,10 +208,11 @@ class FriendshipsProvider extends ChangeNotifier {
 
     // On obtient le message du serveur
     final message = '${data['message']}';
+    
+    // On obtient de nouveau la liste des relations
+    refreshData();
 
     // On termine la requette
-    loading = false;
-    notifyListeners();
     return message;
   }
 }

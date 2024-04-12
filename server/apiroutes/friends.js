@@ -372,7 +372,7 @@ router.route('/')
                 if (sqlFriendResult.length > 0){
                     console.log("Deblock activate")
                     let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')
-                    FriendshipStatus[0] = "2";
+                    FriendshipStatus[0] = "1";
                     FriendshipStatus = FriendshipStatus.join().replaceAll(',' , '')
                     const sqlQuery = `UPDATE friends SET friendshipStatus = ? WHERE userID1 = ? AND userID2 = ?;`;
                     const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, userID, friendID]);
@@ -398,7 +398,7 @@ router.route('/')
                     // Si jamais une relation est bien existante alors on met à jour la table friends
                     if (sqlFriendResult.length > 0){
                         let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')
-                        FriendshipStatus[1] = "2";
+                        FriendshipStatus[1] = "1";
                         FriendshipStatus = FriendshipStatus.join().replaceAll(',' , '')
                         const sqlQuery = `UPDATE friends SET friendshipStatus = ? WHERE userID1 = ? AND userID2 = ?;`;
                         const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, friendID, userID]);

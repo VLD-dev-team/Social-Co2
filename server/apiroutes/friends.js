@@ -172,7 +172,7 @@ router.route('/')
                 if (sqlFriendResult.length > 0){
                     // On met à jour la relation entre les 2 utilisateurs
 
-                    let FriendshipStatus = sqlFriendResult.friendshipStatus.split('')
+                    let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')
                     FriendshipStatus[0] = "3";
                     FriendshipStatus = FriendshipStatus.join().replaceAll(',' , '')
 
@@ -201,7 +201,7 @@ router.route('/')
                     const sqlFriendResult = await executeQuery(sqlFriend, [friendID, userID]);
                     // Si jamais une relation est bien existante alors on met à jour la table friends
                     if (sqlFriendResult.length > 0){
-                        let FriendshipStatus = sqlFriendResult.friendshipStatus.split('')
+                        let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')
                         FriendshipStatus[1] = "3";
                         FriendshipStatus = FriendshipStatus.join().replaceAll(',' , '')
 

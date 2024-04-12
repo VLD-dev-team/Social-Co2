@@ -365,11 +365,12 @@ router.route('/')
                 }
             }
             if (actionType == "deblock"){
-                console.log("Deblock activate")
                 const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND (friendshipStatus = "31" OR friendshipStatus = "32" OR friendshipStatus = "33") ;`;
                 const sqlFriendResult = await executeQuery(sqlFriend, [userID, friendID]);
                 // Si jamais une relation est bien existante alors on met à jour la table friends
+                console.log(sqlFriendResult)
                 if (sqlFriendResult.length > 0){
+                    console.log("Deblock activate")
                     let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')
                     FriendshipStatus[0] = "2";
                     FriendshipStatus = FriendshipStatus.join().replaceAll(',' , '')
@@ -400,7 +401,7 @@ router.route('/')
                         FriendshipStatus[1] = "2";
                         FriendshipStatus = FriendshipStatus.join().replaceAll(',' , '')
                         const sqlQuery = `UPDATE friends SET friendshipStatus = ? WHERE userID1 = ? AND userID2 = ?;`;
-                        const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, userID, friendID]);
+                        const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, friendID, userID]);
                         // Si la MAJ a bien été effectué alors l'utilisateur a bien été bloqué
                         if (sqlResult.affectedRows > 0){
                             const response = {

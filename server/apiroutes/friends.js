@@ -369,8 +369,9 @@ router.route('/')
                 const sqlFriendResult = await executeQuery(sqlFriend, [userID, friendID]);
                 // Si jamais une relation est bien existante alors on met à jour la table friends
                 if (sqlFriendResult.length > 0){
-                    let FriendshipStatus = sqlFriendResult.friendshipStatus
+                    let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')
                     FriendshipStatus[0] = "2";
+                    FriendshipStatus = FriendshipStatus.join().replaceAll(',' , '')
                     const sqlQuery = `UPDATE friends SET friendshipStatus = ? WHERE userID1 = ? AND userID2 = ?;`;
                     const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, userID, friendID]);
                     // Si on a pu mettre à jour la BDD alors l'utilisateur a bien été bloqué
@@ -394,8 +395,9 @@ router.route('/')
                     const sqlFriendResult = await executeQuery(sqlFriend, [friendID, userID]);
                     // Si jamais une relation est bien existante alors on met à jour la table friends
                     if (sqlFriendResult.length > 0){
-                        let FriendshipStatus = sqlFriendResult.friendshipStatus
+                        let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')
                         FriendshipStatus[1] = "2";
+                        FriendshipStatus = FriendshipStatus.join().replaceAll(',' , '')
                         const sqlQuery = `UPDATE friends SET friendshipStatus = ? WHERE userID1 = ? AND userID2 = ?;`;
                         const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, userID, friendID]);
                         // Si la MAJ a bien été effectué alors l'utilisateur a bien été bloqué

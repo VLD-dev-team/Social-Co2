@@ -33,23 +33,23 @@ router.route('/')
                 friends = friends1.concat(friends2);
             } else if (actionType === "request_receive") {
                 // Requête pour obtenir les amis en attente
-                const getFriendsQuery = `SELECT * FROM friends WHERE userID1 = ? AND friendshipStatus = "12" ;`;
+                const getFriendsQuery = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID2 WHERE userID1 = ? AND friendshipStatus = "12" ;`;
                 const friends1 = await executeQuery(getFriendsQuery, [userID]);
-                const getFriendsQuery2 = `SELECT * FROM friends WHERE userID2 = ? AND friendshipStatus = "21" ;`;
+                const getFriendsQuery2 = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID1 WHERE userID2 = ? AND friendshipStatus = "21" ;`;
                 const friends2 = await executeQuery(getFriendsQuery2, [userID]);
                 friends = friends1.concat(friends2);
             } else if (actionType === "block") {
                 // Requête pour obtenir les personnes bloquées
-                const getFriendsQuery = `SELECT * FROM friends WHERE userID1 = ? AND (friendshipStatus = "31" OR friendshipStatus = "33" OR friendshipStatus = "32") ;`;
+                const getFriendsQuery = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID2 WHERE userID1 = ? AND (friendshipStatus = "31" OR friendshipStatus = "33" OR friendshipStatus = "32") ;`;
                 const friends1 = await executeQuery(getFriendsQuery, [userID]);
-                const getFriendsQuery2 = `SELECT * FROM friends WHERE userID2 = ? AND (friendshipStatus = "13" OR friendshipStatus = "33" OR friendshipStatus = "23") ;`;
+                const getFriendsQuery2 = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID1 WHERE userID2 = ? AND (friendshipStatus = "13" OR friendshipStatus = "33" OR friendshipStatus = "23") ;`;
                 const friends2 = await executeQuery(getFriendsQuery2, [userID]);
                 friends = friends1.concat(friends2);
             } else if (actionType === "friends") {
                 // Requête pour obtenir ses amis
-                const getFriendsQuery = `SELECT * FROM friends WHERE userID1 = ? AND friendshipStatus = "22" ;`;
+                const getFriendsQuery = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID2 WHERE userID1 = ? AND friendshipStatus = "22" ;`;
                 const friends1 = await executeQuery(getFriendsQuery, [userID]);
-                const getFriendsQuery2 = `SELECT * FROM friends WHERE userID2 = ? AND friendshipStatus = "22" ;`;
+                const getFriendsQuery2 = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID1 WHERE userID2 = ? AND friendshipStatus = "22" ;`;
                 const friends2 = await executeQuery(getFriendsQuery2, [userID]);
                 friends = friends1.concat(friends2);
             }

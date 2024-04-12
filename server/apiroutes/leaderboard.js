@@ -44,7 +44,7 @@ router.route('/world')
                 }
 
                 return {
-                    id: userData.uid,
+                    uid: userData.uid,
                     name: surname,
                     photoURL: photoURL,
                     score: user.score
@@ -130,7 +130,7 @@ router.route('/friends')
                     photoURL = null
                 }
                 return {
-                    id: userData.uid,
+                    uid: userData.uid,
                     name: surname,
                     photoURL: photoURL,
                     score: user.score

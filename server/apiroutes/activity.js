@@ -182,6 +182,7 @@ router.route('/')
             // Then apply the passive score
             score = activityCalculator.passiveScore(activityCalculator.multiplier(selectResult.recycl, selectResult.nb_inhabitants, selectResult.surface, selectResult.garden, selectResult.multiplier, selectResult.heating), score)
 
+            console.log(score)
             // We can now insert the activity into the activities table
             const insertQuery = `
             INSERT INTO activities (userID, activityType, activityCO2Impact, activityName, activityTimestamp)

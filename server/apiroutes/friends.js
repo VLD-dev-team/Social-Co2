@@ -70,7 +70,7 @@ router.route('/')
                     photoURL = null
                 }
                 return {
-                    userID: userRecord.uid,
+                    uid: userRecord.uid,
                     name: name,
                     photoURL: photoURL
                 };

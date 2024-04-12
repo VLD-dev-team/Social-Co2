@@ -183,7 +183,7 @@ class _SocialRelationViewerState extends State<SocialRelationViewer> {
           if (actionType == 'blockedUsers')
             IconButton.filled(
                 onPressed: () {
-                  providerData.blockUser(user.userID);
+                  providerData.unlockUser(user.userID);
                 },
                 icon: const Icon(Icons.check, color: Colors.green)),
         ],

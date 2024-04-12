@@ -139,7 +139,7 @@ class _SearchCardState extends State<SearchCard> {
                         .then((value) => Provider.of<FriendshipsProvider>(
                                 context,
                                 listen: false)
-                            .initData())
+                            .refreshData())
                         .catchError((error) {
                       setState(() {
                         sended.remove(result['uid']);

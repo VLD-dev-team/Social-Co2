@@ -14,10 +14,10 @@ class FriendshipsProvider extends ChangeNotifier {
   List<SCO2user> blockedUsers = []; // bloqués par l'utilisateur courant
 
   FriendshipsProvider() {
-    initData();
+    refreshData();
   }
 
-  Future<void> initData() async {
+  Future<void> refreshData() async {
     getFriends();
     getFriendRequests();
     getPendingRequests();
@@ -208,10 +208,11 @@ class FriendshipsProvider extends ChangeNotifier {
 
     // On obtient le message du serveur
     final message = '${data['message']}';
+    
+    // On obtient de nouveau la liste des relations
+    refreshData();
 
     // On termine la requette
-    loading = false;
-    notifyListeners();
     return message;
   }
 }

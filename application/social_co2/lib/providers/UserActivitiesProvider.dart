@@ -79,7 +79,6 @@ class UserActivitiesProvider extends ChangeNotifier {
     // Liste d'activités
     List<SCO2activity> parsingList = [];
     for (var i = 0; i < data['activities'].length; i++) {
-      print(data[i]);
       parsingList.add(SCO2activity.fromJSON(data[i]));
     }
     userActivitiesPerDays.update(
@@ -87,8 +86,6 @@ class UserActivitiesProvider extends ChangeNotifier {
       (value) => parsingList,
       ifAbsent: () => parsingList,
     );
-
-    print(userRecapPhrasePerDays.keys.toString());
 
     // On renvoie les données aux widgets et à l'appel de la fonction
     isLoading = false;
@@ -172,12 +169,10 @@ class UserActivitiesProvider extends ChangeNotifier {
     // On construit les headers et le body de la requette
     final body = activity.toJson();
     final headers = {'authorization': '$token', 'userid': '$userID'};
-    print(body);
 
     // On effectue la requette
     const endpoint = "activity";
     final data = await requestService().post(endpoint, headers, body);
-    print(data);
 
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets

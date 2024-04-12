@@ -12,8 +12,8 @@ class SCO2user {
   factory SCO2user.fromJSON(Map<String, dynamic> json) {
     return SCO2user(
       userID: json["uid"],
-      displayName: json['displayName'],
-      avatarURL: json['avatarURL'],
+      displayName: json['name'],
+      avatarURL: json['photoURL'],
     );
   }
 

@@ -365,8 +365,9 @@ router.route('/')
                 }
             }
             if (actionType == "deblock"){
+                console.log("Deblock activate")
                 const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND (friendshipStatus = "31" OR friendshipStatus = "32" OR friendshipStatus = "33") ;`;
-                const sqlFriendResult = await executeQuery(sqlFriend, [friendID, userID]);
+                const sqlFriendResult = await executeQuery(sqlFriend, [userID, friendID]);
                 // Si jamais une relation est bien existante alors on met à jour la table friends
                 if (sqlFriendResult.length > 0){
                     let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')
@@ -392,7 +393,7 @@ router.route('/')
                     }
                 } else {
                     const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND (friendshipStatus = "13" OR friendshipStatus = "23" OR friendshipStatus = "33") ;`;
-                    const sqlFriendResult = await executeQuery(sqlFriend, [userID, friendID]);
+                    const sqlFriendResult = await executeQuery(sqlFriend, [friendID, userID]);
                     // Si jamais une relation est bien existante alors on met à jour la table friends
                     if (sqlFriendResult.length > 0){
                         let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')

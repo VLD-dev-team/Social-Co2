@@ -1,10 +1,13 @@
 import Menu  from '../app/components/Menu';
 import Menu2 from '../app/components/Menu2';
+import menu3 from '../app/components/Menu3';
+import menu4 from '../app/components/Menu3';
 import Logo  from '../app/components/Logo';
 import Banner from '../app/components/Banner';
 import Button from '../app/components/Button';
 import Card from '../app/components/Card';
 import RootLayout from '../app/layout';
+import Menu3 from '../app/components/Menu3';
 
 export default function Home() {
   return (
@@ -31,26 +34,32 @@ export default function Home() {
             </div>
           </div>
           <div className='flex'>
-            <div className='pl-36'></div>
-            {/*<div className='border-white border-8'></div>
-            <div className='border-white border-8'></div>
-  <div className='border-white border-8'></div>*/}
-            <div className='basis-4/5 border-l-white border-b-white border-l-8 border-b-8 rounded-full'>
-            </div>
-            <div className='basis-4/5'></div>
+            <div className='basis-4/5 box'></div>
             <div><Menu></Menu></div>
             <div className='basis-44'></div>
-            <div className=''></div>
           </div>
-
+          
+          <div>
+            <div className='pt-8'></div>
+            <div className='border-8 border-white'></div>
+            <div className='border-8 border-white'></div>
+          </div>
 
           <div className='flex pt-36'>
             <div className='left-0'></div>
             <Menu2></Menu2>
             <div className='basis-11/12'></div>
+            <div className='basis-44'></div>
             <div className='basis-11/12'></div>
             <div className='basis-11/12'></div>
+          </div>
+
+          <div className='flex pt-36'>
+            <div className='right-0'></div>
+            <div className='basis-44'></div>
             <div className='basis-11/12'></div>
+            <div className='basis-11/12'></div>
+              <Menu3></Menu3>
           </div>
           
 

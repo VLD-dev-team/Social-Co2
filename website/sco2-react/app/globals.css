@@ -7,6 +7,10 @@ body{
   background: linear-gradient(270deg, rgba(9,121,60,1) 0%, rgb(6, 112, 126) 100%);
 }
 
+.box{
+  box-shadow: inset 10px black;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

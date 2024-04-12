@@ -1,4 +1,5 @@
 import Menu  from '../app/components/Menu';
+import Menu2 from '../app/components/Menu2';
 import Logo  from '../app/components/Logo';
 import Banner from '../app/components/Banner';
 import Button from '../app/components/Button';
@@ -30,15 +31,28 @@ export default function Home() {
             </div>
           </div>
           <div className='flex'>
-            <div className='basis-4/5'></div>
+            <div className='pl-36'></div>
+            {/*<div className='border-white border-8'></div>
+            <div className='border-white border-8'></div>
+  <div className='border-white border-8'></div>*/}
+            <div className='basis-4/5 border-l-white border-b-white border-l-8 border-b-8 rounded-full'>
+            </div>
             <div className='basis-4/5'></div>
             <div><Menu></Menu></div>
             <div className='basis-44'></div>
+            <div className=''></div>
           </div>
-          <div className=''>
-            <Card></Card>
+
+
+          <div className='flex pt-36'>
+            <div className='left-0'></div>
+            <Menu2></Menu2>
+            <div className='basis-11/12'></div>
+            <div className='basis-11/12'></div>
+            <div className='basis-11/12'></div>
+            <div className='basis-11/12'></div>
           </div>
-       
+          
 
       
         

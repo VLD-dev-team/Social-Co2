@@ -1,6 +1,8 @@
 class SCO2Post {
   final int postID;
   final String userID;
+  String? userName;
+  String? userPhotoURL;
   String? postTextContent;
   String? postMediaContentURL;
   int? postLinkedActivity;
@@ -14,6 +16,8 @@ class SCO2Post {
     required this.userID,
     required this.postCreatedAt,
     required this.postType,
+    this.userName,
+    this.userPhotoURL,
     this.postTextContent,
     this.postMediaContentURL,
     this.postLinkedActivity,
@@ -25,6 +29,8 @@ class SCO2Post {
     return SCO2Post(
       postID: json["postID"],
       userID: json["userID"],
+      userName: json["userName"],
+      userPhotoURL: json["userPhotoURL"],
       postTextContent: json["postTextContent"],
       postMediaContentURL: json["postMediaContentURL"],
       postLinkedActivity: json["postLinkedActivity"],
@@ -42,6 +48,14 @@ class SCO2Post {
       'postCreatedAt': postCreatedAt.toIso8601String(),
       'postType': postType,
     };
+
+    if (userName != null) {
+      data['userName'] = userName!;
+    }
+
+    if (userPhotoURL != null) {
+      data['userPhotoURL'] = userPhotoURL!;
+    }
 
     if (postTextContent != null) {
       data['postTextContent'] = postTextContent!.toString();

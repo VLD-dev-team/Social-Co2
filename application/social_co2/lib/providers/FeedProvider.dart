@@ -10,6 +10,7 @@ class FeedProvider extends ChangeNotifier {
   bool loading = false;
 
   FeedProvider() {
+    print("Obtention du feed");
     refreshFeed();
   }
 
@@ -19,6 +20,8 @@ class FeedProvider extends ChangeNotifier {
 
   Future<List<SCO2Post>> getFeed() async {
     // On initialise la liste et le provider
+    print('go feed');
+
     error = "";
     loading = true;
     notifyListeners();
@@ -33,6 +36,8 @@ class FeedProvider extends ChangeNotifier {
       "authorization": '$authToken',
       'userid': userID,
     });
+
+    print(data);
 
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
@@ -49,12 +54,14 @@ class FeedProvider extends ChangeNotifier {
     }
 
     // On transforme les données en liste d'utilisateur SCO2
-    if (data['results'] != []) {
-      for (var i = 0; i < data['results'].length; i++) {
-        final userData = SCO2Post.fromJSON(data['results'][i]);
+    if (data['feed'] != []) {
+      for (var i = 0; i < data['feed'].length; i++) {
+        final userData = SCO2Post.fromJSON(data['feed'][i]);
         newFeed.add(userData);
       }
     }
+
+    print("feed $newFeed");
 
     // On termine la requette
     loading = false;

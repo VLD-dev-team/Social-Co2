@@ -30,7 +30,7 @@ class FeedPost extends StatelessWidget {
               ),
               title: Text('${postData.userName}'),
               subtitle: Text(postData.postCreatedAt.toIso8601String())),
-          Text(postData.)
+          Text('postData')
         ],
       ),
     );

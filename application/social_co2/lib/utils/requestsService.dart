@@ -32,7 +32,8 @@ class requestService {
       final url = Uri.parse(serverApiURL + endpoint);
       headers.addAll(additionnalHeaders);
 
-      final response = await http.post(url, headers: headers, body: body);
+      final response =
+          await http.post(url, headers: headers, body: jsonEncode(body));
       data = json.decode(response.body);
     } catch (err) {
       data = {"error": true, "error_message": err.toString()};
@@ -49,7 +50,8 @@ class requestService {
       final url = Uri.parse(serverApiURL + endpoint);
       headers.addAll(additionnalHeaders);
 
-      final response = await http.put(url, headers: headers, body: body);
+      final response =
+          await http.put(url, headers: headers, body: jsonEncode(body));
       data = json.decode(response.body);
     } catch (err) {
       data = {"error": true, "error_message": err.toString()};
@@ -66,7 +68,8 @@ class requestService {
       final url = Uri.parse(serverApiURL + endpoint);
       headers.addAll(additionnalHeaders);
 
-      final response = await http.delete(url, headers: headers, body: body);
+      final response =
+          await http.delete(url, headers: headers, body: jsonEncode(body));
       data = json.decode(response.body);
     } catch (err) {
       data = {"error": true, "error_message": err.toString()};

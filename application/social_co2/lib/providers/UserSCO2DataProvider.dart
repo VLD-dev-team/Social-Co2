@@ -97,7 +97,7 @@ class UserSCO2DataProvider extends ChangeNotifier {
     return CurrentUserScore;
   }
 
-  Future<bool> updateUserSCO2Data(Map<String, dynamic> userData) async {
+  Future<bool> updateUserSCO2Data(Map<String, String> userData) async {
     isLoading = true;
     notifyListeners();
 

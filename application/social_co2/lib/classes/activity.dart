@@ -41,25 +41,27 @@ class SCO2activity {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {
+  Map<String, String> toJson() {
+    final Map<String, String> data = {
       'activityType': activityType,
       'activityName': activityName,
       'activityTimestamp': activityTimestamp.toIso8601String(),
     };
 
-    if (activityID != null) data['activityID'] = activityID;
-    if (userID != null) data['userID'] = userID;
+    if (activityID != null) data['activityID'] = activityID.toString();
+    if (userID != null) data['userID'] = userID.toString();
     if (activityCO2Impact != null) {
-      data['activityCO2Impact'] = activityCO2Impact;
+      data['activityCO2Impact'] = activityCO2Impact.toString();
     }
     if (activityMealIngredients != null) {
-      data['activityMealIngredients'] = activityMealIngredients;
+      data['activityMealIngredients'] = activityMealIngredients!;
     }
-    if (activityPurchase != null) data['activityPurchase'] = activityPurchase;
-    if (activityDistance != null) data['activityDistance'] = activityDistance;
-    if (activityVehicule != null) data['activityVehicle'] = activityVehicule;
-    if (activityBuild != null) data['activityBuild'] = activityBuild;
+    if (activityPurchase != null) data['activityPurchase'] = activityPurchase!;
+    if (activityDistance != null) {
+      data['activityDistance'] = activityDistance!.toString();
+    }
+    if (activityVehicule != null) data['activityVehicle'] = activityVehicule!;
+    if (activityBuild != null) data['activityBuild'] = activityBuild!;
 
     return data;
   }

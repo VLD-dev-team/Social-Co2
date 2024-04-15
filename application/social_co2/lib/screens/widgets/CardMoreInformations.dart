@@ -323,7 +323,7 @@ class _CardMoreInformations extends State<CardMoreInformations> {
               label: const Text("Sauvegarder"),
               onPressed: () {
                 setState(() {
-                  final Map<String, String> data = createJson();
+                  final Map<String, dynamic> data = createJson();
                   print(data);
                   Provider.of<UserSCO2DataProvider>(context, listen: false)
                       .updateUserSCO2Data(data)
@@ -400,14 +400,14 @@ class _CardMoreInformations extends State<CardMoreInformations> {
     );
   }
 
-  Map<String, String> createJson() {
+  Map<String, dynamic> createJson() {
     return {
       'area': surfaceFieldController.text,
       'heating': getHeatingModeLabelFromEnum(_selectedHeatingMode!),
-      'garden': garden.toString(),
-      'recycl': recycling.toString(),
-      'car': getCarSizeLabelFromEnum(_selectedCarSize!).toString(),
-      'hybrid': isCarHybrid.toString(),
+      'garden': garden,
+      'recycl': recycling,
+      'car': getCarSizeLabelFromEnum(_selectedCarSize!),
+      'hybrid': isCarHybrid,
       'nb_inhabitants': nb_inhabitantsController.text,
     };
   }

@@ -35,9 +35,9 @@ class SCO2Post {
     );
   }
 
-  Map<String, String> toJson() {
-    final Map<String, String> data = {
-      'postID': postID.toString(),
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {
+      'postID': postID,
       'userID': userID,
       'postCreatedAt': postCreatedAt.toIso8601String(),
       'postType': postType,
@@ -48,19 +48,19 @@ class SCO2Post {
     }
 
     if (postMediaContentURL != null) {
-      data['postMediaContentURL'] = postMediaContentURL!.toString();
+      data['postMediaContentURL'] = postMediaContentURL!;
     }
 
     if (postLinkedActivity != null) {
-      data['postLinkedActivity'] = postLinkedActivity!.toString();
+      data['postLinkedActivity'] = postLinkedActivity!;
     }
 
     if (postLikesNumber != null) {
-      data['postLikesNumber'] = postLikesNumber!.toString();
+      data['postLikesNumber'] = postLikesNumber!;
     }
 
     if (postCommentNumber != null) {
-      data['postCommentNumber'] = postCommentNumber!.toString();
+      data['postCommentNumber'] = postCommentNumber!;
     }
 
     return data;

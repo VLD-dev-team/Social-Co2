@@ -18,7 +18,7 @@ class SCO2user {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, String> data = {'uid': userID};
+    final Map<String, dynamic> data = {'uid': userID};
 
     if (displayName != null) {
       data['displayName'] = displayName!.toString();

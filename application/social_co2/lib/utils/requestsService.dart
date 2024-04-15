@@ -24,8 +24,8 @@ class requestService {
   }
 
   // REQUETTE POST
-  Future<Map<String, dynamic>> post(String endpoint,
-      Map<String, String> headers, Map<String, String> body) async {
+  Future<Map<String, dynamic>> post(
+      String endpoint, Map<String, String> headers, Object body) async {
     Map<String, dynamic> data = {};
 
     try {
@@ -41,8 +41,8 @@ class requestService {
   }
 
   // REQUETTE PUT
-  Future<Map<String, dynamic>> put(String endpoint, Map<String, String> headers,
-      Map<String, String> body) async {
+  Future<Map<String, dynamic>> put(
+      String endpoint, Map<String, String> headers, Object body) async {
     Map<String, dynamic> data = {};
 
     try {
@@ -58,8 +58,8 @@ class requestService {
   }
 
   // REQUETTE DELETE
-  Future<Map<String, dynamic>> delete(String endpoint,
-      Map<String, String> headers, Map<String, String> body) async {
+  Future<Map<String, dynamic>> delete(
+      String endpoint, Map<String, String> headers, Object body) async {
     Map<String, dynamic> data = {};
 
     try {

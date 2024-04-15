@@ -12,9 +12,9 @@ import Menu3 from '../app/components/Menu3';
 export default function Home() {
   return (
       <main>
-        <div className='static'>
+        <div className='relative'>
           <Banner></Banner>
-            <div className='absolute top-48 right-0 pr-4'>
+            <div className='absolute top-48 right-0 pr-4 h-auto w-auto'>
               <Logo></Logo>
           </div>
         </div>
@@ -34,16 +34,17 @@ export default function Home() {
             </div>
           </div>
           <div className='flex'>
-            <div className='basis-4/5 box'></div>
+            <div className='basis-4/5'></div>
+            <div className='basis-4/5'></div>
             <div><Menu></Menu></div>
-            <div className='basis-44'></div>
+            <div className='basis-1/4'></div>
           </div>
           
-          <div>
+         {/*<div>
             <div className='pt-8'></div>
             <div className='border-8 border-white'></div>
             <div className='border-8 border-white'></div>
-          </div>
+            </div>*/} 
 
           <div className='flex pt-36'>
             <div className='left-0'></div>
@@ -60,6 +61,9 @@ export default function Home() {
             <div className='basis-11/12'></div>
             <div className='basis-11/12'></div>
               <Menu3></Menu3>
+          </div>
+          <div className='flex'>
+
           </div>
           
 

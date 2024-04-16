@@ -36,7 +36,7 @@ router.route('/feed')
         const feedResult = await executeQuery(getFeedQuery, [friendIDs]);
 
 
-        const response = feedResult;
+        const response = {feed: feedResult};
         return res.status(200).json(response);
     });
 

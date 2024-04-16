@@ -12,7 +12,7 @@ router.route('/messages')
     .get(async (req, res) => {
         try {
             const userID = req.headers.userid;
-            const convID = req.query.convid;
+            const convID = parseInt(req.query.convid);
             const startIndex = parseInt(req.query.startIndex) || 0;
 
             // Vérifies si l'utilisateur fait partie de la conversation ;)

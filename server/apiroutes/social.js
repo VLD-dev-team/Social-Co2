@@ -44,7 +44,7 @@ router.route('/like')
     .post(async (req, res) => {
         // Pour liker un post
         const userID = req.headers.userid;
-        const postID = req.body.postid;
+        const postID = parseInt(req.body.postid);
 
         if (typeof userID !== 'string' || isNaN(postID)) {
             const response = {
@@ -128,7 +128,7 @@ router.route('/like')
 
 router.route('/comments') // Route pour charger les commentaires
     .get (async (req,res) => {
-        const postID = req.query.postid;
+        const postID = parseInt(req.query.postid);
 
         if(isNaN(postID)){
             const response = {
@@ -162,7 +162,7 @@ router.route('/comments') // Route pour charger les commentaires
     .post(async (req, res) => {
             // Pour creer un commentaire
             const userID = req.headers.userid;
-            const postID = req.body.postid;
+            const postID = parseInt(req.body.postid);
             const commentTextContent = req.body.commentTextContent;
 
             if (typeof userID !== 'string' || isNaN(postID) || typeof commentTextContent !== 'string') {
@@ -234,7 +234,7 @@ router.route('/comments') // Route pour charger les commentaires
 router.route('/posts')
     .post( async (req, res) => {
         const userID = req.headers.userid;
-        const postType = req.body.postType;
+        const postType = parseInt(req.body.postType);
     
         // Vérification des paramètres obligatoires
         if (!userID || !postType) {
@@ -328,7 +328,7 @@ router.route('/posts')
                 break;
             case 'activite':
                 // Vérification des paramètres activityType et activityCO2Impact
-                const activityID = req.body.activityid
+                const activityID = parseInt(req.body.activityid);
                 
                 if (!activityID || NaN(activityID)) {
                     const response = {

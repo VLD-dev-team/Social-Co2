@@ -103,7 +103,6 @@ router.route('/')
     })
     .post(async (req,res) => {
         try {
-            //TODO : Supprimer un ami & Supprimer une demande en attente
 
             // On recupère les données nécessaires
             const userID = req.headers.userid;

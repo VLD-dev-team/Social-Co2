@@ -119,12 +119,12 @@ router.route('/')
 
         // On récupère les paramètres directement sur la page pour mettre à jour la BDD
 
-        const recycl = req.body.recycl
-        const nb_inhabitants = req.body.nb_inhabitants
-        const area = req.body.area
-        const garden = req.body.garden
-        const car = req.body.car
-        const hybrid = req.body.hybrid
+        const recycl = (req.body.recycl == "true")
+        const nb_inhabitants = parseInt(req.body.nb_inhabitants)
+        const area = parseInt(req.body.area)
+        const garden = (req.body.garden == "true")
+        const car = parseInt(req.body.car)
+        const hybrid = (req.body.hybrid == "true")
         const heating = req.body.heating
 
         if (typeof recycl !== 'boolean' || typeof nb_inhabitants !== 'number' || typeof area !== 'number' || typeof garden !== 'boolean' || typeof car !== 'number' || typeof hybrid !== 'boolean' || typeof heating !== 'string') {
@@ -255,13 +255,12 @@ router.route('/')
 
         // On récupère les paramètres directement sur la page pour mettre à jour la BDD
 
-        const recycl = req.body.recycl
-        const nb_inhabitants = req.body.nb_inhabitants
-        const area = req.body.area
-        const garden = req.body.garden
-        const multiplier = req.body.multiplier
-        const car = req.body.car
-        const hybrid = req.body.hybrid
+        const recycl = (req.body.recycl == "true")
+        const nb_inhabitants = parseInt(req.body.nb_inhabitants)
+        const area = parseInt(req.body.area)
+        const garden = (req.body.garden == "true")
+        const car = parseInt(req.body.car)
+        const hybrid = (req.body.hybrid == "true")
         const heating = req.body.heating
 
         if (typeof recycl !== 'boolean' || typeof nb_inhabitants !== 'number' || typeof area !== 'number' || typeof garden !== 'boolean' || typeof multiplier !== 'number' || typeof car !== 'number' || typeof hybrid !== 'boolean' || typeof heating !== 'string') {
@@ -276,6 +275,8 @@ router.route('/')
         // On calcul le score de base avec les paramètres de l'utilisateurs
         const newscore = activityCalculator.passiveScore(activityCalculator.multiplier(recycl, nb_inhabitants, area, garden, multiplier, heating),5000)
         // Maintenant, q'on a vérifié le typage, on peut creer notre utilisateur avec les différents paramètres associés
+
+        const multiplier = activityCalculator.multiplier(recycl, nb_inhabitants, area, garden, multiplier, heating)
 
         const sqlQuery = `INSERT INTO users (userID, score, recycl, nb_inhabitants, area, garden, multiplier, car, hybrid, heating) VALUES ( ? , ? , ? , ? , ? , ? , ?, ?, ?, ?) ;`;
         const sqlResult = await executeQuery(sqlQuery, [userID, parseInt(newscore) , recycl, nb_inhabitants, area, garden, multiplier, car, hybrid, heating]);

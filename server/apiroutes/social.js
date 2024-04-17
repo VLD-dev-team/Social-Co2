@@ -36,7 +36,36 @@ router.route('/feed')
         const feedResult = await executeQuery(getFeedQuery, [friendIDs]);
 
 
-        const response = {feed: feedResult};
+        const feed = await Promise.all(feedResult.map(async (post) => {
+            const postData = await admin.auth().getUser(post.userID);
+            let surname = postData.displayName;
+                let photoURL = postData.photoURL;
+                if (typeof postData.displayName !== "string"){
+                    surname = null
+                }
+                if (typeof postData.photoURL !== "string"){
+                    photoURL = null
+                }
+                return {
+                    uid: postData.uid,
+                    name: surname,
+                    photoURL: photoURL,
+                    postID : feedResult.postID,
+                    postTextContent : feedResult.postTextContent,
+                    postMediaContentURL : feedResult.postMediaContentURL,
+                    postLinkedActivity : feedResult.postLinkedActivity,
+                    postLikesNumber : feedResult.postLikesNumber,
+                    postCreatedAt : feedResult.postCreatedAt,
+                    postCommentsNumber : feedResult.postCommentsNumber,
+                    postType : feedResult.postType
+                };
+            }));
+
+
+        const response = {
+            feed: feed,
+            message : "posts was loading succesfully !"
+        };
         return res.status(200).json(response);
     });
 

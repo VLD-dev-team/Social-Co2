@@ -140,11 +140,12 @@ router.route('/')
         const authUser = await admin.auth().getUser(userID);
 
         // On récupère le score depuis la base de données SQL
-        const sqlQuery = `SELECT score FROM users WHERE userID = ? ;`;
+        const sqlQuery = `SELECT score,multiplier FROM users WHERE userID = ? ;`;
         const sqlResult = await executeQuery(sqlQuery, [userID]);
 
         if (sqlResult.length > 0) {
             // Création d'un objet avec les données d'authentification et le score
+            const multiplier = sqlResult[0].multiplier
             const newscore = activityCalculator.passiveScore(activityCalculator.multiplier(recycl, nb_inhabitants, area, garden, multiplier, heating),sqlResult[0].score)
             const updateQuery = `UPDATE users SET score = ? WHERE userID = ? ;`;
             const updateResult = await executeQuery(updateQuery, [parseInt(newscore) , userID]);

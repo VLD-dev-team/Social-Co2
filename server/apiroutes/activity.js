@@ -74,7 +74,7 @@ router.route('/')
         const activityTimestamp = req.body.activityTimestamp;
         
         // Initialize variable to 0
-        let activityCO2Impact = 0;
+        var activityCO2Impact = 0;
         // Calculate impact on score based on chosen activity type
         if (activityType == "trip"){
             let vehicle = req.body.activityVehicule
@@ -178,11 +178,11 @@ router.route('/')
         } else {
 
             // Update the score
-            let score = selectResult.score + activityCO2Impact
+            let score = selectResult[0].score + activityCO2Impact
+            console.log(score)
             // Then apply the passive score
             score = activityCalculator.passiveScore(activityCalculator.multiplier(selectResult.recycl, selectResult.nb_inhabitants, selectResult.surface, selectResult.garden, selectResult.multiplier, selectResult.heating), score)
 
-            console.log(score)
             // We can now insert the activity into the activities table
             const insertQuery = `
             INSERT INTO activities (userID, activityType, activityCO2Impact, activityName, activityTimestamp)

@@ -205,6 +205,7 @@ router.route('/')
                 activityName : activityName,
                 activityTimestamp : activityTimestamp
             }
+            console.table(response)
 
             return res.status(200).json(response);
             } else {

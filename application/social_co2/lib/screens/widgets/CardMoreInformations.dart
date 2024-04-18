@@ -402,13 +402,13 @@ class _CardMoreInformations extends State<CardMoreInformations> {
 
   Map<String, dynamic> createJson() {
     return {
-      'area': surfaceFieldController.text,
+      'area': int.parse(surfaceFieldController.text),
       'heating': getHeatingModeLabelFromEnum(_selectedHeatingMode!),
       'garden': garden,
       'recycl': recycling,
       'car': getCarSizeLabelFromEnum(_selectedCarSize!),
       'hybrid': isCarHybrid,
-      'nb_inhabitants': nb_inhabitantsController.text,
+      'nb_inhabitants': int.parse(nb_inhabitantsController.text),
     };
   }
 }

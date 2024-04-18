@@ -106,7 +106,7 @@ class UserSCO2DataProvider extends ChangeNotifier {
     final userID = await firebaseAuth.currentUser!.uid;
 
     // On fait la requette au server
-    final data = await requestService().post(
+    final data = await requestService().put(
         "user/",
         {
           "authorization": '$authToken',

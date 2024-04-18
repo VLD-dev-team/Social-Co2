@@ -307,6 +307,7 @@ router.route('/activities')
         const userID = req.headers.userid;
         const currentTimestamp = req.query.currentTimestamp;
 
+
         if (typeof userID !== 'string') {
             const response = {
                     error : true,
@@ -316,7 +317,7 @@ router.route('/activities')
             return res.status(400).json(response);
         }
 
-        const sqlQuery = `SELECT * FROM activities WHERE userID = ? AND activityTimestamp = ? ;`;
+        const sqlQuery = `SELECT * FROM activities WHERE userID = ? AND DATE(activityTimestamp) = DATE(?) ;`;
         const sqlResult = await executeQuery(sqlQuery, [userID, currentTimestamp]);
 
         if (sqlResult.length > 0 ){

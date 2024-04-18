@@ -99,7 +99,7 @@ router.route('/')
                     }
                 }
             }
-            const distance = parseInt(req.body.activityDistance);
+            const distance = req.body.activityDistance
             activityCO2Impact = activityCalculator.newTrip(vehicle, distance)
         } else if (activityType == "purchase"){
             const article = req.body.activityPurchase
@@ -222,9 +222,9 @@ router.route('/')
         // Update an activity
         // Retrieve all data
         const userID = req.headers.userid;
-        const activityId = parseInt(req.body.activityid);
+        const activityId = req.body.activityid;
         const activityType = req.body.activityType;
-        const activityCO2Impact = parseFloat(req.body.activityCO2Impact);
+        const activityCO2Impact = req.body.activityCO2Impact;
         const activityName = req.body.activityName;
         const activityTimestamp = req.body.activityTimestamp;
 
@@ -284,7 +284,7 @@ router.route('/')
     .delete(async (req, res) => {
         // Retrieve necessary info for deletion
         const userID = req.headers.userid;
-        const activityId = parseInt(req.params.activityid);
+        const activityId = req.params.activityid;
 
         // Type verification
 
@@ -335,7 +335,7 @@ router.route('/')
 router.route('/favorite')
     .post(async (req,res) => {
         const userID = req.headers.userid
-        const activityID = parseInt(req.body.activityid);
+        const activityID = req.body.activityid
 
         // Type verification
 
@@ -384,7 +384,7 @@ router.route('/favorite')
     })
     .delete(async (req,res) => {
         const userID = req.headers.userid
-        const activityID = parseInt(req.body.activityid)
+        const activityID = req.body.activityid
 
         // Type verification
 

@@ -119,12 +119,12 @@ router.route('/')
 
         // On récupère les paramètres directement sur la page pour mettre à jour la BDD
 
-        const recycl = (req.body.recycl == "true")
-        const nb_inhabitants = parseInt(req.body.nb_inhabitants)
-        const area = parseInt(req.body.area)
-        const garden = (req.body.garden == "true")
-        const car = parseInt(req.body.car)
-        const hybrid = (req.body.hybrid == "true")
+        const recycl = req.body.recycl
+        const nb_inhabitants = req.body.nb_inhabitants
+        const area = req.body.area
+        const garden = req.body.garden
+        const car = req.body.car
+        const hybrid = req.body.hybrid
         const heating = req.body.heating
 
         if (typeof recycl !== 'boolean' || typeof nb_inhabitants !== 'number' || typeof area !== 'number' || typeof garden !== 'boolean' || typeof car !== 'number' || typeof hybrid !== 'boolean' || typeof heating !== 'string') {
@@ -256,12 +256,13 @@ router.route('/')
 
         // On récupère les paramètres directement sur la page pour mettre à jour la BDD
 
-        const recycl = (req.body.recycl == "true")
-        const nb_inhabitants = parseInt(req.body.nb_inhabitants)
-        const area = parseInt(req.body.area)
-        const garden = (req.body.garden == "true")
-        const car = parseInt(req.body.car)
-        const hybrid = (req.body.hybrid == "true")
+        const recycl = req.body.recycl
+        const nb_inhabitants = req.body.nb_inhabitants
+        const area = req.body.area
+        const garden = req.body.garden
+        const multiplier = req.body.multiplier
+        const car = req.body.car
+        const hybrid = req.body.hybrid
         const heating = req.body.heating
 
         if (typeof recycl !== 'boolean' || typeof nb_inhabitants !== 'number' || typeof area !== 'number' || typeof garden !== 'boolean' || typeof car !== 'number' || typeof hybrid !== 'boolean' || typeof heating !== 'string') {

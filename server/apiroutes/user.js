@@ -260,7 +260,6 @@ router.route('/')
         const nb_inhabitants = req.body.nb_inhabitants
         const area = req.body.area
         const garden = req.body.garden
-        const multiplier = req.body.multiplier
         const car = req.body.car
         const hybrid = req.body.hybrid
         const heating = req.body.heating

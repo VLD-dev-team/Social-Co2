@@ -1,3 +1,5 @@
+import 'package:social_co2/classes/activity.dart';
+
 class SCO2Post {
   final int postID;
   final String userID;
@@ -5,7 +7,7 @@ class SCO2Post {
   String? userPhotoURL;
   String? postTextContent;
   String? postMediaContentURL;
-  int? postLinkedActivity;
+  SCO2activity? postLinkedActivity;
   int? postLikesNumber;
   DateTime postCreatedAt;
   int? postCommentNumber;
@@ -33,7 +35,7 @@ class SCO2Post {
       userPhotoURL: json["userPhotoURL"],
       postTextContent: json["postTextContent"],
       postMediaContentURL: json["postMediaContentURL"],
-      postLinkedActivity: json["postLinkedActivity"],
+      postLinkedActivity: SCO2activity.fromJSON(json["postLinkedActivity"]),
       postLikesNumber: json["postLikesNumber"],
       postCreatedAt: DateTime.parse(json["postCreatedAt"]),
       postCommentNumber: json["postCommentNumber"],
@@ -66,7 +68,7 @@ class SCO2Post {
     }
 
     if (postLinkedActivity != null) {
-      data['postLinkedActivity'] = postLinkedActivity!;
+      data['postLinkedActivity'] = postLinkedActivity!.toJson();
     }
 
     if (postLikesNumber != null) {

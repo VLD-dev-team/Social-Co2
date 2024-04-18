@@ -1,5 +1,8 @@
+import 'dart:js_interop';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:social_co2/classes/activity.dart';
 import 'package:social_co2/classes/post.dart';
 import 'package:social_co2/utils/requestsService.dart';
 
@@ -37,6 +40,19 @@ class FeedProvider extends ChangeNotifier {
       'userid': userID,
     });
 
+    newFeed.add(SCO2Post(
+        postID: 0,
+        postTextContent: "Salut tout le monde, J'ai fait du vélo ce matin !",
+        userName: 'Valentin',
+        userPhotoURL: 'url',
+        userID: userID,
+        postLinkedActivity: SCO2activity(
+            activityName: "Activité",
+            activityType: 'renovation',
+            activityTimestamp: DateTime.now()),
+        postCreatedAt: DateTime.now(),
+        postType: "text"));
+
     print(data);
 
     // On analyse la réponse du server
@@ -62,10 +78,11 @@ class FeedProvider extends ChangeNotifier {
     }
 
     print("feed $newFeed");
+    feed = newFeed;
 
     // On termine la requette
     loading = false;
     notifyListeners();
-    return newFeed;
+    return feed;
   }
 }

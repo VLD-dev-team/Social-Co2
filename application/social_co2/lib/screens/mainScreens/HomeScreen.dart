@@ -38,35 +38,47 @@ class HomeScreen extends StatelessWidget {
                     ? (MediaQuery.of(context).size.width - drawerWidth) / 3 * 2
                     : (MediaQuery.of(context).size.width -
                         drawerWidth), // On définie notre colonne de gauche comme faisait soit deux tiers de l'écran quand il est large ou comme 100% de l'espace d'écran si jamais il est plus petits
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: SingleChildScrollView(
-                    child: Column(children: [
-                      const ScoreQuickOverview(),
-                      // On intégre les widgets de droite en dessous du recap du score sur les plus petits écrans
-                      (responsiveFormat == ResponsiveFormats.mid ||
-                              responsiveFormat == ResponsiveFormats.small)
-                          ? const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                      child: LeaderBoardWidget(
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: ScoreQuickOverview(),
+                    ),
+                    // On intégre les widgets de droite en dessous du recap du score sur les plus petits écrans
+                    (responsiveFormat == ResponsiveFormats.mid ||
+                            responsiveFormat == ResponsiveFormats.small)
+                        ? const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                  child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: 0, right: 10, left: 10, bottom: 5),
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 0, right: 10, left: 0, bottom: 5),
+                                  child: LeaderBoardWidget(
                                     indexAffichage: 1,
-                                  )),
-                                  Expanded(child: ReccurentActivities())
-                                ],
-                              ),
-                            )
-                          : const SizedBox(
-                              width: 0,
-                              height: 0,
-                            ),
-                      CallToPost(),
-                      const Feed()
-                    ]),
-                  ),
+                                  ),
+                                ),
+                              )),
+                              Expanded(child: ReccurentActivities())
+                            ],
+                          )
+                        : const SizedBox(
+                            width: 0,
+                            height: 0,
+                          ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: CallToPost(),
+                    ),
+                    const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      child: Feed(),
+                    )
+                  ]),
                 )),
             if (responsiveFormat ==
                 ResponsiveFormats
@@ -81,6 +93,7 @@ class HomeScreen extends StatelessWidget {
                           LeaderBoardWidget(
                             indexAffichage: 1,
                           ),
+                          SizedBox(height: 10),
                           ReccurentActivities(),
                         ]),
                   )),

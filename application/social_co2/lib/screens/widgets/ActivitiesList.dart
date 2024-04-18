@@ -21,10 +21,10 @@ class ActivitiesList extends StatelessWidget {
     activities ??= []; // Si activities est null, alors on crée une liste vide
 
     if (activities!.isEmpty) {
-      return Column(
+      return const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [
+        children: [
           Icon(Icons.check_circle_outline),
           SizedBox(height: 5),
           Text("Aucun élément enregistré pour cette journée.")
@@ -122,7 +122,6 @@ class ActivitiesList extends StatelessWidget {
 
             return Container(
               decoration: primaryCard,
-              margin: const EdgeInsets.symmetric(horizontal: 10),
               child: ListTile(
                 leading: Row(
                   mainAxisSize: MainAxisSize.min,

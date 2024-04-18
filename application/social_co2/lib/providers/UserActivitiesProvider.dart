@@ -65,6 +65,8 @@ class UserActivitiesProvider extends ChangeNotifier {
       return [];
     }
 
+    print(data);
+
     // Si pas d'erreur on enregistre les données temporairement
     // Phrase de récap
     String? phrase = data['phrase'];

@@ -9,6 +9,7 @@ import 'package:social_co2/utils/requestsService.dart';
 class FeedProvider extends ChangeNotifier {
   // Variables globales au provider
   List<SCO2Post> feed = [];
+  Map<String, dynamic> postComments = {};
   String error = "";
   bool loading = false;
 
@@ -84,5 +85,75 @@ class FeedProvider extends ChangeNotifier {
     loading = false;
     notifyListeners();
     return feed;
+  }
+
+  Future<int> likePost(postID) async {
+    error = "";
+    loading = true;
+    notifyListeners();
+
+    // On récupère le token de connexion
+    final authToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+    final userID = FirebaseAuth.instance.currentUser!.uid;
+
+    // On fait la requette au server
+    final data = await requestService().get("social/like", {
+      "authorization": '$authToken',
+      'userid': userID,
+    });
+
+    // On analyse la réponse du server
+    // En cas d'erreur, on renvoie erreur aux widgets
+    if (data["error"] == true) {
+      try {
+        error = 'error: ${data["error_message"].toString()}';
+      } catch (e) {
+        error = "error: unknown error";
+      }
+
+      loading = false;
+      notifyListeners();
+      return 0;
+    }
+
+    // On analyse les données renvoyés par le serveur et on affiche le like
+    // TODO: analyser la réponse serveur
+
+    return 0;
+  }
+
+  Future<List<Map<String, dynamic>>> getPostComment(postID) async {
+    error = "";
+    loading = true;
+    notifyListeners();
+
+    // On récupère le token de connexion
+    final authToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+    final userID = FirebaseAuth.instance.currentUser!.uid;
+
+    // On fait la requette au server
+    final data = await requestService().get("social/like", {
+      "authorization": '$authToken',
+      'userid': userID,
+    });
+
+    // On analyse la réponse du server
+    // En cas d'erreur, on renvoie erreur aux widgets
+    if (data["error"] == true) {
+      try {
+        error = 'error: ${data["error_message"].toString()}';
+      } catch (e) {
+        error = "error: unknown error";
+      }
+
+      loading = false;
+      notifyListeners();
+      return [];
+    }
+
+    postComments.update(postID, (value) => data['comments'],
+        ifAbsent: () => data['comments']);
+
+    return [];
   }
 }

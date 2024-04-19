@@ -112,7 +112,7 @@ class _newActivityDialog extends State<newActivityDialog> {
                         onPressed: () {
                           value.postRouteActivity(
                               availableVehicles[routeMode!]["type"],
-                              double.parse(distanceController.text));
+                              double.parse(distanceController.text.toString()));
                         },
                         icon: const Icon(Icons.check),
                         label: const Text('Envoyer')),
@@ -151,7 +151,9 @@ class _newActivityDialog extends State<newActivityDialog> {
           onTap: () {
             if (activity['type'] == 'mail') {
               Provider.of<UserActivitiesProvider>(context, listen: false)
-                  .postEmailActivity();
+                  .postEmailActivity()
+                  .then((value) =>
+                      Navigator.of(context, rootNavigator: true).pop);
             } else {
               setState(() {
                 _currentMenu = activity['type'];

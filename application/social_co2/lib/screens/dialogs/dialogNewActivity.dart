@@ -110,9 +110,13 @@ class _newActivityDialog extends State<newActivityDialog> {
                         top: 10, bottom: 20, left: 20, right: 20),
                     child: ElevatedButton.icon(
                         onPressed: () {
-                          value.postRouteActivity(
-                              availableVehicles[routeMode!]["type"],
-                              double.parse(distanceController.text.toString()));
+                          setState(() {
+                            _currentMenu = "";
+                            value.postRouteActivity(
+                                availableVehicles[routeMode!]["type"],
+                                double.parse(
+                                    distanceController.text.toString()));
+                          });
                         },
                         icon: const Icon(Icons.check),
                         label: const Text('Envoyer')),
@@ -137,8 +141,26 @@ class _newActivityDialog extends State<newActivityDialog> {
       case "trip":
         return routeMenu();
       default:
-        return mainList();
+        return valid();
     }
+  }
+
+  dynamic valid() {
+    return const Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.check,
+          color: Colors.green,
+        ),
+        Text(
+          "Activité posté",
+          style: TextStyle(color: Colors.green),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
   }
 
   // Menu principal
@@ -150,10 +172,11 @@ class _newActivityDialog extends State<newActivityDialog> {
         return ListTile(
           onTap: () {
             if (activity['type'] == 'mail') {
-              Provider.of<UserActivitiesProvider>(context, listen: false)
-                  .postEmailActivity()
-                  .then((value) =>
-                      Navigator.of(context, rootNavigator: true).pop);
+              setState(() {
+                _currentMenu = "";
+                Provider.of<UserActivitiesProvider>(context, listen: false)
+                    .postEmailActivity();
+              });
             } else {
               setState(() {
                 _currentMenu = activity['type'];
@@ -193,8 +216,11 @@ class _newActivityDialog extends State<newActivityDialog> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             minVerticalPadding: 10,
             onTap: () {
-              Provider.of<UserActivitiesProvider>(context, listen: false)
-                  .postMealActivity(meal['type']);
+              setState(() {
+                _currentMenu = "";
+                Provider.of<UserActivitiesProvider>(context, listen: false)
+                    .postMealActivity(meal['type']);
+              });
             },
           );
         }),
@@ -213,8 +239,11 @@ class _newActivityDialog extends State<newActivityDialog> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             minVerticalPadding: 10,
             onTap: () {
-              Provider.of<UserActivitiesProvider>(context, listen: false)
-                  .postPurchaseActivity(purchase['type']);
+              setState(() {
+                _currentMenu = "";
+                Provider.of<UserActivitiesProvider>(context, listen: false)
+                    .postPurchaseActivity(purchase['type']);
+              });
             },
           );
         },
@@ -233,8 +262,11 @@ class _newActivityDialog extends State<newActivityDialog> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             minVerticalPadding: 10,
             onTap: () {
-              Provider.of<UserActivitiesProvider>(context, listen: false)
-                  .postBuildActivity(build['type']);
+              setState(() {
+                _currentMenu = "";
+                Provider.of<UserActivitiesProvider>(context, listen: false)
+                    .postBuildActivity(build['type']);
+              });
             },
           );
         },
@@ -326,9 +358,9 @@ class _newActivityDialog extends State<newActivityDialog> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text("Nombre de Km"),
                       SizedBox(height: 5),
                       TextField(

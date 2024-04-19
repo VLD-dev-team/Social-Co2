@@ -5,9 +5,9 @@ const verifyAuthToken = require('../utils/requireAuth.js');
 const admin = require('firebase-admin');
 const activityCalculator = require('../utils/activityCalculator.js')
 
-// router.route('/*')
-//     .all((req, res, next) => verifyAuthToken(req, res, next));
-//     // Connection verification
+router.route('/*')
+    .all((req, res, next) => verifyAuthToken(req, res, next));
+    // Connection verification
 
 router.route('/')
     .get(async (req, res) => {
@@ -69,14 +69,14 @@ router.route('/')
         // Retrieve necessary data for activity creation
 
         const userID = req.headers.userid;
-        const activityType = req.query.activityType;
-        const activityName = req.query.activityName;
+        const activityType = req.body.activityType;
+        const activityName = req.body.activityName;
         
         // Initialize variable to 0
         var activityCO2Impact = 0;
         // Calculate impact on score based on chosen activity type
         if (activityType == "trip"){
-            let vehicle = req.query.activityVehicule
+            let vehicle = req.body.activityVehicule
             if (vehicle == 'car'){
                 const sqlQuery = 'SELECT car, hybrid FROM users WHERE userID = ? '
                 const sqlResult = await executeQuery(sqlQuery, [userID])
@@ -98,7 +98,7 @@ router.route('/')
                     }
                 }
             }
-            const distance = req.query.activityDistance
+            const distance = req.body.activityDistance
             activityCO2Impact = activityCalculator.newTrip(vehicle, distance)
         } else if (activityType == "purchase"){
             const article = req.body.activityPurchase

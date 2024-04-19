@@ -6,8 +6,8 @@ const admin = require('firebase-admin');
 const activityCalculator = require('../utils/activityCalculator.js')
 const sendNotificationDaily = require('../utils/emailSender.js')
 
-// router.route('/*')
-//     .all((req, res, next) => verifyAuthToken(req, res, next));
+router.route('/*')
+    .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/')
     .get(async (req, res) => {

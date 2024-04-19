@@ -5,8 +5,8 @@ const verifyAuthToken = require('../utils/requireAuth.js');
 const notificationHandler = require('../utils/notificationHandler.js'); // Importez le gestionnaire de notifications
 const socketManager = require('../utils/socketManager.js'); // Importez le gestionnaire de sockets pour accéder à `io`
 
-router.route('/*')
-    .all((req, res, next) => verifyAuthToken(req, res, next));
+// router.route('/*')
+//     .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/feed')
     .get(async (req, res) => {
@@ -137,8 +137,8 @@ router.route('/like')
                 await executeQuery(`INSERT INTO notifications (userID, notificationContent, notificationTitle, notificationStatus) VALUES (?, ?, ?, ?) ;`, [postOwnerID, notificationContent, notificationTitle, notificationStatus]);
 
                 // Émission de la notification via Socket.io
-                const io = socketManager.getIO();
-                notificationHandler.handleNewNotification(io, { userID: postOwnerID, notificationContent });
+                // const io = socketManager.getIO();
+                // notificationHandler.handleNewNotification(io, { userID: postOwnerID, notificationContent });
 
                 const NbLikesQuery = `SELECT postLikesNumber FROM posts WHERE postID = ? ;`;
                 const NbLikesQueryResult = await executeQuery(NbLikesQuery, [postID]);
@@ -296,7 +296,7 @@ router.route('/posts')
                 const mood = req.body.mood
                 // Vérification du paramètre moodPhrase
                 if (!mood || typeof mood !== 'string') {
-                    const response = {
+                    response = {
                         error: true,
                         error_message: 'moodType is required for postType "mood".',
                         error_code: 2
@@ -330,7 +330,7 @@ router.route('/posts')
                         Moodphrase = Moodphrase + "Je suis pas content !!! 😠 😠 😠"
                         break;
                     default:
-                        const response = {
+                        response = {
                             error: true,
                             error_message: 'Invalid postType. Allowed values are "mood", "message", "activite", or "rapport".',
                             error_code: 6
@@ -412,7 +412,7 @@ router.route('/posts')
                     }
                 break;
             default:
-                const response = {
+                response = {
                     error: true,
                     error_message: 'Invalid postType. Allowed values are "mood", "message", "activite", or "rapport".',
                     error_code: 33
@@ -426,7 +426,7 @@ router.route('/posts')
             if (insertResult.affectedRows > 0) {
                 return res.status(201).json(response);
             } else {
-                const response = {
+                response = {
                     error: true,
                     error_message: 'Failed to create post',
                     error_code: 34
@@ -435,7 +435,7 @@ router.route('/posts')
             }
         } catch (error) {
             console.error('Error creating post:', error);
-            const response = {
+            response = {
                 error: true,
                 error_message: 'Internal Server Error',
                 error_code: 2

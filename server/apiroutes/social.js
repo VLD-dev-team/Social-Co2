@@ -4,9 +4,11 @@ const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
 const notificationHandler = require('../utils/notificationHandler.js'); // Importez le gestionnaire de notifications
 const socketManager = require('../utils/socketManager.js'); // Importez le gestionnaire de sockets pour accéder à `io`
+const admin = require('firebase-admin');
 
-// router.route('/*')
-//     .all((req, res, next) => verifyAuthToken(req, res, next));
+
+router.route('/*')
+    .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/feed')
     .get(async (req, res) => {

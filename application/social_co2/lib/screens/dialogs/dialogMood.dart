@@ -39,6 +39,10 @@ class MoodDialog extends StatelessWidget {
                     return const Center(
                       child: LinearProgressIndicator(),
                     );
+                  } else if (value.sended) {
+                    return const Center(
+                      child: Text("Envoyé !"),
+                    );
                   } else {
                     return const MoodGridView();
                   }
@@ -96,14 +100,9 @@ class MoodGridView extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               // Si un mood est selectionné, on effectue la requette vers le serveur via le provider
-              // TODO : Fonction à revoir avec le code du serveur (NON IMPLEMENTÉ)
               Provider.of<MakePostProvider>(listen: false, context)
                   // On poste
-                  .postMood(index)
-                  // Puis on ferme le dialogbox
-                  .then((value) {
-                Navigator.of(context).pop();
-              });
+                  .postMood(moodCollection[index]['label']);
             },
             child: Card(
               child: Padding(

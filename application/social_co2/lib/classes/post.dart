@@ -12,6 +12,7 @@ class SCO2Post {
   DateTime postCreatedAt;
   int? postCommentNumber;
   String postType;
+  String? moodLabel;
 
   SCO2Post({
     required this.postID,
@@ -25,6 +26,7 @@ class SCO2Post {
     this.postLinkedActivity,
     this.postLikesNumber,
     this.postCommentNumber,
+    this.moodLabel,
   });
 
   factory SCO2Post.fromJSON(Map<String, dynamic> json) {
@@ -77,6 +79,10 @@ class SCO2Post {
 
     if (postCommentNumber != null) {
       data['postCommentNumber'] = postCommentNumber!;
+    }
+
+    if (moodLabel != null) {
+      data['mood'] = moodLabel;
     }
 
     return data;

@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:social_co2/providers/MakePostProvider.dart';
 import 'package:social_co2/screens/dialogs/dialogMood.dart';
 import 'package:social_co2/screens/dialogs/dialogPostActivities.dart';
 import 'package:social_co2/styles/CardStyles.dart';

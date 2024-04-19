@@ -46,6 +46,16 @@ router.route('/feed')
                 if (typeof postData.photoURL !== "string"){
                     photoURL = null
                 }
+                const getLikeBool = `
+                SELECT *
+                FROM likes
+                WHERE userID = ? AND postID = ?;`;
+                const getLikeBoolResult = await executeQuery(getLikeBool, [postData.uid,feedResult.postID]);
+                if (getLikeBoolResult.length > 0){
+                    const like = true
+                } else {
+                    const like = false
+                }
                 return {
                     uid: postData.uid,
                     name: surname,
@@ -57,7 +67,8 @@ router.route('/feed')
                     postLikesNumber : feedResult.postLikesNumber,
                     postCreatedAt : feedResult.postCreatedAt,
                     postCommentsNumber : feedResult.postCommentsNumber,
-                    postType : feedResult.postType
+                    postType : feedResult.postType,
+                    like : like
                 };
             }));
 
@@ -129,11 +140,11 @@ router.route('/like')
                 const io = socketManager.getIO();
                 notificationHandler.handleNewNotification(io, { userID: postOwnerID, notificationContent });
 
+                const NbLikesQuery = `SELECT postLikesNumber FROM posts WHERE postID = ? ;`;
+                const NbLikesQueryResult = await executeQuery(NbLikesQuery, [postID]);
+
                 const response = {
-                        userID : postOwnerID,
-                        notificationContent : notificationContent,
-                        notificationTitle : notificationTitle,
-                        notificationStatus : notificationStatus
+                        NbLikes : NbLikesQueryResult
                 }
                 return res.status(200).json(response);
             } else {

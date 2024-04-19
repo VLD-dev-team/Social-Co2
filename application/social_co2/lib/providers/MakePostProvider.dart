@@ -77,9 +77,6 @@ class MakePostProvider extends ChangeNotifier {
     error = "";
     posting = false;
     sended = true;
-
-    // Création d'une nouvelle instance de SCO2Post avec les données renvoyés par le serveur
-    post = SCO2Post.fromJSON(data);
     notifyListeners();
     return post;
   }

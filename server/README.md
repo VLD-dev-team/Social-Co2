@@ -131,7 +131,7 @@ CREATE TABLE activities (
   activityType VARCHAR(255),
   activityCO2Impact INT,
   activityName VARCHAR(255),
-  activityTimestamp TIMESTAMP ,
+  activityTimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (activityID)
 );
 
@@ -141,7 +141,7 @@ CREATE TABLE recurrentActivities (
   activityType VARCHAR(255),
   activityCO2Impact FLOAT,
   activityName VARCHAR(255),
-  activityTimestamp TIMESTAMP,
+  activityTimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (activityID)
 );
 

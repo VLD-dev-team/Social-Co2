@@ -321,9 +321,9 @@ router.route('/activities')
         const sqlResult = await executeQuery(sqlQuery, [userID, currentTimestamp]);
 
         if (sqlResult.length > 0 ){
-            currentPhrase = "Vous avez effectué les acitivités suivantes : "
+            currentPhrase = "Vous avez effectué les activités suivantes : "
             for (activities in sqlResult){
-                currentPhrase = currentPhrase + sqlResult[activities].activityName.toString()
+                currentPhrase = currentPhrase + "\n-" + sqlResult[activities].activityName.toString()
             }
             const response = {
                 activities : sqlResult,

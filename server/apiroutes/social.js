@@ -190,7 +190,7 @@ router.route('/comments') // Route pour charger les commentaires
                 const authUser = await admin.auth().getUser(each.userID);
                 response[authUser.displayName] = selectResult[each];
             }
-            return res.status(200).json(response);
+            return res.status(200).json({comments: response});
         }
         const response = {
             error : true,

@@ -53,10 +53,9 @@ router.route('/feed')
                 FROM likes
                 WHERE userID = ? AND postID = ?;`;
                 const getLikeBoolResult = await executeQuery(getLikeBool, [postData.uid,feedResult.postID]);
+                let like = false
                 if (getLikeBoolResult.length > 0){
-                    const like = true
-                } else {
-                    const like = false
+                    like = true
                 }
                 return {
                     uid: postData.uid,

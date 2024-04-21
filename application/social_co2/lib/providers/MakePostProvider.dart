@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:social_co2/classes/post.dart';
 import 'package:social_co2/main.dart';
+import 'package:social_co2/providers/FeedProvider.dart';
 import 'package:social_co2/utils/requestsService.dart';
 
 class MakePostProvider extends ChangeNotifier {

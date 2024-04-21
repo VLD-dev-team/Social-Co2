@@ -229,10 +229,12 @@ router.route('/comments') // Route pour charger les commentaires
                     const { userID: postOwnerID } = postOwner;
 
                     // Récupération du nom de l'utilisateur qui a commenté
-                    const [commenterInfo] = await executeQuery(`SELECT userName FROM users WHERE userID = ? ;`, [userID]);
+                    let commenterName = (await admin.auth().getUser(userID)).displayName;
+                    console.log(commenterName)
 
-                    if (commenterInfo) {
-                        const { userName: commenterName } = commenterInfo;
+                    if (!commenterName) {
+                        commenterName = "Quelqu'un"
+                    }
 
                         // Insertion de la notification dans la table notifications
                         const notificationContent = `${commenterName} a commenté votre publication.`;
@@ -252,7 +254,7 @@ router.route('/comments') // Route pour charger les commentaires
                                 notificationStatus : notificationStatus
                         }
                         return res.status(200).json(response);
-                    }
+                    
                 }
                 const response = {
                         error : true,

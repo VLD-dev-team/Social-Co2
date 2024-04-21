@@ -48,9 +48,7 @@ router.route('/')
                     activityCO2Impact : sqlResult[0].activityCO2Impact,
                     activityName : sqlResult[0].activityName,
                     activityTimestamp : sqlResult[0].activityTimestamp
-                },
-                status : 200,
-                type : 'response'
+                }
             }
             return req.status(200).json(response)
 
@@ -203,7 +201,6 @@ router.route('/')
                 activityCO2Impact : activityCO2Impact,
                 activityName : activityName,
             }
-            console.table(response)
 
             return res.status(200).json(response);
             } else {

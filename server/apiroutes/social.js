@@ -40,7 +40,7 @@ router.route('/feed')
 
         const feed = await Promise.all(feedResult.map(async (post) => {
             const postData = await admin.auth().getUser(post.userID);
-            let surname = postData.displayName;
+                let surname = postData.displayName;
                 let photoURL = postData.photoURL;
                 if (typeof postData.displayName !== "string"){
                     surname = null
@@ -52,7 +52,7 @@ router.route('/feed')
                 SELECT *
                 FROM likes
                 WHERE userID = ? AND postID = ?;`;
-                const getLikeBoolResult = await executeQuery(getLikeBool, [postData.uid,feedResult.postID]);
+                const getLikeBoolResult = await executeQuery(getLikeBool, [postData.uid,post.postID]);
                 let like = false
                 if (getLikeBoolResult.length > 0){
                     like = true
@@ -61,14 +61,14 @@ router.route('/feed')
                     uid: postData.uid,
                     name: surname,
                     photoURL: photoURL,
-                    postID : feedResult.postID,
-                    postTextContent : feedResult.postTextContent,
-                    postMediaContentURL : feedResult.postMediaContentURL,
-                    postLinkedActivity : feedResult.postLinkedActivity,
-                    postLikesNumber : feedResult.postLikesNumber,
-                    postCreatedAt : feedResult.postCreatedAt,
-                    postCommentsNumber : feedResult.postCommentsNumber,
-                    postType : feedResult.postType,
+                    postID : post.postID,
+                    postTextContent : post.postTextContent,
+                    postMediaContentURL : post.postMediaContentURL,
+                    postLinkedActivity : post.postLinkedActivity,
+                    postLikesNumber : post.postLikesNumber,
+                    postCreatedAt : post.postCreatedAt,
+                    postCommentsNumber : post.postCommentsNumber,
+                    postType : post.postType,
                     like : like
                 };
             }));

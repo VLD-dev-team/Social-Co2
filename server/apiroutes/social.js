@@ -164,6 +164,7 @@ router.route('/like')
 router.route('/comments') // Route pour charger les commentaires
     .get (async (req,res) => {
         const postID = req.query.postid;
+        const userID = req.headers.userid
 
         if(isNaN(postID)){
             const response = {
@@ -180,6 +181,7 @@ router.route('/comments') // Route pour charger les commentaires
         const selectResult = await executeQuery(selectQuery, [postID])
 
         if (selectResult.length > 0){
+            console.log(selectResult)
             let response = {};
             for (let each of selectResult) {
                 const authUser = await admin.auth().getUser(each.userID);

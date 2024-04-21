@@ -13,6 +13,7 @@ class SCO2Post {
   int? postCommentNumber;
   String postType;
   String? moodLabel;
+  bool? liked = false;
 
   SCO2Post({
     required this.postID,
@@ -27,21 +28,26 @@ class SCO2Post {
     this.postLikesNumber,
     this.postCommentNumber,
     this.moodLabel,
+    this.liked,
   });
 
   factory SCO2Post.fromJSON(Map<String, dynamic> json) {
     return SCO2Post(
       postID: json["postID"],
-      userID: json["userID"],
-      userName: json["userName"],
-      userPhotoURL: json["userPhotoURL"],
+      userID: json["uid"],
+      userName: json["name"],
+      userPhotoURL: json["photoURL"],
       postTextContent: json["postTextContent"],
       postMediaContentURL: json["postMediaContentURL"],
-      postLinkedActivity: SCO2activity.fromJSON(json["postLinkedActivity"]),
+      postLinkedActivity: (json["postLinkedActivity"] == "null")
+          ? SCO2activity.fromJSON(json["postLinkedActivity"])
+          : null,
       postLikesNumber: json["postLikesNumber"],
       postCreatedAt: DateTime.parse(json["postCreatedAt"]),
       postCommentNumber: json["postCommentNumber"],
       postType: json["postType"],
+      moodLabel: json["mood"],
+      liked: (json["like"] == "null") ? false : json["like"],
     );
   }
 
@@ -82,7 +88,11 @@ class SCO2Post {
     }
 
     if (moodLabel != null) {
-      data['mood'] = moodLabel;
+      data['mood'] = moodLabel!;
+    }
+
+    if (liked != null) {
+      data['like'] = liked!;
     }
 
     return data;

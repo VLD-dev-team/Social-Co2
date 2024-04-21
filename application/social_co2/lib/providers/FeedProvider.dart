@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:social_co2/classes/activity.dart';
 import 'package:social_co2/classes/post.dart';
 import 'package:social_co2/utils/requestsService.dart';
 
@@ -12,7 +11,6 @@ class FeedProvider extends ChangeNotifier {
   bool loading = false;
 
   FeedProvider() {
-    print("Obtention du feed");
     refreshFeed();
   }
 
@@ -22,8 +20,6 @@ class FeedProvider extends ChangeNotifier {
 
   Future<List<SCO2Post>> getFeed() async {
     // On initialise la liste et le provider
-    print('go feed');
-
     error = "";
     loading = true;
     notifyListeners();
@@ -39,21 +35,6 @@ class FeedProvider extends ChangeNotifier {
       'userid': userID,
     });
 
-    newFeed.add(SCO2Post(
-        postID: 0,
-        postTextContent: "Salut tout le monde, J'ai fait du vélo ce matin !",
-        userName: 'Valentin',
-        userPhotoURL: 'url',
-        userID: userID,
-        postLinkedActivity: SCO2activity(
-            activityName: "Activité",
-            activityType: 'renovation',
-            activityTimestamp: DateTime.now()),
-        postCreatedAt: DateTime.now(),
-        postType: "text"));
-
-    print(data);
-
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
     if (data["error"] == true) {
@@ -68,11 +49,14 @@ class FeedProvider extends ChangeNotifier {
       return newFeed;
     }
 
-    // On transforme les données en liste d'utilisateur SCO2
+    print(data['feed']);
+
+    // On transforme les données en liste de post SCO2
     if (data['feed'] != []) {
       for (var i = 0; i < data['feed'].length; i++) {
-        final userData = SCO2Post.fromJSON(data['feed'][i]);
-        newFeed.add(userData);
+        final post =
+            SCO2Post.fromJSON(Map<String, dynamic>.from(data["feed"][i]));
+        newFeed.add(post);
       }
     }
 

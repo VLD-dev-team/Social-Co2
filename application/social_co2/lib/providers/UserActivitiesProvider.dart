@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:social_co2/classes/activity.dart';
 import 'package:social_co2/collections/activitiesData.dart';
@@ -65,8 +63,6 @@ class UserActivitiesProvider extends ChangeNotifier {
 
       return [];
     }
-
-    print(data);
 
     // Si pas d'erreur on enregistre les données temporairement
     // Phrase de récap

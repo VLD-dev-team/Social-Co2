@@ -125,10 +125,12 @@ router.route('/like')
             const { userID: postOwnerID } = postOwner;
 
             // Récupération du nom de l'utilisateur qui a liké
-            const [likerInfo] = await executeQuery(`SELECT userName FROM users WHERE userID = ? ;`, [userID]);
+            let likerName = (await admin.auth().getUser(userID)).displayName;
+            console.log(likerName)
 
-            if (likerInfo) {
-                const { userName: likerName } = likerInfo;
+            if (!likerName) {
+                likerName = "Quelqu'un"
+            }
 
                 // Insertion de la notification dans la table notifications
                 const notificationContent = `${likerName} a aimé votre publication.`;
@@ -148,14 +150,6 @@ router.route('/like')
                         NbLikes : NbLikesQueryResult
                 }
                 return res.status(200).json(response);
-            } else {
-                const response = {
-                    error : true,
-                    error_message : ' Invalid user ID, post ID, or comment content ',
-                    error_code : 9
-                }
-                return res.status(500).json(response);
-            }
         }
 
         const response = {

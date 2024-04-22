@@ -7,7 +7,7 @@ import 'package:social_co2/screens/mainScreens/ActivitiesScreen.dart';
 import 'package:social_co2/screens/mainScreens/HomeScreen.dart';
 import 'package:social_co2/screens/mainScreens/LeaderBoardScreen.dart';
 import 'package:social_co2/screens/mainScreens/MessagesScreen.dart';
-import 'package:social_co2/screens/mainScreens/SCO2ReportScreen.dart';
+import 'package:social_co2/screens/mainScreens/ReportScreen.dart';
 import 'package:social_co2/screens/mainScreens/SearchScreen.dart';
 import 'package:social_co2/screens/mainScreens/SettingsScreen.dart';
 
@@ -132,7 +132,7 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
               case 3:
                 return const ActivityScreen(); // ACTIVITÉS
               case 4:
-                return const SCO2ReportScreen(); // RAPPORT
+                return const ReportScreen(); // RAPPORT
               case 5:
                 return const LeaderBoardScreeen(); // CLASSEMENT
               case 6:

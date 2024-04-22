@@ -69,9 +69,18 @@ class CallToPost extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {
-                          PROVIDERVALUES.postText(postFieldController.text);
-                        },
+                        onPressed: (PROVIDERVALUES.posting)
+                            ? null
+                            : () {
+                                PROVIDERVALUES
+                                    .postText(postFieldController.text)
+                                    .then((value) {
+                                  postFieldController.text = "";
+                                  Provider.of<FeedProvider>(context,
+                                          listen: false)
+                                      .refreshFeed();
+                                });
+                              },
                         icon: const Icon(Icons.send),
                       )
                     ],

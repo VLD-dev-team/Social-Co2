@@ -31,90 +31,98 @@ class CallToPost extends StatelessWidget {
   Widget build(BuildContext context) {
     final postFieldController = TextEditingController();
 
-    return Container(
-      decoration: primaryCard,
-      child: Padding(
-        padding: const EdgeInsets.all(5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Card(
-              color: secondaryCardColor,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    userphoto,
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: Container(
-                        decoration: const BoxDecoration(
-                            color: primaryCardColor,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(25))),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: TextField(
-                            minLines: 1,
-                            maxLines: 3,
-                            decoration: const InputDecoration(
-                                hintText: "Quoi de neuf..."),
-                            controller: postFieldController,
+    return Consumer<MakePostProvider>(
+      builder: (context, PROVIDERVALUES, child) => Container(
+        decoration: primaryCard,
+        child: Padding(
+          padding: const EdgeInsets.all(5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Card(
+                color: secondaryCardColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      userphoto,
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              color: primaryCardColor,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(25))),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: TextField(
+                              minLines: 1,
+                              maxLines: 3,
+                              decoration: const InputDecoration(
+                                  hintText: "Quoi de neuf..."),
+                              controller: postFieldController,
+                            ),
                           ),
                         ),
                       ),
-                    )
-                  ],
+                      IconButton(
+                        onPressed: () {
+                          PROVIDERVALUES.postText(postFieldController.text);
+                        },
+                        icon: const Icon(Icons.send),
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Card(
-              color: secondaryCardColor,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Wrap(
-                  spacing: 10,
-                  children: [
-                    FilledButton.icon(
-                        onPressed: () {
-                          showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (context) {
-                                return const MoodDialog();
-                              }).then((value) => Provider.of<FeedProvider>(
-                                  context,
-                                  listen: false)
-                              .refreshFeed());
-                        },
-                        icon: const Icon(Icons.mood),
-                        label: const Text("Ton humeur")),
-                    FilledButton.icon(
-                        onPressed: () {
-                          showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (context) {
-                                return const dialogPostActivities();
-                              }).then((value) => Provider.of<FeedProvider>(
-                                  context,
-                                  listen: false)
-                              .refreshFeed());
-                        },
-                        icon: const Icon(Icons.energy_savings_leaf_outlined),
-                        label: const Text("Poste tes activités")),
-                    FilledButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.upload),
-                        label: const Text("Ton rapport")),
-                  ],
+              Card(
+                color: secondaryCardColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Wrap(
+                    spacing: 10,
+                    children: [
+                      FilledButton.icon(
+                          onPressed: () {
+                            showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) {
+                                  return const MoodDialog();
+                                }).then((value) => Provider.of<FeedProvider>(
+                                    context,
+                                    listen: false)
+                                .refreshFeed());
+                          },
+                          icon: const Icon(Icons.mood),
+                          label: const Text("Ton humeur")),
+                      FilledButton.icon(
+                          onPressed: () {
+                            showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) {
+                                  return const dialogPostActivities();
+                                }).then((value) => Provider.of<FeedProvider>(
+                                    context,
+                                    listen: false)
+                                .refreshFeed());
+                          },
+                          icon: const Icon(Icons.energy_savings_leaf_outlined),
+                          label: const Text("Poste tes activités")),
+                      FilledButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.upload),
+                          label: const Text("Ton rapport")),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

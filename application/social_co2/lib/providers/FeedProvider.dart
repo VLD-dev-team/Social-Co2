@@ -25,7 +25,7 @@ class FeedProvider extends ChangeNotifier {
     error = "";
     loading = true;
     notifyListeners();
-    List<SCO2Post> newFeed = [];
+    feed.clear();
 
     // On récupère le token de connexion
     final authToken = await FirebaseAuth.instance.currentUser!.getIdToken();
@@ -48,22 +48,17 @@ class FeedProvider extends ChangeNotifier {
 
       loading = false;
       notifyListeners();
-      return newFeed;
+      return feed;
     }
-
-    print(data['feed']);
 
     // On transforme les données en liste de post SCO2
     if (data['feed'] != []) {
       for (var i = 0; i < data['feed'].length; i++) {
         final post =
             SCO2Post.fromJSON(Map<String, dynamic>.from(data["feed"][i]));
-        newFeed.add(post);
+        feed.add(post);
       }
     }
-
-    print("feed $newFeed");
-    feed = newFeed;
 
     // On termine la requette
     loading = false;
@@ -108,11 +103,12 @@ class FeedProvider extends ChangeNotifier {
 
     // On analyse les données renvoyés par le serveur et on affiche le like
     // Si le post est liké alors termine la fonction et on actualise le feed
-    refreshFeed();
+    loading = false;
+    notifyListeners();
     return 0;
   }
 
-  Future<List<Map<String, dynamic>>> getPostComment(postID) async {
+  Future<dynamic> getPostComment(postID) async {
     error = "";
     gettingNewComments = true;
     notifyListeners();

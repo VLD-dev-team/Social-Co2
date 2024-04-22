@@ -92,16 +92,23 @@ class _dialogComments extends State<dialogComments> {
                 ),
                 const SizedBox(width: 10),
                 IconButton(
-                    onPressed:
-                        (editingNewComment && !PROVIDERVALUES.postingComment)
-                            ? () {
-                                PROVIDERVALUES.sendComment(
-                                    postData.postID, controller.text);
-                                setState(() {
-                                  controller.text = "";
-                                });
-                              }
-                            : null,
+                    onPressed: (editingNewComment &&
+                            !PROVIDERVALUES.postingComment)
+                        ? () {
+                            PROVIDERVALUES
+                                .sendComment(postData.postID, controller.text)
+                                .then((value) {
+                              PROVIDERVALUES.getPostComment(postData.postID);
+                              setState(() {
+                                postData.postCommentsNumber =
+                                    postData.postCommentsNumber! + 1;
+                              });
+                            });
+                            setState(() {
+                              controller.text = "";
+                            });
+                          }
+                        : null,
                     icon: const Icon(Icons.send))
               ],
             ),

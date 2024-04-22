@@ -948,6 +948,7 @@ const response = {
             }
 ```
 
+
 ## Test avec postman
 
 Pour tester notre **API**, j'ai opté pour le logiciel Postman qui permet de faire des requêtes directement au serveur avec les différentes clés en paramètres : HEADERS, BODY, PARAMS, QUERY ...

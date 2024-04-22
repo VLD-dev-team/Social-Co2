@@ -68,10 +68,7 @@ class _FeedPostState extends State<FeedPost> {
                 TextButton.icon(
                   onPressed: () {
                     Provider.of<FeedProvider>(context, listen: false)
-                        .likePost(postData.postID)
-                        .then((value) =>
-                            Provider.of<FeedProvider>(context, listen: false)
-                                .getFeed());
+                        .likePost(postData.postID);
                   },
                   label: Text("${postData.postLikesNumber}"),
                   icon: (postData.liked == true)
@@ -85,9 +82,7 @@ class _FeedPostState extends State<FeedPost> {
                       builder: (context) => dialogComments(
                         postData: postData,
                       ),
-                    ).then((value) =>
-                        Provider.of<FeedProvider>(context, listen: false)
-                            .getFeed());
+                    );
                   },
                   label: Text("${postData.postCommentsNumber}"),
                   icon: const Icon(Icons.comment),

@@ -104,6 +104,14 @@ class FeedProvider extends ChangeNotifier {
     // On analyse les données renvoyés par le serveur et on affiche le like
     // Si le post est liké alors termine la fonction et on actualise le feed
     loading = false;
+    final index = feed.indexWhere((element) => element.postID == postID);
+    if (feed[index].liked!) {
+      feed[index].postLikesNumber = feed[index].postLikesNumber! - 1;
+      feed[index].liked = false;
+    } else {
+      feed[index].postLikesNumber = feed[index].postLikesNumber! + 1;
+      feed[index].liked = true;
+    }
     notifyListeners();
     return 0;
   }

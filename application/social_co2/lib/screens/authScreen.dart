@@ -144,7 +144,6 @@ class _AuthScreenState extends State<AuthScreen> {
         FocusScope.of(context).unfocus;
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('SCO2'), centerTitle: true),
         body:
             !isLoading // Affichage le form si aucune action d'authentication est en cours
                 ? Center(

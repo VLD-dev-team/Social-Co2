@@ -111,7 +111,7 @@ class _dialogPostActivitiesState extends State<dialogPostActivities> {
                                           activities:
                                               value2.userActivitiesPerDays[
                                                   selectedDate],
-                                          multiSelection: true,
+                                          selection: true,
                                           error: value2.error);
                                     }
                                   }))

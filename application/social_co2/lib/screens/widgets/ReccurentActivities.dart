@@ -49,7 +49,7 @@ class ReccurentActivities extends StatelessWidget {
                     height: 120,
                     child: ActivitiesList(
                       activities: PROVIDERVALUES.reccurentActivities,
-                      multiSelection: false,
+                      selection: false,
                       error: PROVIDERVALUES.error,
                     ),
                   );

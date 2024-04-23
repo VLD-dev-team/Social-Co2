@@ -53,7 +53,7 @@ List<Map<String, dynamic>> meals = [
 List<Map<String, dynamic>> purchases = [
   {"type": "newclothes", "label": "Vêtements 1ère main"},
   {"type": "reusedclothes", "label": "Vêtements 2nd main"},
-  {"type": "applicance", "label": "Éléctroménager"},
+  {"type": "appliances", "label": "Éléctroménager"},
   {"type": "computer", "label": "Ordinateur"},
   {"type": "phone", "label": "Téléphone"}
 ];

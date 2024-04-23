@@ -7,6 +7,7 @@ import 'package:social_co2/screens/mainScreens/ActivitiesScreen.dart';
 import 'package:social_co2/screens/mainScreens/HomeScreen.dart';
 import 'package:social_co2/screens/mainScreens/LeaderBoardScreen.dart';
 import 'package:social_co2/screens/mainScreens/MessagesScreen.dart';
+import 'package:social_co2/screens/mainScreens/SCO2ReportScreen.dart';
 import 'package:social_co2/screens/mainScreens/SearchScreen.dart';
 import 'package:social_co2/screens/mainScreens/SettingsScreen.dart';
 
@@ -28,12 +29,11 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveFormats responsive_format = whichResponsiveFormat(context);
+    ResponsiveFormats responsiveFormat = whichResponsiveFormat(context);
 
     return Scaffold(
         body: Row(
@@ -42,15 +42,14 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
           decoration:
               drawerDecoration, // Fond dégradé du drawer enregistré dans les fichiers de style + ombre
           child: SizedBox(
-            width: (responsive_format == ResponsiveFormats.small ||
-                    responsive_format == ResponsiveFormats.mobile)
+            width: (responsiveFormat == ResponsiveFormats.small ||
+                    responsiveFormat == ResponsiveFormats.mobile)
                 ? 60
                 : 300,
             child: ListView.builder(
                 // Construction du drawer
-                // TODO: coder une meilleure implémentation -> Trop long pour le responsive
-                padding: (responsive_format == ResponsiveFormats.small ||
-                        responsive_format == ResponsiveFormats.mobile)
+                padding: (responsiveFormat == ResponsiveFormats.small ||
+                        responsiveFormat == ResponsiveFormats.mobile)
                     ? const EdgeInsets.only(right: 10)
                     : const EdgeInsets.only(right: 20),
                 itemCount: drawerEntries.length,
@@ -58,13 +57,12 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
                   if (index == 0) {
                     // Si l'index est égal à 0, alors on affiche le logo de l'application
                     return Container(
-                      // TODO : Implémenter le clic sur le logo
                       margin: const EdgeInsets.symmetric(
                           vertical: 20, horizontal: 15),
                       child: RotatedBox(
-                        quarterTurns: (responsive_format ==
+                        quarterTurns: (responsiveFormat ==
                                     ResponsiveFormats.small ||
-                                responsive_format == ResponsiveFormats.mobile)
+                                responsiveFormat == ResponsiveFormats.mobile)
                             ? 3
                             : 0,
                         child: Image.asset(
@@ -95,9 +93,9 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
                                 color: Colors.black,
                                 size: 30,
                               ),
-                              if (responsive_format == // Pas de titre d'option sur les petits écrans
+                              if (responsiveFormat == // Pas de titre d'option sur les petits écrans
                                       ResponsiveFormats.small ||
-                                  responsive_format == ResponsiveFormats.mobile)
+                                  responsiveFormat == ResponsiveFormats.mobile)
                                 const SizedBox(
                                   width: 0,
                                   height: 0,
@@ -134,10 +132,12 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
               case 3:
                 return const ActivityScreen(); // ACTIVITÉS
               case 4:
-                return const LeaderBoardScreeen(); // CLASSEMENT
+                return const SCO2ReportScreen(); // RAPPORT
               case 5:
-                return const MessagesScreen(); // MESSAGES
+                return const LeaderBoardScreeen(); // CLASSEMENT
               case 6:
+                return const MessagesScreen(); // MESSAGES
+              case 7:
                 return const SettingsScreen(); // PARAMÈTRES
               default:
                 return const HomeScreen(); // ACCUEIL

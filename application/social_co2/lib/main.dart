@@ -13,6 +13,7 @@ import 'package:social_co2/firebase_options.dart';
 
 // Importation des providers
 import 'package:provider/provider.dart';
+import 'package:social_co2/providers/FeedProvider.dart';
 import 'package:social_co2/providers/FriendshipsProvider.dart';
 import 'package:social_co2/providers/IndexProvider.dart';
 import 'package:social_co2/providers/LeaderboardProvider.dart';
@@ -123,6 +124,9 @@ class HomeScreen extends StatelessWidget {
         ListenableProvider<FriendshipsProvider>(
             create: (_) =>
                 FriendshipsProvider()), // Provider qui permet de gérer les amités de l'utilisateur
+        ListenableProvider<FeedProvider>(
+            create: (_) =>
+                FeedProvider()), // Provider qui permet d'afficher le feed et les données liés au feed
       ],
       builder: (context, child) {
         if (kIsWeb) {

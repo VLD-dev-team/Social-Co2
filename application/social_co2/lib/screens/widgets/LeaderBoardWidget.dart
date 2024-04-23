@@ -198,23 +198,20 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                                 ),
                                 title: Row(
                                   children: [
-                                    CircleAvatar(
-                                      //affiche un rond qui contient la photo de profil de l'utilisateur
-                                      backgroundImage: NetworkImage(
-                                        selectedIcon == "friends"
-                                            ? value
-                                                .leaderBoardFriends
-                                                .leaderBoardData[index]
-                                                    ["photoURL"]
-                                                .toString()
-                                            : value
-                                                .leaderBoardWorld
-                                                .leaderBoardData[index]
-                                                    ["photoURL"]
-                                                .toString(),
-                                        scale: 40,
+                                    CircleAvatar( //affiche photo de profil utilisateur
+                                        radius: 40, // Défini le rayon du cercle
+                                        backgroundImage: selectedIcon == "friends" ?
+                                          (value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"] != null ? //condition si l'utilisateur n'a pas de photo de profil, et qu'on souhaite le classement des amis
+                                            NetworkImage(value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"].toString()) : null)//si l'utilisateur possède une photo de profil, on l'affiche, sinon backgroundImage est défini sur null et ne s'affiche pas
+                                          : (value.leaderBoardWorld.leaderBoardData[index]["PhotoURL"] != null ?//conditoon si l'utilisateur n'a pas de pp, et qu'on souhaite le classement mondial (selectedIcon=!"friends" donc selectedIcon="world")
+                                            NetworkImage(value.leaderBoardWorld.leaderBoardData[index]["PhotoURL"].toString()) : null),//si l'utilisateur possède une photo de profil, on l'affiche, sinon backgroundImage est défini sur null et ne s'affiche pas
+                                        child: selectedIcon == "friends" ?
+                                          (value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"] == null ?//si background image est nul
+                                            const Icon(Icons.person, size: 40) : null)// on affiche l'icone par défaut, sinon child est défini sur null et ne s'affiche pas
+                                          : (value.leaderBoardWorld.leaderBoardData[index]["PhotoURL"] == null ?
+                                            const Icon(Icons.person, size: 40) : null),
+                                            //backgroundImage (photo de profil) ou child (icone par défaut) s'affiche en fonction de la photo de profil de l'utilisateur
                                       ),
-                                    ),
                                     Expanded(
                                         child: Center(
                                             child: Text(
@@ -416,17 +413,19 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                                       ),
                                       title: Row(
                                         children: [
-                                          CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                              selectedIcon == "friends"
-                                                  ? value.leaderBoardFriends
-                                                          .leaderBoardData[
-                                                      index]["photoURL"]
-                                                  : value.leaderBoardWorld
-                                                          .leaderBoardData[
-                                                      index]["photoURL"],
-                                              scale: 40,
-                                            ),
+                                          CircleAvatar( //affiche photo de profil utilisateur
+                                            radius: 40, // Défini le rayon du cercle
+                                            backgroundImage: selectedIcon == "friends" ?
+                                              (value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"] != null ? //condition si l'utilisateur n'a pas de photo de profil, et qu'on souhaite le classement des amis
+                                                NetworkImage(value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"].toString()) : null)//si l'utilisateur possède une photo de profil, on l'affiche, sinon backgroundImage est défini sur null et ne s'affiche pas
+                                              : (value.leaderBoardWorld.leaderBoardData[index]["PhotoURL"] != null ?//conditoon si l'utilisateur n'a pas de pp, et qu'on souhaite le classement mondial (selectedIcon=!"friends" donc selectedIcon="world")
+                                                NetworkImage(value.leaderBoardWorld.leaderBoardData[index]["PhotoURL"].toString()) : null),//si l'utilisateur possède une photo de profil, on l'affiche, sinon backgroundImage est défini sur null et ne s'affiche pas
+                                            child: selectedIcon == "friends" ?
+                                              (value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"] == null ?//si background image est nul
+                                                const Icon(Icons.person, size: 40) : null)// on affiche l'icone par défaut, sinon child est défini sur null et ne s'affiche pas
+                                              : (value.leaderBoardWorld.leaderBoardData[index]["PhotoURL"] == null ?
+                                                const Icon(Icons.person, size: 40) : null),
+                                                //backgroundImage (photo de profil) ou child (icone par défaut) s'affiche en fonction de la photo de profil de l'utilisateur
                                           ),
                                           Expanded(
                                             child: Center(
@@ -614,16 +613,20 @@ Widget listLeaderbaord(String title, double width) {
                             ),
                             title: Row(
                               children: [
-                                CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    title == "Amis"
-                                        ? value.leaderBoardFriends
-                                            .leaderBoardData[index]["photoURL"]
-                                        : value.leaderBoardWorld
-                                            .leaderBoardData[index]["photoURL"],
-                                    scale: 40,
-                                  ),
-                                ),
+                                CircleAvatar( //affiche photo de profil utilisateur
+                                        radius: 40, // Défini le rayon du cercle
+                                        backgroundImage: title == "Amis" ?
+                                          (value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"] != null ? //condition si l'utilisateur n'a pas de photo de profil, et qu'on souhaite le classement des amis
+                                            NetworkImage(value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"].toString()) : null)//si l'utilisateur possède une photo de profil, on l'affiche, sinon backgroundImage est défini sur null et ne s'affiche pas
+                                          : (value.leaderBoardWorld.leaderBoardData[index]["PhotoURL"] != null ?//conditoon si l'utilisateur n'a pas de pp, et qu'on souhaite le classement mondial (selectedIcon=!"friends" donc selectedIcon="world")
+                                            NetworkImage(value.leaderBoardWorld.leaderBoardData[index]["PhotoURL"].toString()) : null),//si l'utilisateur possède une photo de profil, on l'affiche, sinon backgroundImage est défini sur null et ne s'affiche pas
+                                        child: title == "Amis" ?
+                                          (value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"] == null ?//si background image est nul
+                                            const Icon(Icons.person, size: 40) : null)// on affiche l'icone par défaut, sinon child est défini sur null et ne s'affiche pas
+                                          : (value.leaderBoardWorld.leaderBoardData[index]["PhotoURL"] == null ?
+                                            const Icon(Icons.person, size: 40) : null),
+                                            //backgroundImage (photo de profil) ou child (icone par défaut) s'affiche en fonction de la photo de profil de l'utilisateur
+                                      ),
                                 Expanded(
                                   child: Center(
                                     child: Text(

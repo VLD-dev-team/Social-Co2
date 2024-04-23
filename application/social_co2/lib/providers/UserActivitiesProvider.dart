@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:social_co2/classes/activity.dart';
 import 'package:social_co2/collections/activitiesData.dart';
@@ -46,7 +44,8 @@ class UserActivitiesProvider extends ChangeNotifier {
 
     // On prépare la requette get
     final headers = {'authorization': '$token', 'userid': '$userID'};
-    const endpoint = "user/activities";
+    final endpoint =
+        "user/activities?currentTimestamp=${parsedDate.toIso8601String()}";
 
     // On effectue la requette
     final data = await requestService().get(endpoint, headers);
@@ -79,7 +78,7 @@ class UserActivitiesProvider extends ChangeNotifier {
     // Liste d'activités
     List<SCO2activity> parsingList = [];
     for (var i = 0; i < data['activities'].length; i++) {
-      parsingList.add(SCO2activity.fromJSON(data[i]));
+      parsingList.add(SCO2activity.fromJSON(data['activities'][i]));
     }
     userActivitiesPerDays.update(
       parsedDate,
@@ -189,18 +188,15 @@ class UserActivitiesProvider extends ChangeNotifier {
       return activity;
     }
 
-    // Si pas d'erreur on traite la requette
-    final SCO2activity newActivity = SCO2activity.fromJSON(data);
-
     // On met à jour les widget
     isPosting = false;
     error = "";
     notifyListeners();
 
     // On met à jour la liste des activités
-    getCurrentUserActivitiesByDate(newActivity.activityTimestamp);
+    getCurrentUserActivitiesByDate(activity.activityTimestamp);
 
     // On retourne l'activité nouvellement créée
-    return newActivity;
+    return activity;
   }
 }

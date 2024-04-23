@@ -114,10 +114,10 @@ class SQOLeftColumn extends StatelessWidget {
                                 ),
                               )
                             ])
-                  : Column(
+                  : const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
+                      children: [
                         Padding(
                           padding: EdgeInsets.all(20),
                           child: CircularProgressIndicator(
@@ -172,10 +172,10 @@ class SQOLeftColumn extends StatelessWidget {
                                 ),
                               )
                             ])
-                  : Column(
+                  : const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
+                      children: [
                         Padding(
                           padding: EdgeInsets.all(20),
                           child: CircularProgressIndicator(

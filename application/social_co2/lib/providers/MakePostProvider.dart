@@ -6,10 +6,20 @@ import 'package:social_co2/utils/requestsService.dart';
 
 class MakePostProvider extends ChangeNotifier {
   bool posting = false;
+  bool sended = false;
   String error = "";
 
+  MakePostProvider() {
+    resetSended();
+  }
+
+  Future<void> resetSended() async {
+    sended = false;
+    notifyListeners();
+  }
+
   // Fonction pour poster un mood
-  Future<SCO2Post> postMood(index) async {
+  Future<SCO2Post> postMood(label) async {
     // Obtention le user id
     final userID = FirebaseAuth.instance.currentUser!.uid;
 
@@ -19,7 +29,7 @@ class MakePostProvider extends ChangeNotifier {
         userID: userID,
         postCreatedAt: DateTime.now(),
         postType: "mood",
-        postTextContent: '$index');
+        moodLabel: '$label');
 
     // Envoie du post vers le serveur
     final postReq = await uploadPost(postData);
@@ -29,6 +39,7 @@ class MakePostProvider extends ChangeNotifier {
   // Fonction d'envoi du post (tout type confondu)
   Future<SCO2Post> uploadPost(SCO2Post post) async {
     posting = true;
+    sended = false;
     notifyListeners();
 
     // On récupère le token de connexion
@@ -40,14 +51,13 @@ class MakePostProvider extends ChangeNotifier {
 
     // On fait la requette au server
     final data = await requestService().post(
-        'user/${userID}/social/post/',
-        {
-          "authorization": '$authToken',
-          'userid': '$userID',
-        },
-        body);
-
-    // TODO : ERREUR DE TYPE À CONFIRMER AVEC LUKA
+      'social/posts/',
+      {
+        "authorization": '$authToken',
+        'userid': '$userID',
+      },
+      body,
+    );
 
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
@@ -58,7 +68,7 @@ class MakePostProvider extends ChangeNotifier {
         error = "error: unknown error";
       }
       posting = false;
-
+      print(error);
       notifyListeners();
       return post;
     }
@@ -66,9 +76,7 @@ class MakePostProvider extends ChangeNotifier {
     // Si pas d'erreur  on met à jour le provider
     error = "";
     posting = false;
-
-    // Création d'une nouvelle instance de SCO2Post avec les données renvoyés par le serveur
-    post = SCO2Post.fromJSON(data);
+    sended = true;
     notifyListeners();
     return post;
   }

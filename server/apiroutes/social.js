@@ -4,6 +4,8 @@ const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
 const notificationHandler = require('../utils/notificationHandler.js'); // Importez le gestionnaire de notifications
 const socketManager = require('../utils/socketManager.js'); // Importez le gestionnaire de sockets pour accéder à `io`
+const admin = require('firebase-admin');
+
 
 router.route('/*')
     .all((req, res, next) => verifyAuthToken(req, res, next));
@@ -36,7 +38,46 @@ router.route('/feed')
         const feedResult = await executeQuery(getFeedQuery, [friendIDs]);
 
 
-        const response = feedResult;
+        const feed = await Promise.all(feedResult.map(async (post) => {
+            const postData = await admin.auth().getUser(post.userID);
+                let surname = postData.displayName;
+                let photoURL = postData.photoURL;
+                if (typeof postData.displayName !== "string"){
+                    surname = null
+                }
+                if (typeof postData.photoURL !== "string"){
+                    photoURL = null
+                }
+                const getLikeBool = `
+                SELECT *
+                FROM likes
+                WHERE userID = ? AND postID = ?;`;
+                const getLikeBoolResult = await executeQuery(getLikeBool, [postData.uid,post.postID]);
+                let like = false
+                if (getLikeBoolResult.length > 0){
+                    like = true
+                }
+                return {
+                    uid: postData.uid,
+                    name: surname,
+                    photoURL: photoURL,
+                    postID : post.postID,
+                    postTextContent : post.postTextContent,
+                    postMediaContentURL : post.postMediaContentURL,
+                    postLinkedActivity : post.postLinkedActivity,
+                    postLikesNumber : post.postLikesNumber,
+                    postCreatedAt : post.postCreatedAt,
+                    postCommentsNumber : post.postCommentsNumber,
+                    postType : post.postType,
+                    like : like
+                };
+            }));
+
+
+        const response = {
+            feed: feed,
+            message : "posts was loading succesfully !"
+        };
         return res.status(200).json(response);
     });
 
@@ -84,10 +125,12 @@ router.route('/like')
             const { userID: postOwnerID } = postOwner;
 
             // Récupération du nom de l'utilisateur qui a liké
-            const [likerInfo] = await executeQuery(`SELECT userName FROM users WHERE userID = ? ;`, [userID]);
+            let likerName = (await admin.auth().getUser(userID)).displayName;
+            console.log(likerName)
 
-            if (likerInfo) {
-                const { userName: likerName } = likerInfo;
+            if (!likerName) {
+                likerName = "Quelqu'un"
+            }
 
                 // Insertion de la notification dans la table notifications
                 const notificationContent = `${likerName} a aimé votre publication.`;
@@ -97,24 +140,16 @@ router.route('/like')
                 await executeQuery(`INSERT INTO notifications (userID, notificationContent, notificationTitle, notificationStatus) VALUES (?, ?, ?, ?) ;`, [postOwnerID, notificationContent, notificationTitle, notificationStatus]);
 
                 // Émission de la notification via Socket.io
-                const io = socketManager.getIO();
-                notificationHandler.handleNewNotification(io, { userID: postOwnerID, notificationContent });
+                // const io = socketManager.getIO();
+                // notificationHandler.handleNewNotification(io, { userID: postOwnerID, notificationContent });
+
+                const NbLikesQuery = `SELECT postLikesNumber FROM posts WHERE postID = ? ;`;
+                const NbLikesQueryResult = await executeQuery(NbLikesQuery, [postID]);
 
                 const response = {
-                        userID : postOwnerID,
-                        notificationContent : notificationContent,
-                        notificationTitle : notificationTitle,
-                        notificationStatus : notificationStatus
+                        NbLikes : NbLikesQueryResult
                 }
                 return res.status(200).json(response);
-            } else {
-                const response = {
-                    error : true,
-                    error_message : ' Invalid user ID, post ID, or comment content ',
-                    error_code : 9
-                }
-                return res.status(500).json(response);
-            }
         }
 
         const response = {
@@ -129,6 +164,7 @@ router.route('/like')
 router.route('/comments') // Route pour charger les commentaires
     .get (async (req,res) => {
         const postID = req.query.postid;
+        const userID = req.headers.userid
 
         if(isNaN(postID)){
             const response = {
@@ -145,12 +181,16 @@ router.route('/comments') // Route pour charger les commentaires
         const selectResult = await executeQuery(selectQuery, [postID])
 
         if (selectResult.length > 0){
+            console.log(selectResult)
             let response = {};
             for (let each of selectResult) {
                 const authUser = await admin.auth().getUser(each.userID);
                 response[authUser.displayName] = selectResult[each];
             }
-            return res.status(200).json(response);
+            const reponse = {
+                comments: response
+            }
+            return res.status(200).json(reponse);
         }
         const response = {
             error : true,
@@ -189,10 +229,12 @@ router.route('/comments') // Route pour charger les commentaires
                     const { userID: postOwnerID } = postOwner;
 
                     // Récupération du nom de l'utilisateur qui a commenté
-                    const [commenterInfo] = await executeQuery(`SELECT userName FROM users WHERE userID = ? ;`, [userID]);
+                    let commenterName = (await admin.auth().getUser(userID)).displayName;
+                    console.log(commenterName)
 
-                    if (commenterInfo) {
-                        const { userName: commenterName } = commenterInfo;
+                    if (!commenterName) {
+                        commenterName = "Quelqu'un"
+                    }
 
                         // Insertion de la notification dans la table notifications
                         const notificationContent = `${commenterName} a commenté votre publication.`;
@@ -212,7 +254,7 @@ router.route('/comments') // Route pour charger les commentaires
                                 notificationStatus : notificationStatus
                         }
                         return res.status(200).json(response);
-                    }
+                    
                 }
                 const response = {
                         error : true,
@@ -256,7 +298,7 @@ router.route('/posts')
                 const mood = req.body.mood
                 // Vérification du paramètre moodPhrase
                 if (!mood || typeof mood !== 'string') {
-                    const response = {
+                    response = {
                         error: true,
                         error_message: 'moodType is required for postType "mood".',
                         error_code: 2
@@ -290,7 +332,7 @@ router.route('/posts')
                         Moodphrase = Moodphrase + "Je suis pas content !!! 😠 😠 😠"
                         break;
                     default:
-                        const response = {
+                        response = {
                             error: true,
                             error_message: 'Invalid postType. Allowed values are "mood", "message", "activite", or "rapport".',
                             error_code: 6
@@ -372,7 +414,7 @@ router.route('/posts')
                     }
                 break;
             default:
-                const response = {
+                response = {
                     error: true,
                     error_message: 'Invalid postType. Allowed values are "mood", "message", "activite", or "rapport".',
                     error_code: 33
@@ -386,7 +428,7 @@ router.route('/posts')
             if (insertResult.affectedRows > 0) {
                 return res.status(201).json(response);
             } else {
-                const response = {
+                response = {
                     error: true,
                     error_message: 'Failed to create post',
                     error_code: 34
@@ -395,7 +437,7 @@ router.route('/posts')
             }
         } catch (error) {
             console.error('Error creating post:', error);
-            const response = {
+            response = {
                 error: true,
                 error_message: 'Internal Server Error',
                 error_code: 2

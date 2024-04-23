@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-04-01T08:06:39.739Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="ES6bGJZxHksoNubq9V_Z" version="24.2.0" type="github">
+<mxfile host="app.diagrams.net" modified="2024-04-08T06:42:41.007Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="QFurZbg9S_mdxSHF0jlU" version="24.2.1" type="github">
   <diagram name="Page-1" id="jhAAQiRTMC3WOToZxg92">
     <mxGraphModel dx="2741" dy="3328" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -630,7 +630,7 @@
         <mxCell id="eBHFEck8xo7xaAXGFLvW-3" value="friends" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="-230" y="-785" width="240" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="eBHFEck8xo7xaAXGFLvW-4" value="friendshipID int AUTO_INCREMENT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="eBHFEck8xo7xaAXGFLvW-3" vertex="1">
+        <mxCell id="eBHFEck8xo7xaAXGFLvW-4" value="friendshipID int DEFAULT AUTO_INCREMENT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="eBHFEck8xo7xaAXGFLvW-3" vertex="1">
           <mxGeometry y="30" width="240" height="30" as="geometry" />
         </mxCell>
         <mxCell id="eBHFEck8xo7xaAXGFLvW-5" value="userID1 varchar(255)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="eBHFEck8xo7xaAXGFLvW-3" vertex="1">

@@ -140,11 +140,12 @@ router.route('/')
         const authUser = await admin.auth().getUser(userID);
 
         // On récupère le score depuis la base de données SQL
-        const sqlQuery = `SELECT score FROM users WHERE userID = ? ;`;
+        const sqlQuery = `SELECT score,multiplier FROM users WHERE userID = ? ;`;
         const sqlResult = await executeQuery(sqlQuery, [userID]);
 
         if (sqlResult.length > 0) {
             // Création d'un objet avec les données d'authentification et le score
+            const multiplier = sqlResult[0].multiplier
             const newscore = activityCalculator.passiveScore(activityCalculator.multiplier(recycl, nb_inhabitants, area, garden, multiplier, heating),sqlResult[0].score)
             const updateQuery = `UPDATE users SET score = ? WHERE userID = ? ;`;
             const updateResult = await executeQuery(updateQuery, [parseInt(newscore) , userID]);
@@ -259,12 +260,11 @@ router.route('/')
         const nb_inhabitants = req.body.nb_inhabitants
         const area = req.body.area
         const garden = req.body.garden
-        const multiplier = req.body.multiplier
         const car = req.body.car
         const hybrid = req.body.hybrid
         const heating = req.body.heating
 
-        if (typeof recycl !== 'boolean' || typeof nb_inhabitants !== 'number' || typeof area !== 'number' || typeof garden !== 'boolean' || typeof multiplier !== 'number' || typeof car !== 'number' || typeof hybrid !== 'boolean' || typeof heating !== 'string') {
+        if (typeof recycl !== 'boolean' || typeof nb_inhabitants !== 'number' || typeof area !== 'number' || typeof garden !== 'boolean' || typeof car !== 'number' || typeof hybrid !== 'boolean' || typeof heating !== 'string') {
             const response = {
                 error: true,
                 error_message: 'Invalid parameters',
@@ -273,9 +273,11 @@ router.route('/')
         return res.status(400).json(response);
         }
 
+        const multiplier = activityCalculator.multiplier(recycl, nb_inhabitants, area, garden, 1, heating)
         // On calcul le score de base avec les paramètres de l'utilisateurs
         const newscore = activityCalculator.passiveScore(activityCalculator.multiplier(recycl, nb_inhabitants, area, garden, multiplier, heating),5000)
         // Maintenant, q'on a vérifié le typage, on peut creer notre utilisateur avec les différents paramètres associés
+
 
         const sqlQuery = `INSERT INTO users (userID, score, recycl, nb_inhabitants, area, garden, multiplier, car, hybrid, heating) VALUES ( ? , ? , ? , ? , ? , ? , ?, ?, ?, ?) ;`;
         const sqlResult = await executeQuery(sqlQuery, [userID, parseInt(newscore) , recycl, nb_inhabitants, area, garden, multiplier, car, hybrid, heating]);
@@ -305,7 +307,8 @@ router.route('/activities')
         const userID = req.headers.userid;
         const currentTimestamp = req.query.currentTimestamp;
 
-        if (typeof userID !== 'string') {
+
+        if (typeof userID !== 'string' || typeof currentTimestamp !='string') {
             const response = {
                     error : true,
                     error_message : 'Invalid user ID',
@@ -314,13 +317,13 @@ router.route('/activities')
             return res.status(400).json(response);
         }
 
-        const sqlQuery = `SELECT * FROM activities WHERE userID = ? AND activityTimestamp = ? ;`;
+        const sqlQuery = `SELECT * FROM activities WHERE userID = ? AND DATE(activityTimestamp) = DATE(?) ;`;
         const sqlResult = await executeQuery(sqlQuery, [userID, currentTimestamp]);
 
         if (sqlResult.length > 0 ){
-            currentPhrase = "Vous avez effectué les acitivités suivantes : "
+            currentPhrase = "Vous avez effectué les activités suivantes : "
             for (activities in sqlResult){
-                currentPhrase = currentPhrase + sqlResult[activities].activityName.toString()
+                currentPhrase = currentPhrase + sqlResult[activities].activityName.toString() + ", "
             }
             const response = {
                 activities : sqlResult,

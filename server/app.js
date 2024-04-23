@@ -10,6 +10,8 @@ const { executeQuery } = require('./utils/database.js');
 
 const websocketRouter = require('./apiroutes/websocket.js'); // Importer le routeur WebSocket
 
+const path = require('path'); // Le module path pour react
+
 // initialisation de la variable environnement
 require('dotenv').config()
 
@@ -25,6 +27,14 @@ firebaseAdmin.initializeApp({
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+
+// On utilise express.static pour servir les fichiers statiques de notre application React
+app.use('/SCO2site', express.static(path.join(__dirname, '../website/sco2-react')));
+// Route pour servir le site React
+app.get('/SCO2site', (req, res) => {
+  res.sendFile(path.join(__dirname, '../website/sco2-react', 'index.html'));
+});
 
 const apiroutes = require('./apiroutes/index.js');
 app.use('/api', apiroutes);

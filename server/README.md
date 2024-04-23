@@ -16,8 +16,7 @@
     * Pourquoi avoir utiliser ce procédé ?
 * Documentation de l'API
 * Test avec postman
-
-
+* Ressources supplémentaires
 
 ## Documentation Docker
 
@@ -129,7 +128,7 @@ CREATE TABLE activities (
   activityType VARCHAR(255),
   activityCO2Impact INT,
   activityName VARCHAR(255),
-  activityTimestamp TIMESTAMP ,
+  activityTimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (activityID)
 );
 
@@ -139,7 +138,7 @@ CREATE TABLE recurrentActivities (
   activityType VARCHAR(255),
   activityCO2Impact FLOAT,
   activityName VARCHAR(255),
-  activityTimestamp TIMESTAMP,
+  activityTimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (activityID)
 );
 
@@ -158,7 +157,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE friends (
-  friendshipID INT,
+  friendshipID INT AUTO_INCREMENT,
   userID1 VARCHAR(255),
   userID2 VARCHAR(255),
   friendshipStatus VARCHAR(255),
@@ -363,9 +362,6 @@ Pour traiter les erreurs, nous avons identifiés chacunes des erreurs par un cod
 * Code d'erreur n°33 : Invalid Data - Statut 400
 * Code d'erreur n°34 : Failed to create post - Statut 400
 * Code d'erreur n°35 : Friendship already exist - Statut 400
-
-
-
 
 ### Le système de messagerie
 
@@ -611,39 +607,201 @@ Pour plus d'informations, voir le fichier `GestionAPI.drawio`
 -- Utilisation de la route /activity --
 
 * GET :  Donne les informations d'une activité
+
+```js
+const response = {
+                activityData : {
+                    activityID : activityID,
+                    userID : userID,
+                    activityType : activityType,
+                    activityCO2Impact : activityCO2Impact,
+                    activityName : activityName,
+                    activityTimestamp : activityTimestamp
+                }
+            }
+```
+
 * POST : Creer une activité dans la table activité
+
+```js
+const response = {
+                activityID : activityID,
+                userID : userID,
+                activityType : activityType,
+                activityCO2Impact : activityCO2Impact,
+                activityName : activityName,
+            }
+```
+
 * PUT : Met à jour une activité
+
+```js
+const response = {
+                    activityID: activityId,
+                    userID : userID,
+                    activityType : activityType,
+                    activityCO2Impact : activityCO2Impact,
+                    activityName : activityName,
+            }
+```
+
 * DELETE : Supprime une activité
+
+```js
+const response = {
+                message : 'Activity deleted successfully',
+                status : 200,
+            }
+```
 
 -- Utilisation de la route /activity/favorite --
 
 * POST : Met en favori une activité
+
+```js
+const response = {
+                    message : 'Activity added to favorites successfully',
+                    status : 200,
+                }
+```
+
 * DELETE : Enlève une activité des favoris
+
+```js
+const response = {
+                    message : 'Activity deleted from favorites successfully',
+                    status : 200,
+                }
+```
 
 -- Utilisation de la route /activities --
 
 * GET : Donne les 20 activités d'un utilisateur à partir d'un index
 
+```js
+const response = {
+                activities : activities,
+                status : 200,
+            }
+```
+
 -- Utilisation de la route /activities/favorite --
 
 * GET : Donne les 20 activités favorite d'un utilisateur à partir d'un index
+
+```js
+const response = {
+                activitiesfav : activitiesfav,
+                status : 200,
+            }
+```
 
 ### Gestion de l'utilisateur
 
 -- Utilisation de la route /user --
 
 * GET : Donne toutes les infos de l'utilisateur
+
+```js
+const response = {
+                    userId : userID,
+                    uid: uid,
+                    email: email,
+                    name: surname,
+                    dateCreation: creationTime,
+                    derniereConnexion: lastSignInTime,
+                    score: score,
+                    recycl : recycl,
+                    nb_inhabitants : nb_inhabitants,
+                    area : area,
+                    garden : garden,
+                    multiplier : multiplier,
+                    car : car,
+                    hybrid : hybrid,
+                    heating : heating
+                }
+
+||
+
+const response = {
+                    userId : userID,
+                    score: parseInt(newscore),
+                    uid: uid,
+                    email: email,
+                    name: surname,
+                    dateCreation: creationTime,
+                    derniereConnexion: lastSignInTime,
+                    recycl : false,
+                    nb_inhabitants : 1,
+                    area : 50,
+                    garden : false,
+                    multiplier : multiplier,
+                    car : 2,
+                    hybrid : 0,
+                    heating : "gas",
+                    message : 'User is defined',
+                }
+```
+
 * POST : Création de l'utilisateur
+
+```js
+const response = {
+                userId : userID,
+                score: parseInt(newscore),
+                message : 'User is defined',
+            }
+```
+
 * PUT : Met à jour les infos de l'utilisateur
+
+```js
+ const response = {
+                    userId: userID,
+                    score : newscore,
+                    recycl,
+                    nb_inhabitants,
+                    area,
+                    garden,
+                    multiplier,
+                    car,
+                    hybrid,
+                    heating,
+                    message: 'User data has been updated',
+                }
+```
+
 * DELETE : Supprime l'utilisateur et tout ce qu'il lui est associé
+
+```js
+ const response = {
+                userId : userID,
+                message : 'User has been delete',
+            }
+```
 
 -- Utilisation de la route /user/activities --
 
 * GET : Donne toutes les activités et leurs infos d'un utilisateur à partir d'une date + donne la phrase récapitulative
 
+```js
+
+const response = {
+                activities : activities,
+                phrase : currentPhrase,
+            }
+```
+
 -- Utilisation de la route /user/notifications --
 
 * GET : Donne le contenu des 10 dernières notifications émises
+
+```js
+const response = {
+                notifications : notifications,
+                status : 200,
+            }
+```
 
 ### Gestion du leaderboard
 
@@ -651,9 +809,25 @@ Pour plus d'informations, voir le fichier `GestionAPI.drawio`
 
 * GET : Donne le classement des amis avec soit compris au niveau du score
 
+```js
+const response = {
+                leaderboard : leaderboard,
+                status : 200,
+                message: "leaderboard load succesfull"
+            }
+```
+
 -- Utilisation de la route /leaderboard/world --
 
 * GET : Donne le classement des utilisateurs avec soit compris au niveau du score
+
+```js
+const response = {
+                leaderboard : leaderboard,
+                status : 200,
+                message: "leaderboard load succesfull"
+            }
+```
 
 ### Gestion du réseau social principal
 
@@ -661,20 +835,56 @@ Pour plus d'informations, voir le fichier `GestionAPI.drawio`
 
 * GET : Donne les différents posts liés au compte de l'utilisateur donc aussi ces amis
 
+```js
+const response = {
+            feed: feed,
+            message : "posts was loading succesfully !"
+        };
+```
+
 -- Utilisation de la route /social/like --
 
 * POST : permet d'ajouter un like au post
 
+```js
+const response = {
+                    NbLikes : NbLikesQueryResult
+                }
+```
+
 -- Utilisation de la route /social/comments --
 
 * GET : Charger les commentaires d'un post
+
+```js
+const reponse = {
+                comments: response
+            }
+```
+
 * POST : ajouter un commentaire à un post
+
+```js
+const response = {
+                    userID : postOwnerID,
+                    notificationContent : notificationContent,
+                    notificationTitle : notificationTitle,
+                    notificationStatus : notificationStatus
+                  }
+```
 
 ### Gestion de l'amitié
 
 -- Utilisation de la route /friends --
 
 * GET : Donne les différents amis, personnes en attente et bloqués dans un dictionnaire JSON
+
+```js
+const response = {
+                    results : users
+                }
+```
+
 * POST : actionType :
   - add : pour envoyer une demande d'ami
   - block : pour bloquer
@@ -682,9 +892,23 @@ Pour plus d'informations, voir le fichier `GestionAPI.drawio`
   - refuse
   - deblock
 
+```js
+const response = {
+                      message : "user accept succesfully",
+                      status : 200
+                  }
+```
+
 -- Utilisation de la route /friends/search --
 
 * GET : rechercher un utilisateur qui commence par idSearch
+
+```js
+const response = {
+                query: idSearch,
+                results: listUsers
+            }
+```
 
 ### Affichage du rapport
 
@@ -692,15 +916,47 @@ Pour plus d'informations, voir le fichier `GestionAPI.drawio`
 
 * GET : Charge le rapport en envoyant les acitivtés trioés par types et par dates sous forme de dictionnaire JSON
 
+```js
+const response = {
+                    rapport : rapport,
+                    impact : impact,
+                    maximum : maximum
+                }
+```
+
 ### Gestion du système de messagerie
 
 -- Utilisation de la route /conversations --
 
 * GET : Charger les conversations de l'utilisateur
 
+```js
+const response = {
+                conversations: conversationsResult,
+                status: 200,
+            }
+```
+
 -- Utilisation de la route /messages --
 
 * GET : Charger les 40 derniers messages partir d'un index 
 
+```js
+const response = {
+                messages : messagesResult,
+                status : 200,
+            }
+```
+
+
 ## Test avec postman
 
+Pour tester notre **API**, j'ai opté pour le logiciel Postman qui permet de faire des requêtes directement au serveur avec les différentes clés en paramètres : HEADERS, BODY, PARAMS, QUERY ...
+
+J'ai donc pu tester toutes les routes en : GET, POST, DELETE & PUT pour voir si tout fonctionnait.
+
+Postman est une excellente alternative au test serveur via le web qui est beaucoup plus long. De plus celui-ci affiche bien la réponse donnée par le serveur soit la plupart du temps le JSON.
+
+## Ressources supplémentaires
+
+Dans le dossier `schemaAPI` se trouve une schematisation de notre API. La schematisation à jour est celle qui se nomme : `GestionAPI.drawio`. Celle qui se nomme `API.drawio` est le brouillon de notre API. Le fichier doit être ouvert avec le site ou logiciel drawio. La documentation vis à vis de friends et du reste des routes y est.

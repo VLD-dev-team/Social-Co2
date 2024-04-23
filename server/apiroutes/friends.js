@@ -33,43 +33,64 @@ router.route('/')
                 friends = friends1.concat(friends2);
             } else if (actionType === "request_receive") {
                 // Requête pour obtenir les amis en attente
-                const getFriendsQuery = `SELECT * FROM friends WHERE userID1 = ? AND friendshipStatus = "12" ;`;
+                const getFriendsQuery = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID2 WHERE userID1 = ? AND friendshipStatus = "12" ;`;
                 const friends1 = await executeQuery(getFriendsQuery, [userID]);
-                const getFriendsQuery2 = `SELECT * FROM friends WHERE userID2 = ? AND friendshipStatus = "21" ;`;
+                const getFriendsQuery2 = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID1 WHERE userID2 = ? AND friendshipStatus = "21" ;`;
                 const friends2 = await executeQuery(getFriendsQuery2, [userID]);
                 friends = friends1.concat(friends2);
             } else if (actionType === "block") {
                 // Requête pour obtenir les personnes bloquées
-                const getFriendsQuery = `SELECT * FROM friends WHERE userID1 = ? AND (friendshipStatus = "31" OR friendshipStatus = "33" OR friendshipStatus = "32") ;`;
+                const getFriendsQuery = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID2 WHERE userID1 = ? AND (friendshipStatus = "31" OR friendshipStatus = "33" OR friendshipStatus = "32") ;`;
                 const friends1 = await executeQuery(getFriendsQuery, [userID]);
-                const getFriendsQuery2 = `SELECT * FROM friends WHERE userID2 = ? AND (friendshipStatus = "13" OR friendshipStatus = "33" OR friendshipStatus = "23") ;`;
+                const getFriendsQuery2 = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID1 WHERE userID2 = ? AND (friendshipStatus = "13" OR friendshipStatus = "33" OR friendshipStatus = "23") ;`;
                 const friends2 = await executeQuery(getFriendsQuery2, [userID]);
                 friends = friends1.concat(friends2);
             } else if (actionType === "friends") {
                 // Requête pour obtenir ses amis
-                const getFriendsQuery = `SELECT * FROM friends WHERE userID1 = ? AND friendshipStatus = "22" ;`;
+                const getFriendsQuery = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID2 WHERE userID1 = ? AND friendshipStatus = "22" ;`;
                 const friends1 = await executeQuery(getFriendsQuery, [userID]);
-                const getFriendsQuery2 = `SELECT * FROM friends WHERE userID2 = ? AND friendshipStatus = "22" ;`;
+                const getFriendsQuery2 = `SELECT userID FROM users JOIN friends ON users.userID = friends.userID1 WHERE userID2 = ? AND friendshipStatus = "22" ;`;
                 const friends2 = await executeQuery(getFriendsQuery2, [userID]);
                 friends = friends1.concat(friends2);
             }
 
+            console.log(friends)
+
             // Récupération des informations utilisateur à partir de Firebase
-            const usersPromises = friends.map(async (friend) => {
-                const friendID = friend.userID1 === userID ? friend.userID2 : friend.userID1;
-                const userRecord = await admin.auth().getUser(friendID);
-                return {
-                    userID: userRecord.uid,
-                    name: userRecord.displayName,
-                    photoURL: userRecord.photoURL
-                };
-        });
-            const users = await Promise.all(usersPromises);
-    
-            const response = {
-                results : users
+            if (friends.length > 0 ){
+                const usersPromises = friends.map(async (friend) => {
+                    const friendID = friend.userID
+                    const userRecord = await admin.auth().getUser(friendID);
+                    let name = userRecord.displayName;
+                    let photoURL = userRecord.photoURL;
+                    if (typeof userRecord.displayName !== "string"){
+                        name = null
+                    }
+                    if (typeof userRecord.photoURL !== "string"){
+                        photoURL = null
+                    }
+                    return {
+                        uid: userRecord.uid,
+                        name: name,
+                        photoURL: photoURL
+                    };
+            });
+                const users = await Promise.all(usersPromises);
+                console.log("users : ", users)
+
+                const response = {
+                    results : users
+                }
+                return res.status(200).json(response);
+            } else {
+                const users = friends
+                console.log("users : ", users)
+
+                const response = {
+                    results : users
+                }
+                return res.status(200).json(response);
             }
-            return res.status(200).json(response);
         } catch (error) {
             console.error('Error retrieving friends:', error);
             const response = {
@@ -84,10 +105,11 @@ router.route('/')
         try {
             // On recupère les données nécessaires
             const userID = req.headers.userid;
-            const actionType = req.query.actionType;
-            const friendID = req.query.friendid;
+            const actionType = req.body.actionType;
+            const friendID = req.body.friendid;
+
             // Vérification du typage
-            if (typeof actionType !== 'string' || typeof userID !== 'string') {
+            if (typeof actionType !== 'string' || typeof userID !== 'string' || typeof friendID !== 'string') {
                 const response = {
                     error: true,
                     error_message: 'Invalid Data',
@@ -101,6 +123,8 @@ router.route('/')
             // - accept : pour accepter la demande d'ami si il y en a une
             // - refuse : pour refuser une demande d'ami
             // - deblock : pour débloquer un ami
+            // - delete : pour supprimer un ami
+            // - undo : pour annuler une demande
             
             // Pour ajouter un ami
             if (actionType == "add"){
@@ -145,8 +169,12 @@ router.route('/')
                 // Si jamais il y a déjà une relation existante
                 if (sqlFriendResult.length > 0){
                     // On met à jour la relation entre les 2 utilisateurs
-                    let FriendshipStatus = sqlFriendResult.friendshipStatus
+
+                    let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')
                     FriendshipStatus[0] = "3";
+                    FriendshipStatus = FriendshipStatus.join().replaceAll(',' , '')
+
+
                     const sqlQuery = `UPDATE friends SET friendshipStatus = ? WHERE userID1 = ? AND userID2 = ?;`;
                     const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, userID, friendID]);
                     // Si on a pu mettre à jour la BDD alors l'utilisateur a bien été bloqué
@@ -171,10 +199,12 @@ router.route('/')
                     const sqlFriendResult = await executeQuery(sqlFriend, [friendID, userID]);
                     // Si jamais une relation est bien existante alors on met à jour la table friends
                     if (sqlFriendResult.length > 0){
-                        let FriendshipStatus = sqlFriendResult.friendshipStatus
+                        let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')
                         FriendshipStatus[1] = "3";
+                        FriendshipStatus = FriendshipStatus.join().replaceAll(',' , '')
+
                         const sqlQuery = `UPDATE friends SET friendshipStatus = ? WHERE userID1 = ? AND userID2 = ?;`;
-                        const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, userID, friendID]);
+                        const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, friendID, userID]);
                         // Si la MAJ a bien été effectué alors l'utilisateur a bien été bloqué
                         if (sqlResult.affectedRows > 0){
                             const response = {
@@ -286,7 +316,7 @@ router.route('/')
                     const sqlResult = await executeQuery(sqlQuery, [userID, friendID]);
                     if (sqlResult.affectedRows > 0){
                         const response = {
-                            message : "user accept succesfully",
+                            message : "user refuse succesfully",
                             status : 200
                         }
                         return res.status(200).json(response)
@@ -309,7 +339,7 @@ router.route('/')
                         const sqlResult = await executeQuery(sqlQuery, [friendID, userID]);
                         if (sqlResult.affectedRows > 0){
                             const response = {
-                                message : "user accept succesfully",
+                                message : "user refuse succesfully",
                                 status : 200
                             }
                             return res.status(200).json(response)
@@ -336,9 +366,12 @@ router.route('/')
                 const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND (friendshipStatus = "31" OR friendshipStatus = "32" OR friendshipStatus = "33") ;`;
                 const sqlFriendResult = await executeQuery(sqlFriend, [userID, friendID]);
                 // Si jamais une relation est bien existante alors on met à jour la table friends
+                console.log(sqlFriendResult)
                 if (sqlFriendResult.length > 0){
-                    let FriendshipStatus = sqlFriendResult.friendshipStatus
-                    FriendshipStatus[0] = "2";
+                    console.log("Deblock activate")
+                    let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')
+                    FriendshipStatus[0] = "1";
+                    FriendshipStatus = FriendshipStatus.join().replaceAll(',' , '')
                     const sqlQuery = `UPDATE friends SET friendshipStatus = ? WHERE userID1 = ? AND userID2 = ?;`;
                     const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, userID, friendID]);
                     // Si on a pu mettre à jour la BDD alors l'utilisateur a bien été bloqué
@@ -362,14 +395,15 @@ router.route('/')
                     const sqlFriendResult = await executeQuery(sqlFriend, [friendID, userID]);
                     // Si jamais une relation est bien existante alors on met à jour la table friends
                     if (sqlFriendResult.length > 0){
-                        let FriendshipStatus = sqlFriendResult.friendshipStatus
-                        FriendshipStatus[1] = "2";
+                        let FriendshipStatus = sqlFriendResult[0].friendshipStatus.split('')
+                        FriendshipStatus[1] = "1";
+                        FriendshipStatus = FriendshipStatus.join().replaceAll(',' , '')
                         const sqlQuery = `UPDATE friends SET friendshipStatus = ? WHERE userID1 = ? AND userID2 = ?;`;
-                        const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, userID, friendID]);
+                        const sqlResult = await executeQuery(sqlQuery, [FriendshipStatus, friendID, userID]);
                         // Si la MAJ a bien été effectué alors l'utilisateur a bien été bloqué
                         if (sqlResult.affectedRows > 0){
                             const response = {
-                                message : "User block successfuly",
+                                message : "User deblock successfuly",
                                 status : 200,
                             }
                             return res.status(200).json(response);
@@ -392,6 +426,116 @@ router.route('/')
                         return res.status(404).json(response);
                     }
                 } 
+            }
+            if (actionType == "delete"){
+                const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND friendshipStatus = "22" ;`;
+                const sqlFriendResult = await executeQuery(sqlFriend, [userID, friendID]);
+                // Si jamais une relation est bien existante alors on met à jour la table friends
+                if (sqlFriendResult.length > 0){
+                    const sqlQuery = `DELETE FROM friends WHERE userID1 = ? AND userID2 = ? ;`;
+                    const sqlResult = await executeQuery(sqlQuery, [userID, friendID]);
+                    if (sqlResult.affectedRows > 0){
+                        const response = {
+                            message : "user delete succesfully",
+                            status : 200
+                        }
+                        return res.status(200).json(response)
+                    }else{
+                        const response = {
+                            error: true,
+                            error_message: 'Internal Server Error',
+                            error_code: 2
+                        };
+                        return res.status(500).json(response);
+                    }
+
+
+                } else {
+                    const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND friendshipStatus = "22" ;`;
+                    const sqlFriendResult = await executeQuery(sqlFriend, [friendID, userID]);
+                    // Si jamais une relation est bien existante alors on met à jour la table friends
+                    if (sqlFriendResult.length > 0){
+                        const sqlQuery = `DELETE FROM friends WHERE userID1 = ? AND userID2 = ? ;`;
+                        const sqlResult = await executeQuery(sqlQuery, [friendID, userID]);
+                        if (sqlResult.affectedRows > 0){
+                            const response = {
+                                message : "user delete succesfully",
+                                status : 200
+                            }
+                            return res.status(200).json(response)
+                        }else{
+                            const response = {
+                                error: true,
+                                error_message: 'Internal Server Error',
+                                error_code: 2
+                            };
+                            return res.status(500).json(response);
+                        }
+                    } else {
+                        // Aucune relation trouvé
+                        const response = {
+                            error: true,
+                            error_message: 'Friendship not found',
+                            error_code: 28
+                        };
+                        return res.status(404).json(response);
+                    } 
+                }
+            }
+            if (actionType == "undo"){
+                const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND friendshipStatus = "21" ;`;
+                const sqlFriendResult = await executeQuery(sqlFriend, [userID, friendID]);
+                // Si jamais une relation est bien existante alors on met à jour la table friends
+                if (sqlFriendResult.length > 0){
+                    const sqlQuery = `DELETE FROM friends WHERE userID1 = ? AND userID2 = ? ;`;
+                    const sqlResult = await executeQuery(sqlQuery, [userID, friendID]);
+                    if (sqlResult.affectedRows > 0){
+                        const response = {
+                            message : "user undo succesfully",
+                            status : 200
+                        }
+                        return res.status(200).json(response)
+                    }else{
+                        const response = {
+                            error: true,
+                            error_message: 'Internal Server Error',
+                            error_code: 2
+                        };
+                        return res.status(500).json(response);
+                    }
+
+
+                } else {
+                    const sqlFriend = `SELECT * FROM friends WHERE userID1 = ? AND userID2 = ? AND friendshipStatus = "21" ;`;
+                    const sqlFriendResult = await executeQuery(sqlFriend, [friendID, userID]);
+                    // Si jamais une relation est bien existante alors on met à jour la table friends
+                    if (sqlFriendResult.length > 0){
+                        const sqlQuery = `DELETE FROM friends WHERE userID1 = ? AND userID2 = ? ;`;
+                        const sqlResult = await executeQuery(sqlQuery, [friendID, userID]);
+                        if (sqlResult.affectedRows > 0){
+                            const response = {
+                                message : "user undo succesfully",
+                                status : 200
+                            }
+                            return res.status(200).json(response)
+                        }else{
+                            const response = {
+                                error: true,
+                                error_message: 'Internal Server Error',
+                                error_code: 2
+                            };
+                            return res.status(500).json(response);
+                        }
+                    } else {
+                        // Aucune relation trouvé
+                        const response = {
+                            error: true,
+                            error_message: 'Friendship not found',
+                            error_code: 28
+                        };
+                        return res.status(404).json(response);
+                    } 
+                }
             }
             const response = {
                 error: true,

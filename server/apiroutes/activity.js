@@ -5,9 +5,9 @@ const verifyAuthToken = require('../utils/requireAuth.js');
 const admin = require('firebase-admin');
 const activityCalculator = require('../utils/activityCalculator.js')
 
-// router.route('/*')
-//     .all((req, res, next) => verifyAuthToken(req, res, next));
-//     // Connection verification
+router.route('/*')
+    .all((req, res, next) => verifyAuthToken(req, res, next));
+    // Connection verification
 
 router.route('/')
     .get(async (req, res) => {
@@ -48,9 +48,7 @@ router.route('/')
                     activityCO2Impact : sqlResult[0].activityCO2Impact,
                     activityName : sqlResult[0].activityName,
                     activityTimestamp : sqlResult[0].activityTimestamp
-                },
-                status : 200,
-                type : 'response'
+                }
             }
             return req.status(200).json(response)
 
@@ -71,10 +69,9 @@ router.route('/')
         const userID = req.headers.userid;
         const activityType = req.body.activityType;
         const activityName = req.body.activityName;
-        const activityTimestamp = req.body.activityTimestamp;
         
         // Initialize variable to 0
-        let activityCO2Impact = 0;
+        var activityCO2Impact = 0;
         // Calculate impact on score based on chosen activity type
         if (activityType == "trip"){
             let vehicle = req.body.activityVehicule
@@ -154,14 +151,6 @@ router.route('/')
             }
             return res.status(400).json(response);
         }
-        if (isNaN(activityPollutionImpact)) {
-            const response = {
-                    error : true,
-                    error_message : 'Invalid activityPollutionImpact',
-                    error_code : 16
-            }
-            return res.status(400).json(response);
-        }
         if (typeof activityName !== 'string') {
             const response = {
                     error : true,
@@ -186,15 +175,16 @@ router.route('/')
         } else {
 
             // Update the score
-            let score = selectResult.score + activityCO2Impact
+            let score = selectResult[0].score + activityCO2Impact
+            console.log(score)
             // Then apply the passive score
             score = activityCalculator.passiveScore(activityCalculator.multiplier(selectResult.recycl, selectResult.nb_inhabitants, selectResult.surface, selectResult.garden, selectResult.multiplier, selectResult.heating), score)
 
             // We can now insert the activity into the activities table
             const insertQuery = `
-            INSERT INTO activities (userID, activityType, activityCO2Impact, activityName, activityTimestamp)
-            VALUES (?, ?, ?, ?, ?) ;`;
-            const insertResult = await executeQuery(insertQuery, [userID, activityType, activityCO2Impact, activityName, activityTimestamp]);
+            INSERT INTO activities (userID, activityType, activityCO2Impact, activityName)
+            VALUES (?, ?, ?, ?) ;`;
+            const insertResult = await executeQuery(insertQuery, [userID, activityType, activityCO2Impact, activityName]);
 
             if (insertResult.affectedRows > 0) {
                 
@@ -210,7 +200,6 @@ router.route('/')
                 activityType : activityType,
                 activityCO2Impact : activityCO2Impact,
                 activityName : activityName,
-                activityTimestamp : activityTimestamp
             }
 
             return res.status(200).json(response);
@@ -232,7 +221,6 @@ router.route('/')
         const activityType = req.body.activityType;
         const activityCO2Impact = req.body.activityCO2Impact;
         const activityName = req.body.activityName;
-        const activityTimestamp = req.body.activityTimestamp;
 
         // Type verification
 
@@ -263,10 +251,10 @@ router.route('/')
         const updateQuery = `
             UPDATE activities
             SET activityType = ?, activityCO2Impact = ?,
-                activityName = ?, activityTimestamp = ?
+                activityName = ?
             WHERE userID = ? AND activityID = ? ;
         `;
-        const updateResult = await executeQuery(updateQuery, [activityType, activityCO2Impact, activityName, activityTimestamp, userID, activityId]);
+        const updateResult = await executeQuery(updateQuery, [activityType, activityCO2Impact, activityName, userID, activityId]);
 
         if (updateResult.affectedRows > 0) {
             const response = {
@@ -275,7 +263,6 @@ router.route('/')
                     activityType : activityType,
                     activityCO2Impact : activityCO2Impact,
                     activityName : activityName,
-                    activityTimestamp : activityTimestamp
             }
             return res.status(200).json(response);
         } else {

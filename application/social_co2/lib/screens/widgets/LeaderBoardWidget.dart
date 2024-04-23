@@ -199,7 +199,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                                 title: Row(
                                   children: [
                                     CircleAvatar( //affiche photo de profil utilisateur
-                                        radius: 40, // Défini le rayon du cercle
+                                        radius: 20, // Défini le rayon du cercle
                                         backgroundImage: selectedIcon == "friends" ?
                                           (value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"] != null ? //condition si l'utilisateur n'a pas de photo de profil, et qu'on souhaite le classement des amis
                                             NetworkImage(value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"].toString()) : null)//si l'utilisateur possède une photo de profil, on l'affiche, sinon backgroundImage est défini sur null et ne s'affiche pas
@@ -414,7 +414,7 @@ class _LeaderBoardWidgetState extends State<LeaderBoardWidget> {
                                       title: Row(
                                         children: [
                                           CircleAvatar( //affiche photo de profil utilisateur
-                                            radius: 40, // Défini le rayon du cercle
+                                            radius: 20, // Défini le rayon du cercle
                                             backgroundImage: selectedIcon == "friends" ?
                                               (value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"] != null ? //condition si l'utilisateur n'a pas de photo de profil, et qu'on souhaite le classement des amis
                                                 NetworkImage(value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"].toString()) : null)//si l'utilisateur possède une photo de profil, on l'affiche, sinon backgroundImage est défini sur null et ne s'affiche pas
@@ -614,7 +614,7 @@ Widget listLeaderbaord(String title, double width) {
                             title: Row(
                               children: [
                                 CircleAvatar( //affiche photo de profil utilisateur
-                                        radius: 40, // Défini le rayon du cercle
+                                        radius: 20, // Défini le rayon du cercle
                                         backgroundImage: title == "Amis" ?
                                           (value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"] != null ? //condition si l'utilisateur n'a pas de photo de profil, et qu'on souhaite le classement des amis
                                             NetworkImage(value.leaderBoardFriends.leaderBoardData[index]["PhotoURL"].toString()) : null)//si l'utilisateur possède une photo de profil, on l'affiche, sinon backgroundImage est défini sur null et ne s'affiche pas

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/providers/ReccurentActivitiesProvider.dart';
+import 'package:social_co2/screens/widgets/ActivitiesList.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
 class ReccurentActivities extends StatelessWidget {
@@ -10,12 +11,10 @@ class ReccurentActivities extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      height: MediaQuery.of(context).size.height-630,
+      height: MediaQuery.of(context).size.height - 630,
       decoration: primaryCard,
-      child: 
-      Column(
-        crossAxisAlignment: 
-        CrossAxisAlignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(
             //widget qui permet d'adapter la taille
@@ -35,27 +34,29 @@ class ReccurentActivities extends StatelessWidget {
             ),
           ),
           Consumer<ReccurentActivitiesProvider>(
-            builder: ((context, value, child) {
-              if (value.isLoading){
+            builder: ((context, PROVIDERVALUES, child) {
+              if (PROVIDERVALUES.isLoading) {
                 //si les données sont en chargement
                 return const SizedBox(
                   height: 40,
                   //on affiche l'icone de chargement
                   child: LinearProgressIndicator(),
                 );
-              }else{
-                if (value.error==""){
+              } else {
+                if (PROVIDERVALUES.error == "") {
                   //on affiche la liste
                   return SizedBox(
-                    height:120 ,
-                    child: Text("liste activités récurrentes"),
+                    height: 120,
+                    child: ActivitiesList(
+                      activities: PROVIDERVALUES.reccurentActivities,
+                      multiSelection: false,
+                      error: PROVIDERVALUES.error,
+                    ),
                   );
-                }else{
+                } else {
                   //on affiche l'erreur
                   return SizedBox(
-                    child: Text(
-                      value.error
-                    ),
+                    child: Text(PROVIDERVALUES.error),
                   );
                 }
               }

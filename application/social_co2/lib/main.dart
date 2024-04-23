@@ -18,6 +18,7 @@ import 'package:social_co2/providers/FriendshipsProvider.dart';
 import 'package:social_co2/providers/IndexProvider.dart';
 import 'package:social_co2/providers/LeaderboardProvider.dart';
 import 'package:social_co2/providers/MakePostProvider.dart';
+import 'package:social_co2/providers/ReccurentActivitiesProvider.dart';
 import 'package:social_co2/providers/SearchProvider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/providers/UserSCO2DataProvider.dart';
@@ -127,6 +128,10 @@ class HomeScreen extends StatelessWidget {
         ListenableProvider<FeedProvider>(
             create: (_) =>
                 FeedProvider()), // Provider qui permet d'afficher le feed et les données liés au feed
+        ListenableProvider<ReccurentActivitiesProvider>(
+          create: (_) =>
+                ReccurentActivitiesProvider() //Provider qui permet d'afficherles activités récurrentes de l'uitilisateur
+        )
       ],
       builder: (context, child) {
         if (kIsWeb) {

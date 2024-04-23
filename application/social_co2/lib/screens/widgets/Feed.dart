@@ -12,7 +12,7 @@ class Feed extends StatelessWidget {
       if (PROVIDERVALUES.error != "") {
         return Card(
           child: Text(
-            "Erreur lors du chargement du feed : $PROVIDERVALUES.error",
+            "Erreur lors du chargement du feed : ${PROVIDERVALUES.error}",
             style: const TextStyle(color: Colors.red),
           ),
         );

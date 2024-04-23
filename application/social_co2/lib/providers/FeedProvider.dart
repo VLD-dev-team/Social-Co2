@@ -6,9 +6,11 @@ import 'package:social_co2/utils/requestsService.dart';
 class FeedProvider extends ChangeNotifier {
   // Variables globales au provider
   List<SCO2Post> feed = [];
-  Map<String, dynamic> postComments = {};
+  Map<int, dynamic> postComments = {};
   String error = "";
   bool loading = false;
+  bool gettingNewComments = false;
+  bool postingComment = false;
 
   FeedProvider() {
     refreshFeed();
@@ -23,7 +25,7 @@ class FeedProvider extends ChangeNotifier {
     error = "";
     loading = true;
     notifyListeners();
-    List<SCO2Post> newFeed = [];
+    feed.clear();
 
     // On récupère le token de connexion
     final authToken = await FirebaseAuth.instance.currentUser!.getIdToken();
@@ -46,22 +48,17 @@ class FeedProvider extends ChangeNotifier {
 
       loading = false;
       notifyListeners();
-      return newFeed;
+      return feed;
     }
-
-    print(data['feed']);
 
     // On transforme les données en liste de post SCO2
     if (data['feed'] != []) {
       for (var i = 0; i < data['feed'].length; i++) {
         final post =
             SCO2Post.fromJSON(Map<String, dynamic>.from(data["feed"][i]));
-        newFeed.add(post);
+        feed.add(post);
       }
     }
-
-    print("feed $newFeed");
-    feed = newFeed;
 
     // On termine la requette
     loading = false;
@@ -79,10 +76,16 @@ class FeedProvider extends ChangeNotifier {
     final userID = FirebaseAuth.instance.currentUser!.uid;
 
     // On fait la requette au server
-    final data = await requestService().get("social/like", {
-      "authorization": '$authToken',
-      'userid': userID,
-    });
+    final data = await requestService().post(
+      "social/like",
+      {
+        "authorization": '$authToken',
+        'userid': userID,
+      },
+      {
+        "postid": postID.toString(),
+      },
+    );
 
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
@@ -99,14 +102,23 @@ class FeedProvider extends ChangeNotifier {
     }
 
     // On analyse les données renvoyés par le serveur et on affiche le like
-    // TODO: analyser la réponse serveur
-
+    // Si le post est liké alors termine la fonction et on actualise le feed
+    loading = false;
+    final index = feed.indexWhere((element) => element.postID == postID);
+    if (feed[index].liked!) {
+      feed[index].postLikesNumber = feed[index].postLikesNumber! - 1;
+      feed[index].liked = false;
+    } else {
+      feed[index].postLikesNumber = feed[index].postLikesNumber! + 1;
+      feed[index].liked = true;
+    }
+    notifyListeners();
     return 0;
   }
 
-  Future<List<Map<String, dynamic>>> getPostComment(postID) async {
+  Future<dynamic> getPostComment(postID) async {
     error = "";
-    loading = true;
+    gettingNewComments = true;
     notifyListeners();
 
     // On récupère le token de connexion
@@ -114,7 +126,7 @@ class FeedProvider extends ChangeNotifier {
     final userID = FirebaseAuth.instance.currentUser!.uid;
 
     // On fait la requette au server
-    final data = await requestService().get("social/like", {
+    final data = await requestService().get("social/comments?postid=$postID", {
       "authorization": '$authToken',
       'userid': userID,
     });
@@ -128,14 +140,59 @@ class FeedProvider extends ChangeNotifier {
         error = "error: unknown error";
       }
 
-      loading = false;
+      gettingNewComments = false;
       notifyListeners();
       return [];
     }
 
+    // On ajoute les commentaires à la liste
     postComments.update(postID, (value) => data['comments'],
         ifAbsent: () => data['comments']);
 
-    return [];
+    // On actualise les widgets et on renvoies les données
+    gettingNewComments = false;
+    notifyListeners();
+    return postComments[postID];
+  }
+
+  Future<String> sendComment(postID, String commentTextContent) async {
+    error = "";
+    postingComment = true;
+    notifyListeners();
+
+    // On récupère le token de connexion
+    final authToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+    final userID = FirebaseAuth.instance.currentUser!.uid;
+
+    // On fait la requette au server
+    final data = await requestService().post("social/comments", {
+      "authorization": '$authToken',
+      'userid': userID,
+    }, {
+      "postid": postID,
+      "commentTextContent": commentTextContent.toString(),
+    });
+
+    // On analyse la réponse du server
+    // En cas d'erreur, on renvoie erreur aux widgets
+    if (data["error"] == true) {
+      try {
+        error = 'error: ${data["error_message"].toString()}';
+      } catch (e) {
+        error = "error: unknown error";
+      }
+
+      postingComment = false;
+      notifyListeners();
+      return error;
+    }
+
+    // On met à jour la liste des commentaires
+    getPostComment(postID);
+
+    // On actualise les widgets
+    postingComment = false;
+    notifyListeners();
+    return "Commentaire posté";
   }
 }

@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:social_co2/classes/activity.dart';
 import 'package:social_co2/classes/post.dart';
 import 'package:social_co2/collections/activitiesData.dart';
+import 'package:social_co2/screens/dialogs/dialogComments.dart';
+import 'package:social_co2/providers/FeedProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
-class FeedPost extends StatelessWidget {
+class FeedPost extends StatefulWidget {
   final SCO2Post postData;
 
   const FeedPost({
     super.key,
+    required this.postData,
+  });
+
+  @override
+  State<StatefulWidget> createState() => _FeedPostState(postData: postData);
+}
+
+class _FeedPostState extends State<FeedPost> {
+  final SCO2Post postData;
+
+  _FeedPostState({
     required this.postData,
   });
 
@@ -52,14 +66,26 @@ class FeedPost extends StatelessWidget {
             child: Row(
               children: [
                 TextButton.icon(
-                  onPressed: () {},
-                  label: Text("25"),
-                  icon: Icon(Icons.favorite),
+                  onPressed: () {
+                    Provider.of<FeedProvider>(context, listen: false)
+                        .likePost(postData.postID);
+                  },
+                  label: Text("${postData.postLikesNumber}"),
+                  icon: (postData.liked == true)
+                      ? const Icon(Icons.favorite)
+                      : const Icon(Icons.favorite_outline_outlined),
                 ),
                 TextButton.icon(
-                  onPressed: () {},
-                  label: Text("2"),
-                  icon: Icon(Icons.comment),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => dialogComments(
+                        postData: postData,
+                      ),
+                    );
+                  },
+                  label: Text("${postData.postCommentsNumber}"),
+                  icon: const Icon(Icons.comment),
                 )
               ],
             ),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:social_co2/classes/post.dart';
 import 'package:social_co2/main.dart';
+import 'package:social_co2/providers/FeedProvider.dart';
 import 'package:social_co2/utils/requestsService.dart';
 
 class MakePostProvider extends ChangeNotifier {
@@ -30,6 +31,25 @@ class MakePostProvider extends ChangeNotifier {
         postCreatedAt: DateTime.now(),
         postType: "mood",
         moodLabel: '$label');
+
+    // Envoie du post vers le serveur
+    final postReq = await uploadPost(postData);
+    return postReq;
+  }
+
+  // Fonction pour un post textuel
+  Future<SCO2Post> postText(String textContent) async {
+    // Obtention le user id
+    final userID = FirebaseAuth.instance.currentUser!.uid;
+
+    // Création d'un poste avec une instance de SCO2Post
+    SCO2Post postData = SCO2Post(
+      postID: 0,
+      userID: userID,
+      postCreatedAt: DateTime.now(),
+      postType: "message",
+      postTextContent: textContent,
+    );
 
     // Envoie du post vers le serveur
     final postReq = await uploadPost(postData);

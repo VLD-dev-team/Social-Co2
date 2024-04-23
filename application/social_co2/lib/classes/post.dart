@@ -10,7 +10,7 @@ class SCO2Post {
   SCO2activity? postLinkedActivity;
   int? postLikesNumber;
   DateTime postCreatedAt;
-  int? postCommentNumber;
+  int? postCommentsNumber;
   String postType;
   String? moodLabel;
   bool? liked = false;
@@ -26,7 +26,7 @@ class SCO2Post {
     this.postMediaContentURL,
     this.postLinkedActivity,
     this.postLikesNumber,
-    this.postCommentNumber,
+    this.postCommentsNumber,
     this.moodLabel,
     this.liked,
   });
@@ -44,7 +44,7 @@ class SCO2Post {
           : null,
       postLikesNumber: json["postLikesNumber"],
       postCreatedAt: DateTime.parse(json["postCreatedAt"]),
-      postCommentNumber: json["postCommentNumber"],
+      postCommentsNumber: json["postCommentsNumber"],
       postType: json["postType"],
       moodLabel: json["mood"],
       liked: (json["like"] == "null") ? false : json["like"],
@@ -83,8 +83,8 @@ class SCO2Post {
       data['postLikesNumber'] = postLikesNumber!;
     }
 
-    if (postCommentNumber != null) {
-      data['postCommentNumber'] = postCommentNumber!;
+    if (postCommentsNumber != null) {
+      data['postCommentsNumber'] = postCommentsNumber!;
     }
 
     if (moodLabel != null) {

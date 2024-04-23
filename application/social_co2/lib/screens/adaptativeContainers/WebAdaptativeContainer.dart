@@ -7,7 +7,7 @@ import 'package:social_co2/screens/mainScreens/ActivitiesScreen.dart';
 import 'package:social_co2/screens/mainScreens/HomeScreen.dart';
 import 'package:social_co2/screens/mainScreens/LeaderBoardScreen.dart';
 import 'package:social_co2/screens/mainScreens/MessagesScreen.dart';
-import 'package:social_co2/screens/mainScreens/SCO2ReportScreen.dart';
+import 'package:social_co2/screens/mainScreens/ReportScreen.dart';
 import 'package:social_co2/screens/mainScreens/SearchScreen.dart';
 import 'package:social_co2/screens/mainScreens/SettingsScreen.dart';
 
@@ -17,8 +17,6 @@ import 'package:social_co2/utils/responsiveHandler.dart';
 
 // Importation des providers
 import 'package:social_co2/providers/IndexProvider.dart';
-import 'package:social_co2/providers/UserActivitiesProvider.dart';
-import 'package:social_co2/providers/UserSCO2DataProvider.dart';
 
 class WebAdaptativeContainer extends StatefulWidget {
   @override
@@ -66,7 +64,7 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
                             ? 3
                             : 0,
                         child: Image.asset(
-                          "logos/LOGO_SCO2.png",
+                          "${releasePath}logos/LOGO_SCO2.png",
                         ),
                       ),
                     );
@@ -132,7 +130,7 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
               case 3:
                 return const ActivityScreen(); // ACTIVITÉS
               case 4:
-                return const SCO2ReportScreen(); // RAPPORT
+                return const ReportScreen(); // RAPPORT
               case 5:
                 return const LeaderBoardScreeen(); // CLASSEMENT
               case 6:

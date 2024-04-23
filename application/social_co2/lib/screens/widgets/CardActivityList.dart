@@ -131,7 +131,10 @@ class _CardActivityList extends State<CardActivitiesList> {
                   context: context,
                   builder: (context) {
                     return const newActivityDialog();
-                  });
+                  }).then((value) => Provider.of<UserActivitiesProvider>(
+                      context,
+                      listen: false)
+                  .initData());
             },
             label: const Text(
               "Ajouter une activité",

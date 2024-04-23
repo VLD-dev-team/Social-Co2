@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@160..700&display=swap');
+
+body{
+  background: linear-gradient( rgb(108, 163, 94) 0%, rgb(108, 163, 94) 0%, rgb(99, 136, 137) 100%);
+}
+
+.box{
+  box-shadow: inset 10px black;
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: white) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 16, 230, 53;
+    --background-end-rgb: 163, 230, 53;
+  }
+}
+

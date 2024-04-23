@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:social_co2/providers/ReccurentActivitiesProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
 class ReccurentActivities extends StatelessWidget {
@@ -11,11 +13,11 @@ class ReccurentActivities extends StatelessWidget {
       height: MediaQuery.of(context).size.height-630,
       decoration: primaryCard,
       child: 
-      const Column(
+      Column(
         crossAxisAlignment: 
         CrossAxisAlignment.center,
         children: [
-          SizedBox(
+          const SizedBox(
             //widget qui permet d'adapter la taille
             width: 300, //largeur de la sizedbox
             child: Card(
@@ -31,6 +33,33 @@ class ReccurentActivities extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          Consumer<ReccurentActivitiesProvider>(
+            builder: ((context, value, child) {
+              if (value.isLoading){
+                //si les données sont en chargement
+                return const SizedBox(
+                  height: 40,
+                  //on affiche l'icone de chargement
+                  child: LinearProgressIndicator(),
+                );
+              }else{
+                if (value.error==""){
+                  //on affiche la liste
+                  return SizedBox(
+                    height:120 ,
+                    child: Text("liste activités récurrentes"),
+                  );
+                }else{
+                  //on affiche l'erreur
+                  return SizedBox(
+                    child: Text(
+                      value.error
+                    ),
+                  );
+                }
+              }
+            }),
           ),
         ],
       ),

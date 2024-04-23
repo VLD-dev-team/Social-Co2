@@ -17,8 +17,6 @@ import 'package:social_co2/utils/responsiveHandler.dart';
 
 // Importation des providers
 import 'package:social_co2/providers/IndexProvider.dart';
-import 'package:social_co2/providers/UserActivitiesProvider.dart';
-import 'package:social_co2/providers/UserSCO2DataProvider.dart';
 
 class WebAdaptativeContainer extends StatefulWidget {
   @override
@@ -66,7 +64,7 @@ class _WebAdaptativeContainerState extends State<WebAdaptativeContainer> {
                             ? 3
                             : 0,
                         child: Image.asset(
-                          "logos/LOGO_SCO2.png",
+                          "${releasePath}logos/LOGO_SCO2.png",
                         ),
                       ),
                     );

@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+// Rajout du assets en mode deploiement pour les images
+String releasePath = kDebugMode ? '' : 'assets/';
+
 enum ResponsiveFormats {
   large,
   mid,

@@ -79,6 +79,7 @@ class UserActivitiesProvider extends ChangeNotifier {
     List<SCO2activity> parsingList = [];
     for (var i = 0; i < data['activities'].length; i++) {
       parsingList.add(SCO2activity.fromJSON(data['activities'][i]));
+      print(data['activities'][i]);
     }
     userActivitiesPerDays.update(
       parsedDate,

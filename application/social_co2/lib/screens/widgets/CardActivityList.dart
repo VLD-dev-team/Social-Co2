@@ -113,7 +113,7 @@ class _CardActivityList extends State<CardActivitiesList> {
                   top: 5, bottom: 15, left: 10, right: 10),
               decoration: secondaryCardInnerShadow,
               child: ActivitiesList(
-                multiSelection: false,
+                selection: false,
                 activities: Provider.of<UserActivitiesProvider>(context,
                             listen: true)
                         .userActivitiesPerDays[

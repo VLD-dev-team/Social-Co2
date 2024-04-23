@@ -12,6 +12,9 @@ const websocketRouter = require('./apiroutes/websocket.js'); // Importer le rout
 
 const path = require('path'); // Le module path pour react
 
+// Le module CORS
+const cors = require('cors');
+
 // initialisation de la variable environnement
 require('dotenv').config()
 
@@ -27,21 +30,13 @@ firebaseAdmin.initializeApp({
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
+app.use(cors());
 
 // On utilise express.static pour servir les fichiers statiques de notre application React
 app.use('/', express.static(path.join(__dirname, '../website/sco2-react')));
 // Route pour servir le site React
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../website/sco2-react', 'index.html'));
-});
-
-// On utilise express.static pour servir les fichiers statiques de notre application Flutter
-app.use('/app', express.static(path.join(__dirname, '../application/social_co2/build/web')));
-
-// Route pour servir l'application Flutter
-app.get('/app', (req, res) => {
-  res.sendFile(path.join(__dirname, '../application/social_co2/build/web', 'index.html'));
 });
 
 const apiroutes = require('./apiroutes/index.js');

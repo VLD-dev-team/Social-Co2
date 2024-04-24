@@ -11,9 +11,9 @@ export default function Home() {
   return (
       <main>
         <div className='relative'>
-          <img className='w-auto h-auto' src="./banner.png" alt="banner" />
-            <div className='absolute top-44 right-4'>
-              <img className='h-auto w-auto' src="./logo.png" alt="logo" />
+          <img className='w-auto h-auto' src="./banner.png" alt="banner"/>
+            <div className='absolute md:top-44 right-4'>
+              <img className='h-auto w-auto' src="./logo.png" alt="logo"/>
             </div>
         </div>
           <div className='absolute top-4 left-4 border-transparent rounded-full bg-white p-1 text-nowrap pr-4 pl-4'> 
@@ -23,7 +23,7 @@ export default function Home() {
           </div>
           <div className='absolute top-4 right-4 border-transparent rounded-full bg-white p-1 text-nowrap pr-4 pl-4'>
             <Button message={"c'est ok"}>
-              S'inscrire
+              S&apos;inscrire
             </Button>
             <div className='absolute top-0 right-36 border-transparent rounded-full bg-white p-1 text-nowrap pr-4 pl-4'>
               <Button message={"c'est ok"}>

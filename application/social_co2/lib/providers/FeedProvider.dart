@@ -172,7 +172,7 @@ class FeedProvider extends ChangeNotifier {
       "postid": postID,
       "commentTextContent": commentTextContent.toString(),
     });
-
+  
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
     if (data["error"] == true) {

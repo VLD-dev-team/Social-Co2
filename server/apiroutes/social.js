@@ -249,9 +249,6 @@ router.route('/comments') // Route pour charger les commentaires
 
                         const response = {
                                 userID : postOwnerID,
-                                notificationContent : notificationContent,
-                                notificationTitle : notificationTitle,
-                                notificationStatus : notificationStatus,
                                 commentTextContent : commentTextContent
                         }
                         return res.status(200).json(response);

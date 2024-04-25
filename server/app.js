@@ -32,15 +32,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-// On utilise express.static pour servir les fichiers statiques de notre application React
-app.use('/', express.static(path.join(__dirname, '../website/sco2-react')));
-// Route pour servir le site React
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../website/sco2-react', 'index.html'));
-});
-
 const apiroutes = require('./apiroutes/index.js');
-app.use('/api', apiroutes);
+app.use('/', apiroutes);
 
 // Utiliser un port différent que socket.io -> port 3006
 // lancement du serveur

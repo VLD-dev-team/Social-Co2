@@ -181,11 +181,13 @@ router.route('/comments') // Route pour charger les commentaires
         const selectResult = await executeQuery(selectQuery, [postID])
 
         if (selectResult.length > 0){
-            console.log(selectResult)
             let response = {};
             for (let each of selectResult) {
                 const authUser = await admin.auth().getUser(each.userID);
-                response[authUser.displayName] = selectResult[each];
+                response[authUser.displayName] = 
+                {"postID": each.postID,
+                "commentTextContent": each.commentTextContent,
+                "commentCreatedAt": each.commentCreatedAt};
             }
             const reponse = {
                 comments: response
@@ -249,9 +251,6 @@ router.route('/comments') // Route pour charger les commentaires
 
                         const response = {
                                 userID : postOwnerID,
-                                notificationContent : notificationContent,
-                                notificationTitle : notificationTitle,
-                                notificationStatus : notificationStatus,
                                 commentTextContent : commentTextContent
                         }
                         return res.status(200).json(response);
@@ -373,7 +372,7 @@ router.route('/posts')
                 // Vérification des paramètres activityType et activityCO2Impact
                 const activityID = req.body.activityid
                 
-                if (!activityID || NaN(activityID)) {
+                if (!activityID || isNaN(activityID)) {
                     const response = {
                         error: true,
                         error_message: 'Invalid activity ID',

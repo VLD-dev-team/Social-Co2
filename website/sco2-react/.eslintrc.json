@@ -1,6 +1,6 @@
 {
   "extends": "next",
   "rules": {
-    "react/no-unescaped-entities": "off"
+    "react/no-unescaped-entities": "off" /*cela permet d'éviter les problèmes d'apostrophes lors du build*/
   }
 }

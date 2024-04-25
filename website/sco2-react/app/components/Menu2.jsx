@@ -1,6 +1,6 @@
 export default function Menu2(){
     return(
-        <div className="grid grid-rows-3 grid-flow-col gap-3 bg-[#F9EFDB] pr-4 pt-3 rounded-lg h-auto w-auto pb-5">
+        <div className="grid grid-rows-3 grid-flow-col gap-3 bg-[#F9EFDB] pr-4 pt-3 rounded-lg h-auto w-auto pb-5 inner-shadow">
                 <div className="row-span-3"></div>
                     <div className="flex col-span-2 w-auto h-auto bg-white border-none rounded items-center justify-center rounded-lg rounded-2xl inner-shadow"><p className="text-5xl font-sans">Pourquoi SCO2 ?</p></div>
                     <div className="grid auto-rows-auto row-span-2 col-span-2 w-auto h-fit bg-[#EBD9B4] border-none rounded-lg rounded-2xl text-justify justify-center px-10 inner-shadow">

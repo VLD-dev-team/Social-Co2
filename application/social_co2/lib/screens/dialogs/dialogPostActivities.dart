@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:social_co2/classes/activity.dart';
 import 'package:social_co2/providers/MakePostProvider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/screens/widgets/ActivitiesList.dart';
@@ -14,12 +15,13 @@ class dialogPostActivities extends StatefulWidget {
 }
 
 class _dialogPostActivitiesState extends State<dialogPostActivities> {
+  DateTime selectedDate =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  List<SCO2activity> activityListForSelectedDate = [];
+
   @override
   Widget build(BuildContext context) {
     // controller de la date courante
-    DateTime selectedDate =
-        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-
     return ChangeNotifierProvider(
         create: (_) => MakePostProvider(),
         builder: (context, child) =>
@@ -39,24 +41,26 @@ class _dialogPostActivitiesState extends State<dialogPostActivities> {
                         disabledColor: Colors.transparent,
                         onPressed: () => showDatePicker(
                                 context: context,
-                                initialDate: (FirebaseAuth.instance.currentUser!
+                                initialDate: selectedDate,
+                                firstDate: (FirebaseAuth.instance.currentUser!
                                             .metadata.creationTime ==
                                         null)
                                     ? DateTime(2024)
                                     : FirebaseAuth.instance.currentUser!
                                         .metadata.creationTime!,
-                                firstDate: DateTime(2024),
                                 lastDate: DateTime.now())
                             .then(
                           (value) {
                             if (value != null) {
                               setState(() {
                                 selectedDate = value;
-                                Provider.of<UserActivitiesProvider>(context,
-                                        listen: false)
-                                    .getCurrentUserActivitiesByDate(
-                                        selectedDate);
                               });
+                              Provider.of<UserActivitiesProvider>(context,
+                                      listen: false)
+                                  .getCurrentUserActivitiesByDate(selectedDate)
+                                  .then((value) => setState(() {
+                                        activityListForSelectedDate = value;
+                                      }));
                             }
                           },
                         ),
@@ -109,8 +113,11 @@ class _dialogPostActivitiesState extends State<dialogPostActivities> {
                                     } else {
                                       return ActivitiesList(
                                           activities:
-                                              value2.userActivitiesPerDays[
-                                                  selectedDate],
+                                              (activityListForSelectedDate
+                                                      .isEmpty)
+                                                  ? value2.userActivitiesPerDays[
+                                                      selectedDate]
+                                                  : activityListForSelectedDate,
                                           selection: true,
                                           error: value2.error);
                                     }

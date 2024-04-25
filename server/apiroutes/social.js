@@ -194,7 +194,7 @@ router.route('/comments') // Route pour charger les commentaires
         }
         const response = {
             error : true,
-            error_message : 'Failed to process comment',
+            error_message : 'Failed to process comment or no comments',
             error_code : 10
         }
         return res.status(500).json(response);
@@ -215,7 +215,7 @@ router.route('/comments') // Route pour charger les commentaires
             }
 
             // Insertion du commentaire dans la table comments
-            const insertCommentQuery = `INSERT INTO comments (userID, postID, commentTextContent, commentCreatedAt) VALUES (?, ?, ?, CURRENT_TIMESTAMP) ;`;
+            const insertCommentQuery = `INSERT INTO comments (userID, postID, commentTextContent) VALUES (?, ?, ?) ;`;
             const insertCommentResult = await executeQuery(insertCommentQuery, [userID, postID, commentTextContent]);
 
             if (insertCommentResult.affectedRows > 0) {
@@ -251,7 +251,8 @@ router.route('/comments') // Route pour charger les commentaires
                                 userID : postOwnerID,
                                 notificationContent : notificationContent,
                                 notificationTitle : notificationTitle,
-                                notificationStatus : notificationStatus
+                                notificationStatus : notificationStatus,
+                                commentTextContent : commentTextContent
                         }
                         return res.status(200).json(response);
                     

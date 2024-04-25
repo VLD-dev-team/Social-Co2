@@ -7,8 +7,8 @@ const socketManager = require('../utils/socketManager.js'); // Importez le gesti
 const admin = require('firebase-admin');
 
 
-// router.route('/*')
-//     .all((req, res, next) => verifyAuthToken(req, res, next));
+router.route('/*')
+    .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/feed')
     .get(async (req, res) => {
@@ -372,7 +372,7 @@ router.route('/posts')
                 // Vérification des paramètres activityType et activityCO2Impact
                 const activityID = req.body.activityid
                 
-                if (!activityID || NaN(activityID)) {
+                if (!activityID || isNaN(activityID)) {
                     const response = {
                         error: true,
                         error_message: 'Invalid activity ID',

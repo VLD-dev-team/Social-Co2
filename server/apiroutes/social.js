@@ -7,8 +7,8 @@ const socketManager = require('../utils/socketManager.js'); // Importez le gesti
 const admin = require('firebase-admin');
 
 
-router.route('/*')
-    .all((req, res, next) => verifyAuthToken(req, res, next));
+// router.route('/*')
+//     .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/feed')
     .get(async (req, res) => {
@@ -181,11 +181,13 @@ router.route('/comments') // Route pour charger les commentaires
         const selectResult = await executeQuery(selectQuery, [postID])
 
         if (selectResult.length > 0){
-            console.log(selectResult)
             let response = {};
             for (let each of selectResult) {
                 const authUser = await admin.auth().getUser(each.userID);
-                response[authUser.displayName] = selectResult[each];
+                response[authUser.displayName] = 
+                {"postID": each.postID,
+                "commentTextContent": each.commentTextContent,
+                "commentCreatedAt": each.commentCreatedAt};
             }
             const reponse = {
                 comments: response

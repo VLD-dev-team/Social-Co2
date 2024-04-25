@@ -131,6 +131,8 @@ class FeedProvider extends ChangeNotifier {
       'userid': userID,
     });
 
+    print(data);
+
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
     if (data["error"] == true) {
@@ -172,7 +174,7 @@ class FeedProvider extends ChangeNotifier {
       "postid": postID,
       "commentTextContent": commentTextContent.toString(),
     });
-  
+
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
     if (data["error"] == true) {
@@ -182,10 +184,13 @@ class FeedProvider extends ChangeNotifier {
         error = "error: unknown error";
       }
 
+      print(error);
       postingComment = false;
       notifyListeners();
       return error;
     }
+
+    print(data);
 
     // On met à jour la liste des commentaires
     getPostComment(postID);

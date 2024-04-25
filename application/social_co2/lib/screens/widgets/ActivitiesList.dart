@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/classes/activity.dart';
 import 'package:social_co2/collections/activitiesData.dart';
+import 'package:social_co2/providers/MakePostProvider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
@@ -11,11 +12,13 @@ class ActivitiesList extends StatelessWidget {
   String error = "";
   String? action;
 
-  ActivitiesList(
-      {super.key,
-      required this.activities,
-      required this.selection,
-      required this.error});
+  ActivitiesList({
+    super.key,
+    required this.activities,
+    required this.selection,
+    required this.error,
+    this.action,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +131,9 @@ class ActivitiesList extends StatelessWidget {
                     ? () {
                         switch (action) {
                           case "post":
+                            Provider.of<MakePostProvider>(context,
+                                    listen: false)
+                                .postActivity(activities![index]);
                             break;
                           case "add":
                             break;

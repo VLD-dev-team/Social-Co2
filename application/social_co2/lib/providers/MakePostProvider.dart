@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:social_co2/classes/activity.dart';
 import 'package:social_co2/classes/post.dart';
 import 'package:social_co2/main.dart';
 import 'package:social_co2/providers/FeedProvider.dart';
@@ -56,6 +57,26 @@ class MakePostProvider extends ChangeNotifier {
     return postReq;
   }
 
+  Future<SCO2Post> postActivity(SCO2activity activity) async {
+    // Obtention le user id
+    final userID = FirebaseAuth.instance.currentUser!.uid;
+
+    // Création d'un poste avec une instance de SCO2Post
+    SCO2Post postData = SCO2Post(
+      postID: 0,
+      userID: userID,
+      postCreatedAt: DateTime.now(),
+      postType: "activite",
+      postTextContent:
+          "J'ai effectué(e) cet activité : ${activity.activityName}",
+      postLinkedActivity: activity,
+    );
+
+    // Envoie du post vers le serveur
+    final postReq = await uploadPost(postData);
+    return postReq;
+  }
+
   // Fonction d'envoi du post (tout type confondu)
   Future<SCO2Post> uploadPost(SCO2Post post) async {
     posting = true;
@@ -67,7 +88,8 @@ class MakePostProvider extends ChangeNotifier {
     final userID = firebaseAuth.currentUser!.uid;
 
     // On construit le body de la requette
-    final body = post.toJson();
+    var body = post.toJson();
+    body.addAll({'activityid': post.postLinkedActivity!.activityID});
 
     // On fait la requette au server
     final data = await requestService().post(

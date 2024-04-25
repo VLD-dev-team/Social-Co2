@@ -112,14 +112,15 @@ class _dialogPostActivitiesState extends State<dialogPostActivities> {
                                       );
                                     } else {
                                       return ActivitiesList(
-                                          activities:
-                                              (activityListForSelectedDate
-                                                      .isEmpty)
-                                                  ? value2.userActivitiesPerDays[
-                                                      selectedDate]
-                                                  : activityListForSelectedDate,
-                                          selection: true,
-                                          error: value2.error);
+                                        activities: (activityListForSelectedDate
+                                                .isEmpty)
+                                            ? value2.userActivitiesPerDays[
+                                                selectedDate]
+                                            : activityListForSelectedDate,
+                                        selection: true,
+                                        error: value2.error,
+                                        action: "post",
+                                      );
                                     }
                                   }))
                           : Column(

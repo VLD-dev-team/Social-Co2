@@ -4,7 +4,7 @@ import 'package:http/http.dart';
 
 class requestService {
   // URL du serveur
-  static const String serverApiURL = 'https://social-co2.vld-group.com/api/';
+  static const String serverApiURL = 'https://api.social-co2.vld-group.com/';
   static const Map<String, String> additionnalHeaders = {
     "Content-Type": "application/json"
   };

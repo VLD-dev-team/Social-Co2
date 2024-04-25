@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/classes/activity.dart';
 import 'package:social_co2/collections/activitiesData.dart';
+import 'package:social_co2/providers/MakePostProvider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/styles/CardStyles.dart';
 
 class ActivitiesList extends StatelessWidget {
-  bool multiSelection = false;
+  bool selection = false;
   List<SCO2activity>? activities = [];
   String error = "";
+  String? action;
 
-  ActivitiesList(
-      {super.key,
-      required this.activities,
-      required this.multiSelection,
-      required this.error});
+  ActivitiesList({
+    super.key,
+    required this.activities,
+    required this.selection,
+    required this.error,
+    this.action,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +77,7 @@ class ActivitiesList extends StatelessWidget {
                             element['type'] ==
                             activity.activityMealIngredients) ==
                         -1)
-                    ? ""
+                    ? "Repas"
                     : meals[meals.indexWhere((element) =>
                         element['type'] ==
                         activity.activityMealIngredients)]['label'];
@@ -82,7 +86,7 @@ class ActivitiesList extends StatelessWidget {
                 details = (purchases.indexWhere((element) =>
                             element['type'] == activity.activityPurchase) ==
                         -1)
-                    ? ""
+                    ? "Achat"
                     : purchases[purchases.indexWhere((element) =>
                         element['type'] == activity.activityPurchase)]['label'];
                 break;
@@ -90,7 +94,7 @@ class ActivitiesList extends StatelessWidget {
                 details = (builds.indexWhere((element) =>
                             element['type'] == activity.activityBuild) ==
                         -1)
-                    ? ""
+                    ? "Bricolage"
                     : builds[builds.indexWhere((element) =>
                         element['type'] == activity.activityBuild)]['label'];
                 break;
@@ -99,7 +103,7 @@ class ActivitiesList extends StatelessWidget {
                 final vehicule = (availableVehicles.indexWhere((element) =>
                             element['type'] == activity.activityVehicule) ==
                         -1)
-                    ? ""
+                    ? "Trajet"
                     : availableVehicles[availableVehicles.indexWhere(
                             (element) =>
                                 element['type'] == activity.activityVehicule)]
@@ -114,7 +118,7 @@ class ActivitiesList extends StatelessWidget {
                       ['icon'];
                 }
                 break;
-              case "cleanInbox":
+              case "mail":
                 details = "Moins d'espace utilisé sur vos espaces en ligne !";
                 break;
               default:
@@ -123,6 +127,19 @@ class ActivitiesList extends StatelessWidget {
             return Container(
               decoration: primaryCard,
               child: ListTile(
+                onTap: (selection)
+                    ? () {
+                        switch (action) {
+                          case "post":
+                            Provider.of<MakePostProvider>(context,
+                                    listen: false)
+                                .postActivity(activities![index]);
+                            break;
+                          case "add":
+                            break;
+                        }
+                      }
+                    : null,
                 leading: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -143,10 +160,13 @@ class ActivitiesList extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text('${activity.activityCO2Impact}'),
-                    if (multiSelection)
-                      Checkbox(
-                        value: false,
-                        onChanged: (value) => {value == true},
+                    if (selection)
+                      const Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Icon(
+                          Icons.send,
+                          color: Colors.black,
+                        ),
                       )
                   ],
                 ),

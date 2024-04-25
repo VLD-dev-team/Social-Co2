@@ -113,7 +113,7 @@ class _CardActivityList extends State<CardActivitiesList> {
                   top: 5, bottom: 15, left: 10, right: 10),
               decoration: secondaryCardInnerShadow,
               child: ActivitiesList(
-                multiSelection: false,
+                selection: false,
                 activities: Provider.of<UserActivitiesProvider>(context,
                             listen: true)
                         .userActivitiesPerDays[
@@ -131,7 +131,10 @@ class _CardActivityList extends State<CardActivitiesList> {
                   context: context,
                   builder: (context) {
                     return const newActivityDialog();
-                  });
+                  }).then((value) => Provider.of<UserActivitiesProvider>(
+                      context,
+                      listen: false)
+                  .initData());
             },
             label: const Text(
               "Ajouter une activité",

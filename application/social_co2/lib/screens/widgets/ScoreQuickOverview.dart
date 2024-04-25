@@ -199,8 +199,12 @@ class SQOLeftColumn extends StatelessWidget {
                             MaterialStatePropertyAll(Colors.white)),
                     onPressed: () {
                       showDialog(
-                          context: context,
-                          builder: (context) => const newActivityDialog());
+                              context: context,
+                              builder: (context) => const newActivityDialog())
+                          .then((value) => Provider.of<UserActivitiesProvider>(
+                                  context,
+                                  listen: false)
+                              .initData());
                     },
                     icon: const Icon(
                       Icons.add,

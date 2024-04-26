@@ -34,10 +34,13 @@ class SCO2activity {
       activityName: json['activityName'],
       activityMealIngredients: json['activityMealIngredients'],
       activityPurchase: json['activityPurchase'],
-      activityDistance: double.tryParse(json['activityDistance'].toString()),
+      activityDistance:
+          double.tryParse('${json['activityDistance']}'.toString()),
       activityVehicule: json['activityVehicle'],
       activityBuild: json['activityBuild'],
-      activityTimestamp: DateTime.parse(json['activityTimestamp'].toString()),
+      activityTimestamp: (DateTime.tryParse(json['activityTimestamp']) == null)
+          ? DateTime(1980)
+          : DateTime.parse(json['activityTimestamp']),
     );
   }
 

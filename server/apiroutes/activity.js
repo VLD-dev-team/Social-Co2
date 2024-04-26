@@ -97,7 +97,7 @@ router.route('/')
                 }
             }
             const distance = req.body.activityDistance
-            activityCO2Impact = parseInt(activityCalculator.newTrip(vehicle, distance))
+            activityCO2Impact = Math.round(activityCalculator.newTrip(vehicle, distance))
         } else if (activityType == "purchase"){
             const article = req.body.activityPurchase
             let condition = false

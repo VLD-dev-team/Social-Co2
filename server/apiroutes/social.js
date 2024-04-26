@@ -9,8 +9,8 @@ const getDay = require('../utils/getDay.js')
 
 
 
-router.route('/*')
-    .all((req, res, next) => verifyAuthToken(req, res, next));
+// router.route('/*')
+//     .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/feed')
     .get(async (req, res) => {
@@ -59,6 +59,27 @@ router.route('/feed')
             if (getLikeBoolResult.length > 0) {
                 like = true
             }
+            let postLinkedActivityStr = post.postLinkedActivity;
+            let postLinkedActivity = {};
+            if (postLinkedActivityStr !== null && typeof postLinkedActivityStr === 'string') {
+                // Expression régulière pour extraire les paires clé-valeur
+                const regex = /"([^"]+)":\s*([^,}]+)/g;
+                let match;
+                while ((match = regex.exec(postLinkedActivityStr)) !== null) {
+                    const key = match[1];
+                    let value = match[2];
+                    // Traitement spécial pour les valeurs non numériques
+                    if (!/^-?\d+$/.test(value)) {
+                        // On supp les espaces et les guillemets
+                        value = value.trim().replace(/^"(.*)"$/, '$1');
+                    } else {
+                        // On convertit les valeurs numériques en nombre
+                        value = Number(value);
+                    }
+                    postLinkedActivity[key] = value;
+                }
+            }
+
             return {
                 uid: postData.uid,
                 name: surname,
@@ -66,7 +87,7 @@ router.route('/feed')
                 postID: post.postID,
                 postTextContent: post.postTextContent,
                 postMediaContentURL: post.postMediaContentURL,
-                postLinkedActivity: post.postLinkedActivity,
+                postLinkedActivity: postLinkedActivity,
                 postLikesNumber: post.postLikesNumber,
                 postCreatedAt: post.postCreatedAt,
                 postCommentsNumber: post.postCommentsNumber,

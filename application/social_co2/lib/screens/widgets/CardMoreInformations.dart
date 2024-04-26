@@ -236,7 +236,7 @@ class _CardMoreInformations extends State<CardMoreInformations> {
                           trailing: SizedBox(
                               width: 60,
                               child: TextField(
-                                  controller: surfaceFieldController,
+                                  controller: nb_inhabitantsController,
                                   onChanged: (value) {
                                     // Si la valeur du textfield change, on indique que cette valeur n'a pas été sauvegardé
                                     setState(() {

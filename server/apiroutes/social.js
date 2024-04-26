@@ -391,12 +391,13 @@ router.route('/posts')
                 sqlQueryActivity = `SELECT * FROM activities WHERE activityID = ?`
                 selectQueryActivityResult = await executeQuery(sqlQueryActivity, [activityID])
 
-                const activityType = selectQueryActivityResult.activityType
-                const activityCO2Impact = selectQueryActivityResult.activityCO2Impact
-                const activityName = selectQueryActivityResult.activityName
-                const activityTimestamp = selectQueryActivityResult.activityTimestamp
+                const activityType = selectQueryActivityResult[0].activityType
+                const activityCO2Impact = selectQueryActivityResult[0].activityCO2Impact
+                const activityName = selectQueryActivityResult[0].activityName
+                const activityTimestamp = selectQueryActivityResult[0].activityTimestamp
+                const postLinkedActivity = {"activityType":activityType, "activityCO2Impact":activityCO2Impact, "activityName":activityName, "activityTimestamp":activityTimestamp}
                 sqlQuery = `INSERT INTO posts (userID, postLinkedActivity, postType, postTextContent) VALUES (?, ?, ?, ?);`;
-                sqlValues = [userID, {"activityType":activityType, "activityCO2Impact":activityCO2Impact, "activityName":activityName, "activityTimestamp":activityTimestamp}, 'activite', req.body.postTextContent];
+                sqlValues = [userID, postLinkedActivity, 'activite', req.body.postTextContent];
                 response = {
                     message: 'Post has been created successfully.',
                     userID: userID,

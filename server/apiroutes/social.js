@@ -284,7 +284,7 @@ router.route('/comments') // Route pour charger les commentaires
 router.route('/posts')
     .post(async (req, res) => {
         const userID = req.headers.userid;
-        const postType = req.query.postType;
+        const postType = req.body.postType;
 
         // Vérification des paramètres obligatoires
         if (!userID || !postType) {
@@ -378,7 +378,7 @@ router.route('/posts')
                 break;
             case 'activite':
                 // Vérification des paramètres activityType et activityCO2Impact
-                const activityID = req.query.activityid
+                const activityID = req.body.activityid
 
                 if (!activityID || isNaN(activityID)) {
                     const response = {

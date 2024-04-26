@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_co2/providers/IndexProvider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/providers/UserSCO2DataProvider.dart';
 import 'package:social_co2/screens/dialogs/dialogNewActivity.dart';

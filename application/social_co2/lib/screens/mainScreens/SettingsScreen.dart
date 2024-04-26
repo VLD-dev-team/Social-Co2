@@ -36,11 +36,9 @@ class _SettingsScreen extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     // Variables necessaires au responsive
-    ResponsiveFormats responsiveFormat = whichResponsiveFormat(context);
     int drawerWidth = getDrawerWidth(context);
 
     String? displayName = FirebaseAuth.instance.currentUser!.displayName;
-    String? email = FirebaseAuth.instance.currentUser!.email;
 
     return Container(
         height: double.infinity,

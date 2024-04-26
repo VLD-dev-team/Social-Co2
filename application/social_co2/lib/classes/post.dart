@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:social_co2/classes/activity.dart';
 
 class SCO2Post {

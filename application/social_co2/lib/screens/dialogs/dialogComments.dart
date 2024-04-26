@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:social_co2/classes/post.dart';
 import 'package:social_co2/providers/FeedProvider.dart';
 
+// ignore: must_be_immutable, camel_case_types
 class dialogComments extends StatefulWidget {
   SCO2Post postData;
 

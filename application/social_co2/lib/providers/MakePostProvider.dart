@@ -89,7 +89,9 @@ class MakePostProvider extends ChangeNotifier {
 
     // On construit le body de la requette
     var body = post.toJson();
-    body.addAll({'activityid': post.postLinkedActivity!.activityID});
+    if (post.postType == "activite") {
+      body.addAll({'activityid': post.postLinkedActivity!.activityID});
+    }
 
     // On fait la requette au server
     final data = await requestService().post(
@@ -110,7 +112,6 @@ class MakePostProvider extends ChangeNotifier {
         error = "error: unknown error";
       }
       posting = false;
-      print(error);
       notifyListeners();
       return post;
     }

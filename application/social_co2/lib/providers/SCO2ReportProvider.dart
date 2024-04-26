@@ -54,6 +54,8 @@ class SCO2ReportProvider extends ChangeNotifier {
       return error;
     }
 
+    print(data);
+
     // On parse les données
     Map impact = data['impact'];
     todayImpact = int.parse(impact.values.first.toString());

@@ -57,6 +57,7 @@ class FeedProvider extends ChangeNotifier {
         final post =
             SCO2Post.fromJSON(Map<String, dynamic>.from(data["feed"][i]));
         feed.add(post);
+        // print(post.toJson().toString());
       }
     }
 

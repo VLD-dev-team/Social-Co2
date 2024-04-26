@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:social_co2/screens/widgets/LeaderBoardWidget.dart';
-import 'package:social_co2/styles/CardStyles.dart';
 import 'package:social_co2/styles/MainScreenStyle.dart';
 import 'package:social_co2/utils/responsiveHandler.dart';
 
@@ -9,7 +8,6 @@ class LeaderBoardScreeen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveFormats responsiveFormat = whichResponsiveFormat(context);
     int drawerWidth = getDrawerWidth(context);
 
     if (drawerWidth == 60) {

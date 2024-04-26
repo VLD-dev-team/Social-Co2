@@ -1,9 +1,5 @@
 // Importation des packages requis pour flutter
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-// Importation des providers requis
-import 'package:social_co2/providers/IndexProvider.dart';
 
 // Importation des styles et du module responsive
 import 'package:social_co2/styles/MainScreenStyle.dart';

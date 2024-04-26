@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:social_co2/classes/post.dart';
 import 'package:social_co2/providers/FeedProvider.dart';
 
+// ignore: must_be_immutable, camel_case_types
 class dialogComments extends StatefulWidget {
   SCO2Post postData;
 
@@ -48,22 +49,54 @@ class _dialogComments extends State<dialogComments> {
       builder: (context, child) => AlertDialog(
         icon: const Icon(Icons.comment),
         title: Text('${postData.postCommentsNumber} commentaires'),
-        content: Consumer<FeedProvider>(
-          builder: (context, PROVIDERVALUES, child) => SizedBox(
+        content:
+            Consumer<FeedProvider>(builder: (context, PROVIDERVALUES, child) {
+          List commentList = [];
+          if (PROVIDERVALUES.postComments[postData.postID] != null) {
+            commentList = PROVIDERVALUES.postComments[postData.postID];
+          }
+          return SizedBox(
             width: 400,
             height: 600,
             child: ListView.separated(
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    // TODO: afficher les valeurs
-                    title: Text(PROVIDERVALUES.postComments[postData.postID]
-                        .toString()),
-                  );
+                  if (commentList.isEmpty) {
+                    return const ListTile(
+                      title: Text("Chargement",
+                          style: TextStyle(color: Colors.grey)),
+                      subtitle: Text(''),
+                    );
+                  }
+                  try {
+                    final Map? comment = commentList[index];
+                    if (comment == null) {
+                      return const ListTile(
+                        title: Text("Chargement",
+                            style: TextStyle(color: Colors.grey)),
+                        subtitle: Text(''),
+                      );
+                    } else {
+                      return ListTile(
+                        title: Text(comment['commentTextContent'].toString()),
+                        subtitle: Text(
+                          "${comment['displayName'].toString()} - ${comment['commentCreatedAt'].toString()}",
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                      );
+                    }
+                  } catch (e) {
+                    return const ListTile(
+                      title: Text("Chargement",
+                          style: TextStyle(color: Colors.grey)),
+                      subtitle: Text(''),
+                    );
+                  }
                 },
                 separatorBuilder: (context, index) => const SizedBox(height: 5),
+                reverse: true,
                 itemCount: postData.postCommentsNumber!),
-          ),
-        ),
+          );
+        }),
         actionsPadding: const EdgeInsets.all(20),
         actions: [
           Consumer<FeedProvider>(

@@ -54,9 +54,11 @@ class FeedProvider extends ChangeNotifier {
     // On transforme les données en liste de post SCO2
     if (data['feed'] != []) {
       for (var i = 0; i < data['feed'].length; i++) {
-        final post =
-            SCO2Post.fromJSON(Map<String, dynamic>.from(data["feed"][i]));
-        feed.add(post);
+        try {
+          final post =
+              SCO2Post.fromJSON(Map<String, dynamic>.from(data["feed"][i]));
+          feed.add(post);
+        } catch (e) {}
       }
     }
 

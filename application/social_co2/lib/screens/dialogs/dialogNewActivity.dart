@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:social_co2/collections/activitiesData.dart';
 import 'package:social_co2/providers/DirectionsProvider.dart';
@@ -114,8 +115,12 @@ class _newActivityDialog extends State<newActivityDialog> {
                             _currentMenu = "";
                             value.postRouteActivity(
                                 availableVehicles[routeMode!]["type"],
-                                double.parse(
-                                    distanceController.text.toString()));
+                                (num.tryParse(distanceController.text
+                                            .toString()) !=
+                                        null)
+                                    ? num.tryParse(
+                                        distanceController.text.toString())!
+                                    : 0);
                           });
                         },
                         icon: const Icon(Icons.check),
@@ -358,15 +363,27 @@ class _newActivityDialog extends State<newActivityDialog> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Nombre de Km"),
-                      SizedBox(height: 5),
-                      TextField(
-                        keyboardType:
-                            TextInputType.numberWithOptions(decimal: true),
-                        decoration: InputDecoration(
+                      const Text("Nombre de Km"),
+                      const SizedBox(height: 5),
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null) {
+                            return null;
+                          }
+                          final n = num.tryParse(value);
+                          if (n == null) {
+                            return '"$value" is not a valid number';
+                          }
+                          return null;
+                        },
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'Entrez une adresse',
                         ),

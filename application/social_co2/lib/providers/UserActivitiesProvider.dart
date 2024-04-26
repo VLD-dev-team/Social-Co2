@@ -143,8 +143,7 @@ class UserActivitiesProvider extends ChangeNotifier {
     return data;
   }
 
-  Future<SCO2activity> postRouteActivity(
-      String vehicule, double distance) async {
+  Future<SCO2activity> postRouteActivity(String vehicule, num distance) async {
     final String time = '${DateTime.now().hour}:${DateTime.now().minute}';
     final SCO2activity activity = SCO2activity(
       activityType: 'trip',

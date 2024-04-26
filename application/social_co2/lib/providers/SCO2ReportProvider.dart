@@ -1,18 +1,14 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:social_co2/classes/activity.dart';
-import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/utils/requestsService.dart';
 
 class SCO2ReportProvider extends ChangeNotifier {
   bool isLoading = false;
   String error = "";
 
-  int todayImpact = 0;
+  List<Map<String, dynamic>> report = [];
   int activityMaxImpactScore = 0;
-  SCO2activity? activityMaxImpact;
 
   SCO2ReportProvider() {
     refreshData();
@@ -40,6 +36,8 @@ class SCO2ReportProvider extends ChangeNotifier {
       },
     );
 
+    print(data);
+
     // On analyse la réponse du server
     // En cas d'erreur, on renvoie erreur aux widgets
     if (data["error"] == true) {
@@ -54,23 +52,26 @@ class SCO2ReportProvider extends ChangeNotifier {
       return error;
     }
 
-    // On parse les données
-    Map impact = data['impact'];
-    todayImpact = int.parse(impact.values.first.toString());
-    activityMaxImpact = data['maximum'];
+    // On parse le rapport
+    final List rawReport = data['rapport'];
+    for (Map<String, dynamic> element in rawReport) {
+      List<SCO2activity> activitylist = [];
+      final rawActivityList = element['activities'];
+      for (Map<String, dynamic> activity in rawActivityList) {
+        activitylist.add(SCO2activity.fromJSON(activity));
+      }
+      report.add({
+        "day": element["day"].toString(),
+        "activities": activitylist,
+        "impact": element["impact"]
+      });
+    }
+    // On récupère l'activité de la semaine
+    activityMaxImpactScore = data['maximum'];
 
-    final DateTime date = DateTime.now();
-    final DateTime parsedDate = DateTime(date.year, date.month, date.day);
-
-    activityMaxImpact = UserActivitiesProvider()
-        .userActivitiesPerDays[parsedDate]!
-        .firstWhere(
-            (element) => element.activityCO2Impact == activityMaxImpactScore);
-
-    print(todayImpact);
-    print(activityMaxImpact);
-    print(activityMaxImpactScore);
-
-    return todayImpact.toString();
+    // On termine la fonction
+    isLoading = false;
+    notifyListeners();
+    return "Report refreshed from the server";
   }
 }

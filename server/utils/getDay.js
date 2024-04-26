@@ -4,7 +4,7 @@ function obtenirNomJourEtDate(timestampISO) {
     var date = new Date(timestampISO);
     
     // Récupérer le nom du jour
-    var nomsJours = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+    var nomsJours = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var nomJour = nomsJours[date.getDay()];
     
     // Récupérer la date

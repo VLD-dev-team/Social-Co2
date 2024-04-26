@@ -82,7 +82,7 @@ function multiplier(recycle, nb_residents, surface, garden, multiplier, heating)
 }
 
 function newTrip(vehicle, distance) {
-  return (60 - activity["vehicle_emission"][vehicle]) * (Math.log(distance) * (1 / 10));
+  return (60 - (activity["vehicle_emission"][vehicle]) * (Math.log(distance) * (1 / 10)));
 }
 
 function newPurchase(item, condition) {

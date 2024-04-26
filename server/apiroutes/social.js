@@ -9,9 +9,8 @@ const getDay = require('../utils/getDay.js')
 
 
 
-// router.route('/*')
-//     .all((req, res, next) => verifyAuthToken(req, res, next));
-
+router.route('/*')
+    .all((req, res, next) => verifyAuthToken(req, res, next));
 router.route('/feed')
     .get(async (req, res) => {
         // Chargement du feed

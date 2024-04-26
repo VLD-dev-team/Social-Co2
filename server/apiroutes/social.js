@@ -5,6 +5,8 @@ const verifyAuthToken = require('../utils/requireAuth.js');
 const notificationHandler = require('../utils/notificationHandler.js'); // Importez le gestionnaire de notifications
 const socketManager = require('../utils/socketManager.js'); // Importez le gestionnaire de sockets pour accéder à `io`
 const admin = require('firebase-admin');
+const getDay = require('../utils/getDay.js')
+
 
 
 router.route('/*')
@@ -394,29 +396,71 @@ router.route('/posts')
                 const activityName = selectQueryActivityResult.activityName
                 const activityTimestamp = selectQueryActivityResult.activityTimestamp
                 sqlQuery = `INSERT INTO posts (userID, postLinkedActivity, postType, postTextContent) VALUES (?, ?, ?, ?);`;
-                sqlValues = [userID, JSON.stringify({"activityType":activityType, "activityCO2Impact":activityCO2Impact, "activityName":activityName, "activityTimestamp":activityTimestamp}), 'activite', req.body.postTextContent];
+                sqlValues = [userID, {"activityType":activityType, "activityCO2Impact":activityCO2Impact, "activityName":activityName, "activityTimestamp":activityTimestamp}, 'activite', req.body.postTextContent];
                 response = {
                     message: 'Post has been created successfully.',
                     userID: userID,
                     postType: postType,
-                    postLinkedActivity: JSON.stringify({"activityType":activityType, "activityCO2Impact":activityCO2Impact, "activityName":activityName, "activityTimestamp":activityTimestamp}),
+                    postLinkedActivity: {"activityType":activityType, "activityCO2Impact":activityCO2Impact, "activityName":activityName, "activityTimestamp":activityTimestamp},
                 }
                 break;
             case 'rapport':
                 sqlQueryActivity = `
                 SELECT * FROM activities 
                 WHERE userID = ? 
-                ORDER BY activityTimestamp DESC, activityType ASC
-                LIMIT 200 ;`
-                selectQueryActivityResult = await executeQuery(sqlQueryActivity, [userID])
-                const rapport = selectQueryActivityResult
-                sqlQuery = `INSERT INTO posts (userID, postTextContent, postType) VALUES (?, ?, ?);`;
-                sqlValues = [userID, JSON.stringify(rapport), 'rapport'];
-                response = {
-                    message: 'Post has been created successfully.',
-                    userID: userID,
-                    postType: postType,
-                    postTextContent: JSON.stringify(rapport),
+                ORDER BY activityTimestamp DESC
+                LIMIT 200 ;`;
+                selectQueryActivityResult = await executeQuery(sqlQueryActivity,[userID])
+                const rapport = {}
+                const impact = {}
+                if (selectQueryActivityResult.length > 0){
+                    let maximum = selectQueryActivityResult[0].activityCO2Impact
+                    let day = ""
+                    for (activities in selectQueryActivityResult){
+                        let rep = true
+                        day = getDay(selectQueryActivityResult[activities].activityTimestamp)
+                        console.log(day)
+                        for (days in rapport){
+                            if (day == days){
+                                rapport[day].push(selectQueryActivityResult[activities])
+                                impact[day] += selectQueryActivityResult[activities].activityCO2Impact
+                                if (selectQueryActivityResult[activities].activityCO2Impact > maximum){
+                                    maximum = selectQueryActivityResult[activities].activityCO2Impact
+                                }
+                                rep = false
+                            }
+                        }
+                        if (rep == true){
+                            rapport[day] = [selectQueryActivityResult[activities]]
+                            impact[day] = selectQueryActivityResult[activities].activityCO2Impact
+                            if (selectQueryActivityResult[activities].activityCO2Impact > maximum){
+                                maximum = selectQueryActivityResult[activities].activityCO2Impact
+                            }
+                        }
+                    }
+                    const rapportV1 = {
+                        rapport : rapport,
+                        impact : impact,
+                        maximum : maximum
+                    }
+
+                    sqlQuery = `INSERT INTO posts (userID, postTextContent, postType) VALUES (?, ?, ?);`;
+                    sqlValues = [userID, rapportV1, 'rapport'];
+                    response = {
+                        message: 'Post has been created successfully.',
+                        userID: userID,
+                        postType: postType,
+                        postTextContent: rapportV1,
+                    }
+        
+                } else {
+                    response = {
+                        rapport : {},
+                        impact : {},
+                        maximum : null,
+                        message : "Aucune activité trouvée",
+                        error : true
+                    }
                 }
                 break;
             default:

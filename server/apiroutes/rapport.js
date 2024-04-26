@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
+const getDay = require('../utils/getDay.js')
+
 
 router.route('/*')
     .all((req, res, next) => verifyAuthToken(req, res, next));
@@ -22,10 +24,11 @@ router.route('/')
             const impact = {}
             if (selectQueryActivityResult.length > 0){
                 let maximum = selectQueryActivityResult[0].activityCO2Impact
+                let day = ""
                 for (activities in selectQueryActivityResult){
-                    console.log(selectQueryActivityResult[activities])
                     let rep = true
-                    const day = Date(selectQueryActivityResult[activities].activityTimestamp).split(" ")[0]
+                    day = getDay(selectQueryActivityResult[activities].activityTimestamp)
+                    console.log(day)
                     for (days in rapport){
                         if (day == days){
                             rapport[day].push(selectQueryActivityResult[activities])

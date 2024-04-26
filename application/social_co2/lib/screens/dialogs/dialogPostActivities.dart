@@ -23,7 +23,7 @@ class _dialogPostActivitiesState extends State<dialogPostActivities> {
   Widget build(BuildContext context) {
     // controller de la date courante
     return ChangeNotifierProvider(
-        create: (_) => MakePostProvider(),
+        create: (_) => MakePostProvider()..resetSended(),
         builder: (context, child) =>
             Consumer<MakePostProvider>(builder: ((context, value, child) {
               return AlertDialog(
@@ -96,33 +96,54 @@ class _dialogPostActivitiesState extends State<dialogPostActivities> {
                           child: CircularProgressIndicator(color: Colors.black),
                         )
                       : (value.error == "")
-                          ? ChangeNotifierProvider(
-                              create: (_) => UserActivitiesProvider(),
-                              builder: (context, child) =>
-                                  Consumer<UserActivitiesProvider>(
-                                      builder: (context, value2, child) {
-                                    if (value2.isLoading) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(
-                                            color: Colors.black),
-                                      );
-                                    } else if (value2.error != "") {
-                                      return Center(
-                                        child: Text("Erreur: ${value2.error}"),
-                                      );
-                                    } else {
-                                      return ActivitiesList(
-                                        activities: (activityListForSelectedDate
-                                                .isEmpty)
-                                            ? value2.userActivitiesPerDays[
-                                                selectedDate]
-                                            : activityListForSelectedDate,
-                                        selection: true,
-                                        error: value2.error,
-                                        action: "post",
-                                      );
-                                    }
-                                  }))
+                          ? (!value.sended)
+                              ? ChangeNotifierProvider(
+                                  create: (_) => UserActivitiesProvider(),
+                                  builder: (context, child) =>
+                                      Consumer<UserActivitiesProvider>(
+                                          builder: (context, value2, child) {
+                                        if (value2.isLoading) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(
+                                                color: Colors.black),
+                                          );
+                                        } else if (value2.error != "") {
+                                          return Center(
+                                            child:
+                                                Text("Erreur: ${value2.error}"),
+                                          );
+                                        } else {
+                                          return ActivitiesList(
+                                            activities: (activityListForSelectedDate
+                                                    .isEmpty)
+                                                ? value2.userActivitiesPerDays[
+                                                    selectedDate]
+                                                : activityListForSelectedDate,
+                                            selection: true,
+                                            error: value2.error,
+                                            action: "post",
+                                          );
+                                        }
+                                      }))
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                    ),
+                                    const Text(
+                                      "Posté !",
+                                      style: TextStyle(color: Colors.green),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      value.error,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                )
                           : Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,

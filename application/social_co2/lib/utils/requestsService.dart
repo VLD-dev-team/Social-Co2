@@ -30,6 +30,8 @@ class requestService {
       String endpoint, Map<String, String> headers, Object body) async {
     Map<String, dynamic> data = {};
 
+    print(body);
+
     try {
       final url = Uri.parse(serverApiURL + endpoint);
       headers.addAll(additionnalHeaders);

@@ -106,7 +106,7 @@ class _CardActivityList extends State<CardActivitiesList> {
           Expanded(
             child: Container(
               width: double.maxFinite,
-              padding: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.all(10),
               margin: const EdgeInsets.only(
                   top: 5, bottom: 15, left: 10, right: 10),
               decoration: secondaryCardInnerShadow,

@@ -7,7 +7,7 @@ class SCO2activity {
   final DateTime activityTimestamp;
   final String? activityMealIngredients;
   final String? activityPurchase;
-  final double? activityDistance;
+  final num? activityDistance;
   final String? activityVehicule;
   final String? activityBuild;
 
@@ -34,9 +34,8 @@ class SCO2activity {
       activityName: json['activityName'],
       activityMealIngredients: json['activityMealIngredients'],
       activityPurchase: json['activityPurchase'],
-      activityDistance:
-          double.tryParse('${json['activityDistance']}'.toString()),
-      activityVehicule: json['activityVehicle'],
+      activityDistance: num.tryParse('${json['activityDistance']}'.toString()),
+      activityVehicule: json['activityVehicule'],
       activityBuild: json['activityBuild'],
       activityTimestamp: (DateTime.tryParse(json['activityTimestamp']) == null)
           ? DateTime(1980)
@@ -61,7 +60,7 @@ class SCO2activity {
     }
     if (activityPurchase != null) data['activityPurchase'] = activityPurchase;
     if (activityDistance != null) data['activityDistance'] = activityDistance;
-    if (activityVehicule != null) data['activityVehicle'] = activityVehicule;
+    if (activityVehicule != null) data['activityVehicule'] = activityVehicule;
     if (activityBuild != null) data['activityBuild'] = activityBuild;
 
     return data;

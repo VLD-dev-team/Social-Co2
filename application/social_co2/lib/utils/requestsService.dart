@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 
 class requestService {
   // URL du serveur
@@ -30,7 +29,6 @@ class requestService {
   Future<Map<String, dynamic>> post(
       String endpoint, Map<String, String> headers, Object body) async {
     Map<String, dynamic> data = {};
-    print(jsonEncode(body));
 
     try {
       final url = Uri.parse(serverApiURL + endpoint);
@@ -49,7 +47,6 @@ class requestService {
   Future<Map<String, dynamic>> put(
       String endpoint, Map<String, String> headers, Object body) async {
     Map<String, dynamic> data = {};
-    print(jsonEncode(body));
 
     try {
       final url = Uri.parse(serverApiURL + endpoint);
@@ -70,7 +67,6 @@ class requestService {
   Future<Map<String, dynamic>> delete(
       String endpoint, Map<String, String> headers, Object body) async {
     Map<String, dynamic> data = {};
-    print(jsonEncode(body));
 
     try {
       final url = Uri.parse(serverApiURL + endpoint);

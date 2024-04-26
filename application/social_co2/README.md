@@ -1,4 +1,4 @@
-[Accueil de la documentation](https://github.com/VLD-dev-team/Social-Co2/blob/main/README.md#social-co2)
+[Accueil de la documentation](https://github.com/VLD-dev-team/Social-Co2/wiki)
 
 # Social CO2 - Partie frontend Flutter
 
@@ -19,9 +19,7 @@ Bienvenue sur la documentation front-end du projet SCO2. Vous retrouverez ici le
     * Providers (`providers`)
     * Fonctions outils (`utils`)
 * Installation
-    * Configuration requises
-    * Clés API
-    * Procédure de mise en place
+    * Configuration requises - Clés API - Mise en place
 * Ressources supplémentaires
 * Crédits
 
@@ -39,9 +37,6 @@ Ces trois couches intérragissent de la manière suivantes :
 
 ## Arboresences des modules utilisés
 
-    * Fichiers styles (``styles``)
-    * Fichiers collections (`collections`)
-    * Classes de données (`classes`)
     * Providers (`providers`)
     * Fonctions outils (`utils`)
 
@@ -81,3 +76,79 @@ La plupart des classes possédent également une ou deux fonctions nécéssaires
 
 ### Providers
 
+Les providers sont des fichiers dart spéciaux, ils sont les intermédiaires entre les widgets qui affichent les données et les classes de données. Ils sont chargés de stocker les données, leur état et effectuer les requêtes requises pour le fonctionnement de l'application.
+
+Ils sont appelés par les widgets depuis leur initialisation dans le fichier main. Pour des raison d'arboresence de widgets pendant l'execution, ils sont aussi initialisé au cas pas cas dans les dialogbox. 
+
+Ils contiennent généralement deux ou trois variables globales élémentaires : 
+- `error`: Une chaine de caractère chargée de stocker les erreurs des requêtes (ex: Internal Server Error, ou Invalid Token)
+- `loading` (ou isloading, posting, etc): Un booléen chargé d'informer les widgets si une requête est en cours d'execution, elle est placé à `true` si des données sont en cours de récéption ou d'envoi.
+
+Les providers contiennent aussi dans des variables les données qu'ils sont chargés de traiter, c'est dans ceux-ci qu'elles sont stockés durant l'éxécution de l'application.
+
+Par exemple pour le feed, le fichiers `FeedProvider.dart` contient les données du feed pendant l'execution dans la variable `feed` de type `List<SCO2post>`. Cette variable est vide à l'initialisation, puis est complété par les données du serveur par la fonction `getFeed()`.
+
+Enfin les providers possédent des fonctions disponibles à l'executions à tout moment depuis les widgets `Consumer` et `Provider.of`. Elles effectues les requêtes et traitent les données quand elles sont appelés.
+
+Pour finir, certains provider possèdent un constructeur pouvant faire appel à une ou plusieurs de leur fonction interne afin d'effectuer les requêtes au lancement de l'application ou à l'affichage d'un widget.
+Ce constructeur est appelé lors de l'execution de la fonction `create` de certains widget.
+
+Lors du traitement des données, les providers peuvent actualiser les widgets qui les écoutent grâce à la fonction `notifyListeners()`.
+
+### Fonctions outils
+
+Les fonctions outils sont disponibles dans le dossier `/utils` des fichiers sources. Elles servent à effectuer des actions spéciales.
+
+- `enumDataParser`: les fonctions de ce fichiers servent à transformer des données `String` en instance de `Enum` et inversement. elles sont essentiels au traitement efficace des données et réduise le risque d'erreur de syntaxe lors des requêtes.
+
+- `requestService.dart`: les fonctions de ce fichiers servent à effectuer les quatres types de requêtes http à l'api. On y retrouve les fonctions `get`, `post`, `put` et `delete`. Ainsi que l'adresse de l'api.
+
+- `responsiveHandler.dart`: comme documenté dans ce fichier, il rassemble les fonctions utiliss pour adapter les widgets aux différentes tailles d'écrans définies dans le projet Figma de SCO2.
+
+## Installation
+
+L'application est d'hors et déjà disponible en live web à l'adresse suivante : [https://app.social-co2.vld-group.com](https://app.social-co2.vld-group.com).
+
+Si vous souhaitez la répliquer sur votre appareil, veuillez suivre les étapes suivantes.
+
+1. Installer Flutter sur votre appareil depuis [la documentation en ligne](https://docs.flutter.dev/get-started/install).
+
+2. Cloner le repository
+```bash
+$ git clone https://github.com/VLD-dev-team/Social-Co2
+```
+
+3. Rendez vous dans le dossier collections du code source de l'application puis créez le fichiers `credentials.dart`
+```bash
+$ cd Social-Co2/application/social_co2/collections
+$ touch credentials.dart
+```
+
+4. Rendez-vous sur le site internet de l'api de openroute service à l'adresse suivante : https://openrouteservice.org/dev/#/home. Créez-vous une clé API.
+
+5. Entrez cette clé API en tant que variable dans le fichiers `credentials.dart`.
+```bash
+$ echo 'String openRouteAPIkey = "yourKEY";' > credentials.dart
+```
+
+6. Executez l'application en mode test (assurez-vous d'avoir Chrome installé)
+```bash
+$ flutter run -d Chrome --web-renderer html
+```
+
+Pour le build d'application, merci de vous référez à la documentation de flutter.
+
+## Ressources supplémentaires
+
+- Documentation Flutter : https://docs.flutter.dev/get-started/install
+- Documentation Firebase Auth pour Flutter : https://firebase.google.com/docs/auth/flutter/start
+- Documentation ORS : https://openrouteservice.org/dev/#/api-docs
+- Wiki universitaire SCO2 : https://github.com/VLD-dev-team/Social-Co2/wiki
+
+## Crédits
+
+Membres développeurs de l'application
+- Valentin MARY - [Github](https://github.com/Vrock691)
+- Jeremy DESBOIS - [Github](https://github.com/Gookd)
+
+Repository public du projet : https://github.com/VLD-dev-team/Social-Co2

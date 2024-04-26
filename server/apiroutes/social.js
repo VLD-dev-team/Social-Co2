@@ -213,6 +213,7 @@ router.route('/comments') // Route pour charger les commentaires
                     "commentCreatedAt": each.commentCreatedAt,
                     "uid": authUser.uid,
                     "displayName": authUser.displayName,
+                    "photoURL": authUser.photoURL
                 };
                 comments.push(element); // On ajoute chaque commentaire a la liste
             }
@@ -462,8 +463,17 @@ router.route('/posts')
                             }
                         }
                     }
+                    const rapportDart = []
+                    // Adaptation à dart
+                    for (keys in rapport){
+                        rapportDart.push({
+                            "day" : keys,
+                            "activities" : rapport[keys],
+                            "impact" : impact[keys]
+                        })
+                    }
                     const rapportV1 = {
-                        rapport : rapport,
+                        rapport : rapportDart,
                         impact : impact,
                         maximum : maximum
                     }

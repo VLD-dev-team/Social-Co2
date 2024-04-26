@@ -9,8 +9,8 @@ const getDay = require('../utils/getDay.js')
 
 
 
-router.route('/*')
-    .all((req, res, next) => verifyAuthToken(req, res, next));
+// router.route('/*')
+//     .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/feed')
     .get(async (req, res) => {
@@ -284,7 +284,7 @@ router.route('/comments') // Route pour charger les commentaires
 router.route('/posts')
     .post(async (req, res) => {
         const userID = req.headers.userid;
-        const postType = req.body.postType;
+        const postType = req.query.postType;
 
         // Vérification des paramètres obligatoires
         if (!userID || !postType) {
@@ -378,7 +378,7 @@ router.route('/posts')
                 break;
             case 'activite':
                 // Vérification des paramètres activityType et activityCO2Impact
-                const activityID = req.body.activityid
+                const activityID = req.query.activityid
 
                 if (!activityID || isNaN(activityID)) {
                     const response = {
@@ -390,12 +390,13 @@ router.route('/posts')
                 }
                 sqlQueryActivity = `SELECT * FROM activities WHERE activityID = ?`
                 selectQueryActivityResult = await executeQuery(sqlQueryActivity, [activityID])
+                console.log(selectQueryActivityResult)
 
                 const activityType = selectQueryActivityResult[0].activityType
                 const activityCO2Impact = selectQueryActivityResult[0].activityCO2Impact
                 const activityName = selectQueryActivityResult[0].activityName
                 const activityTimestamp = selectQueryActivityResult[0].activityTimestamp
-                const postLinkedActivity = {"activityType":activityType, "activityCO2Impact":activityCO2Impact, "activityName":activityName, "activityTimestamp":activityTimestamp}
+                const postLinkedActivity = [{"activityType": activityType, "activityCO2Impact":activityCO2Impact, "activityName":activityName, "activityTimestamp":activityTimestamp}]
                 sqlQuery = `INSERT INTO posts (userID, postLinkedActivity, postType, postTextContent) VALUES (?, ?, ?, ?);`;
                 sqlValues = [userID, postLinkedActivity, 'activite', req.body.postTextContent];
                 response = {

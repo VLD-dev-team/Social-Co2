@@ -5,8 +5,8 @@ const verifyAuthToken = require('../utils/requireAuth.js');
 const getDay = require('../utils/getDay.js')
 
 
-router.route('/*')
-    .all((req, res, next) => verifyAuthToken(req, res, next));
+// router.route('/*')
+//     .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/')
     .get(async (req,res) => {
@@ -28,7 +28,6 @@ router.route('/')
                 for (activities in selectQueryActivityResult){
                     let rep = true
                     day = getDay(selectQueryActivityResult[activities].activityTimestamp)
-                    console.log(day)
                     for (days in rapport){
                         if (day == days){
                             rapport[day].push(selectQueryActivityResult[activities])
@@ -47,9 +46,18 @@ router.route('/')
                         }
                     }
                 }
+                const rapportDart = []
+                // Adaptation à dart
+                for (keys in rapport){
+                    rapportDart.push({
+                        "day" : keys,
+                        "activities" : rapport[keys],
+                        "impact" : impact[keys]
+                    })
+                }
+
                 const response = {
-                    rapport : rapport,
-                    impact : impact,
+                    rapport : rapportDart,
                     maximum : maximum
                 }
     

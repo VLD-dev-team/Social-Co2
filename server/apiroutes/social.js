@@ -393,13 +393,13 @@ router.route('/posts')
                 const activityCO2Impact = selectQueryActivityResult.activityCO2Impact
                 const activityName = selectQueryActivityResult.activityName
                 const activityTimestamp = selectQueryActivityResult.activityTimestamp
-                sqlQuery = `INSERT INTO posts (userID, postLinkedActivity, postType) VALUES (?, ?, ?);`;
-                sqlValues = [userID, JSON.stringify({ activityType, activityCO2Impact, activityName, activityTimestamp }), 'activite'];
+                sqlQuery = `INSERT INTO posts (userID, postLinkedActivity, postType, postTextContent) VALUES (?, ?, ?, ?);`;
+                sqlValues = [userID, JSON.stringify({"activityType":activityType, "activityCO2Impact":activityCO2Impact, "activityName":activityName, "activityTimestamp":activityTimestamp}), 'activite', req.body.postTextContent];
                 response = {
                     message: 'Post has been created successfully.',
                     userID: userID,
                     postType: postType,
-                    postLinkedActivity: JSON.stringify({ activityType, activityCO2Impact, activityName, activityTimestamp }),
+                    postLinkedActivity: JSON.stringify({"activityType":activityType, "activityCO2Impact":activityCO2Impact, "activityName":activityName, "activityTimestamp":activityTimestamp}),
                 }
                 break;
             case 'rapport':

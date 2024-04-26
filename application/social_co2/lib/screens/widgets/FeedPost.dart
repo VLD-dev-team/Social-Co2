@@ -127,7 +127,7 @@ class _FeedPostState extends State<FeedPost> {
                             element['type'] ==
                             activity.activityMealIngredients) ==
                         -1)
-                    ? ""
+                    ? "Repas"
                     : meals[meals.indexWhere((element) =>
                         element['type'] ==
                         activity.activityMealIngredients)]['label'];
@@ -136,7 +136,7 @@ class _FeedPostState extends State<FeedPost> {
                 details = (purchases.indexWhere((element) =>
                             element['type'] == activity.activityPurchase) ==
                         -1)
-                    ? ""
+                    ? "Achat"
                     : purchases[purchases.indexWhere((element) =>
                         element['type'] == activity.activityPurchase)]['label'];
                 break;
@@ -144,7 +144,7 @@ class _FeedPostState extends State<FeedPost> {
                 details = (builds.indexWhere((element) =>
                             element['type'] == activity.activityBuild) ==
                         -1)
-                    ? ""
+                    ? "Bricolage"
                     : builds[builds.indexWhere((element) =>
                         element['type'] == activity.activityBuild)]['label'];
                 break;
@@ -153,7 +153,7 @@ class _FeedPostState extends State<FeedPost> {
                 final vehicule = (availableVehicles.indexWhere((element) =>
                             element['type'] == activity.activityVehicule) ==
                         -1)
-                    ? ""
+                    ? "Trajet"
                     : availableVehicles[availableVehicles.indexWhere(
                             (element) =>
                                 element['type'] == activity.activityVehicule)]
@@ -168,8 +168,8 @@ class _FeedPostState extends State<FeedPost> {
                       ['icon'];
                 }
                 break;
-              case "cleanInbox":
-                details = "Moins d'espace utilisé sur les espaces en ligne !";
+              case "mail":
+                details = "Moins d'espace utilisé sur vos espaces en ligne !";
                 break;
               default:
             }

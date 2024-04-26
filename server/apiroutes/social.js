@@ -213,6 +213,7 @@ router.route('/comments') // Route pour charger les commentaires
                     "commentCreatedAt": each.commentCreatedAt,
                     "uid": authUser.uid,
                     "displayName": authUser.displayName,
+                    "photoURL": authUser.photoURL
                 };
                 comments.push(element); // On ajoute chaque commentaire a la liste
             }

@@ -9,8 +9,8 @@ const getDay = require('../utils/getDay.js')
 
 
 
-// router.route('/*')
-//     .all((req, res, next) => verifyAuthToken(req, res, next));
+router.route('/*')
+    .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/feed')
     .get(async (req, res) => {
@@ -396,7 +396,9 @@ router.route('/posts')
                 const activityCO2Impact = selectQueryActivityResult[0].activityCO2Impact
                 const activityName = selectQueryActivityResult[0].activityName
                 const activityTimestamp = selectQueryActivityResult[0].activityTimestamp
-                const postLinkedActivity = [{"activityType": activityType, "activityCO2Impact":activityCO2Impact, "activityName":activityName, "activityTimestamp":activityTimestamp}]
+                console.log({"activityType": activityType, "activityCO2Impact":activityCO2Impact, "activityName":activityName, "activityTimestamp":activityTimestamp})
+                const postLinkedActivity = `{"activityType": ${activityType}, "activityCO2Impact": ${activityCO2Impact}, "activityName":${activityName}, "activityTimestamp":${activityTimestamp}}`
+                console.log(postLinkedActivity);
                 sqlQuery = `INSERT INTO posts (userID, postLinkedActivity, postType, postTextContent) VALUES (?, ?, ?, ?);`;
                 sqlValues = [userID, postLinkedActivity, 'activite', req.body.postTextContent];
                 response = {

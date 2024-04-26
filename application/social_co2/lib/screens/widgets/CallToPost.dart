@@ -122,10 +122,10 @@ class CallToPost extends StatelessWidget {
                           },
                           icon: const Icon(Icons.energy_savings_leaf_outlined),
                           label: const Text("Poste tes activités")),
-                      FilledButton.icon(
+                      /* FilledButton.icon(
                           onPressed: () {},
                           icon: const Icon(Icons.upload),
-                          label: const Text("Ton rapport")),
+                          label: const Text("Ton rapport")), */
                     ],
                   ),
                 ),

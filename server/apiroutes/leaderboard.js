@@ -4,8 +4,8 @@ const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
 const admin = require('firebase-admin');
 
-// router.route('/*')
-//     .all((req, res, next) => verifyAuthToken(req, res, next));
+router.route('/*')
+    .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/world')
     .get(async (req, res) => {

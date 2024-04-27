@@ -9,8 +9,8 @@ const getDay = require('../utils/getDay.js')
 
 
 
-router.route('/*')
-    .all((req, res, next) => verifyAuthToken(req, res, next));
+// router.route('/*')
+//     .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/feed')
     .get(async (req, res) => {
@@ -79,9 +79,9 @@ router.route('/feed')
                     postLinkedActivity[key] = value;
                 }
                 // On remplace notre date par une date ISO valide
-                const date = new Date(postLinkedActivity["activityTimestamp"]);
-                const isoDateString = date.toISOString();
-                postLinkedActivity["activityTimestamp"] = isoDateString
+                // const date = new Date(postLinkedActivity["activityTimestamp"]);
+                // const isoDateString = date.toISOString();
+                // postLinkedActivity["activityTimestamp"] = isoDateString
             }
 
             return {

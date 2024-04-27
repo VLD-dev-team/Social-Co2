@@ -66,8 +66,7 @@ class MakePostProvider extends ChangeNotifier {
       userID: userID,
       postCreatedAt: DateTime.now(),
       postType: "activite",
-      postTextContent:
-          "J'ai effectué(e) cette activité : ${activity.activityName}",
+      postTextContent: "Nouvelle activité : ${activity.activityName}",
       postLinkedActivity: activity,
     );
 

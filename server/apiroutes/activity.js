@@ -50,6 +50,7 @@ router.route('/')
                     activityTimestamp : sqlResult[0].activityTimestamp
                 }
             }
+            console.log(activityTimestamp)
             return req.status(200).json(response)
 
         // If no corresponding activity is found, return an error

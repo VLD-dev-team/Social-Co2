@@ -91,9 +91,9 @@ function newTrip(vehicle, distance) {
 
 function newPurchase(item, condition) {
   if (condition) { // New
-      return activity["article_emission"][item] * -1;
+      return activity["article_emission"][item] 
   } else { // Second hand
-      return activity["article_emission"][item];
+      return activity["article_emission"][item] * -1;
   }
 }
 

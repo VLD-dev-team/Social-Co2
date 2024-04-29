@@ -3,8 +3,8 @@ const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
 
-// router.route('/*')
-//     .all((req, res, next) => verifyAuthToken(req, res, next));
+router.route('/*')
+    .all((req, res, next) => verifyAuthToken(req, res, next));
 //     // Vérification de la connexion
 
 router.route('/')
@@ -22,7 +22,6 @@ router.route('/')
             // OFFSET pour spécifier l'index auquel on part, trop bien !
 
         const activities = await executeQuery(getActivitiesQuery, [userID, startIndex]);
-        console.log(activities)
         if (activities.length >0){
             const response = {
                 activities : activities,

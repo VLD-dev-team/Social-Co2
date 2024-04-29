@@ -317,7 +317,7 @@ router.route('/activities')
             return res.status(400).json(response);
         }
 
-        const sqlQuery = `SELECT * FROM activities WHERE userID = ? AND DATE(activityTimestamp) = DATE(?) ;`;
+        const sqlQuery = `SELECT *, DATE_ADD(activityTimestamp, INTERVAL 2 HOUR) AS activityTimestamp FROM activities WHERE userID = ? AND DATE(activityTimestamp) = DATE(?) ;`;
         const sqlResult = await executeQuery(sqlQuery, [userID, currentTimestamp]);
 
         if (sqlResult.length > 0 ){

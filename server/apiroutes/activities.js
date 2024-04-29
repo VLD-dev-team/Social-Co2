@@ -14,7 +14,7 @@ router.route('/')
 
         // Requête pour obtenir les 20 dernières activités de l'utilisateur à partir de l'index spécifié
         const getActivitiesQuery = `
-            SELECT *, DATE_ADD(activityTimestamp, INTERVAL 2 HOUR) AS adjustedTimestamp FROM activities
+            SELECT *, DATE_ADD(activityTimestamp, INTERVAL 2 HOUR) AS activityTimestamp FROM activities
             WHERE userID = ?
             ORDER BY activityTimestamp DESC
             LIMIT 20

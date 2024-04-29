@@ -3,9 +3,9 @@ const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
 const verifyAuthToken = require('../utils/requireAuth.js');
 
-router.route('/*')
-    .all((req, res, next) => verifyAuthToken(req, res, next));
-    // Vérification de la connexion
+// router.route('/*')
+//     .all((req, res, next) => verifyAuthToken(req, res, next));
+//     // Vérification de la connexion
 
 router.route('/')
     .get(async (req, res) => {
@@ -14,7 +14,7 @@ router.route('/')
 
         // Requête pour obtenir les 20 dernières activités de l'utilisateur à partir de l'index spécifié
         const getActivitiesQuery = `
-            SELECT * FROM activities
+            SELECT *, DATE_ADD(activityTimestamp, INTERVAL 2 HOUR) AS adjustedTimestamp FROM activities
             WHERE userID = ?
             ORDER BY activityTimestamp DESC
             LIMIT 20
@@ -22,6 +22,7 @@ router.route('/')
             // OFFSET pour spécifier l'index auquel on part, trop bien !
 
         const activities = await executeQuery(getActivitiesQuery, [userID, startIndex]);
+        console.log(activities)
         if (activities.length >0){
             const response = {
                 activities : activities,

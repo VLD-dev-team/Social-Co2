@@ -13,13 +13,13 @@ const activity = {
       "fuel_oil": 57
   },
   "vehicle_emission": {
-      "Large hybrid car": 110,
-      "Medium hybrid car": 100,
-      "Small hybrid car": 80,
+      "Large hybrid car": 50,
+      "Medium hybrid car": 30,
+      "Small hybrid car": 10,
       "Large car": 195,
       "Medium car": 180,
       "Small car": 175,
-      "electric_car": 20,
+      "electric_car": 3,
       "motorcycle": 165,
       "bus": 110,
       "plane": 250,

@@ -3,6 +3,7 @@
 /// importation des modules
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 
 // on importe les fonctions des routes
 const websocket = require('./websocket.js')
@@ -18,6 +19,7 @@ const messages = require('./messages.js');
 const { executeQuery } = require('../utils/database.js');
 
 /// Pages principale de l'espace de travail
+router.use(cors())
 router.use('/websocket', websocket);
 router.use('/user', user);
 router.use('/activity', activity);
@@ -34,7 +36,6 @@ router.use('/messages', messages);
 // Route de l'api pour voir si la connection fonctionne bel et bien
 
 router.get('/',async (req,res)=>{
-    await executeQuery(`SELECT * FROM users;`,[])
     const response = {
         ping : 'Is check',
         status : 200,

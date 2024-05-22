@@ -30,7 +30,7 @@ firebaseAdmin.initializeApp({
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({ origin: 'https://app.social-co2.vld-group.com' }));
 
 const apiroutes = require('./apiroutes/index.js');
 app.use('/', apiroutes);

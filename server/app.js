@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Paramétrage du CORS
-app.use(cors({ origin: ['https://app.social-co2.vld-group.com/', 'localhost:3000'], optionsSuccessStatus: 200 }));
+app.use(cors({ origin: ['https://app.social-co2.vld-group.com/', 'http://localhost:3000'], optionsSuccessStatus: 200 }));
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');

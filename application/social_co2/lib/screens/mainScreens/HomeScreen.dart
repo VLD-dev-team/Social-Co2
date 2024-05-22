@@ -49,16 +49,15 @@ class HomeScreen extends StatelessWidget {
                               Expanded(
                                   child: Padding(
                                 padding: EdgeInsets.only(
-                                    top: 0, right: 10, left: 10, bottom: 5),
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 0, right: 10, left: 0, bottom: 5),
-                                  child: LeaderBoardWidget(
-                                    indexAffichage: 1,
-                                  ),
+                                    top: 0, right: 10, left: 10, bottom: 10),
+                                child: LeaderBoardWidget(
+                                  indexAffichage: 1,
                                 ),
                               )),
-                              Expanded(child: ReccurentActivities())
+                              Expanded(child: Padding(
+                                padding: EdgeInsets.only(right: 10, bottom: 10),
+                                child: ReccurentActivities(),
+                              ))
                             ],
                           )
                         : const SizedBox(
@@ -82,7 +81,7 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                   width: (MediaQuery.of(context).size.width - drawerWidth) / 3,
                   child: const Padding(
-                    padding: EdgeInsets.only(top: 10, right: 10),
+                    padding: EdgeInsets.all(10),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [

@@ -33,7 +33,7 @@ const allowedOrigins = ['https://app.social-co2.vld-group.com'];
 app.options('*', cors())
 app.use(cors({
   origin: function(origin, callback){
-    return true; // TODO: à enlever à la fin des test en prod
+    return callback(null, true); // TODO: à enlever à la fin des test en prod
     if (!origin) {
       return callback(null, true);
     }

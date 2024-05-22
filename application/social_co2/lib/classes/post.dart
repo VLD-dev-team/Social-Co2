@@ -39,7 +39,7 @@ class SCO2Post {
       userPhotoURL: json["photoURL"],
       postTextContent: json["postTextContent"],
       postMediaContentURL: json["postMediaContentURL"],
-      postLinkedActivity: (json["postLinkedActivity"] != {} ||
+      postLinkedActivity: (json["postLinkedActivity"].toString() != "{}" &&
               json["postLinkedActivity"] != null)
           ? SCO2activity.fromJSON(json["postLinkedActivity"])
           : null,

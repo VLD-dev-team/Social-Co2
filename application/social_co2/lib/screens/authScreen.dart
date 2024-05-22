@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:social_co2/styles/CardStyles.dart';
+import 'package:social_co2/utils/responsiveHandler.dart';
 
 // Définition des deux modes : connexion ou création de compte
 enum AuthTypes { signin, signup }
@@ -148,27 +149,25 @@ class _AuthScreenState extends State<AuthScreen> {
       },
       child: Scaffold(
         extendBodyBehindAppBar: true,
-        appBar:
-        PreferredSize(
-          preferredSize: const Size.fromHeight(100), 
-          child: 
-          AppBar(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(100),
+          child: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
             toolbarHeight: 100,
-            title: Image.asset("logos/LOGO_SCO2.png"),
-        ),),
-        
-        body:
-            Container(
-              //ajout de l'image de fond
-              decoration: const BoxDecoration( 
-        image: DecorationImage(
-          image: AssetImage("images/jungle.png"),
-          fit: BoxFit.cover,
+            title: Image.asset("${releasePath}logos/LOGO_SCO2.png"),
+          ),
         ),
-      ),
-              child: !isLoading // Affichage le form si aucune action d'authentication est en cours
+        body: Container(
+          //ajout de l'image de fond
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("${releasePath}images/jungle.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child:
+              !isLoading // Affichage le form si aucune action d'authentication est en cours
                   ? Center(
                       child: SingleChildScrollView(
                           // Implémentation du scroll sur l'écran
@@ -203,8 +202,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                         ),
                                         subtitle: Text(
                                           error,
-                                          style:
-                                              const TextStyle(color: Colors.white),
+                                          style: const TextStyle(
+                                              color: Colors.white),
                                         ),
                                         leading: const Icon(Icons.close),
                                       ),
@@ -229,8 +228,15 @@ class _AuthScreenState extends State<AuthScreen> {
                                           onPressed: () {
                                             signInWithGoogle();
                                           },
-                                          icon: Icon(Icons.web,color: Colors.black,),
-                                          label: Text('Connexion avec Google',style: TextStyle(color: Colors.black),)),
+                                          icon: const Icon(
+                                            Icons.login_rounded,
+                                            color: Colors.black,
+                                          ),
+                                          label: const Text(
+                                            'Connexion avec Google',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          )),
                                     ),
                                     const SizedBox(
                                       height: 20.0,
@@ -246,21 +252,24 @@ class _AuthScreenState extends State<AuthScreen> {
                                             children: [
                                               Card(
                                                 child: TextFormField(
-                                                  controller: nameInputController,
-                                                  decoration: const InputDecoration(
+                                                  controller:
+                                                      nameInputController,
+                                                  decoration:
+                                                      const InputDecoration(
                                                     hintText: '*Nom public',
-                                                    border: OutlineInputBorder(),
+                                                    border:
+                                                        OutlineInputBorder(),
                                                   ),
                                                   autofillHints: const [
                                                     AutofillHints.newUsername
                                                   ], // Information nécessaire pour les éventuels services d'autocomplétion
-                                                  keyboardType: TextInputType.text,
-                                                  validator:
-                                                      (value) => // TODO : Améliorer la validation de ce champ
-                                                          value != null &&
-                                                                  value.isNotEmpty
-                                                              ? null
-                                                              : 'Nom requis',
+                                                  keyboardType:
+                                                      TextInputType.text,
+                                                  validator: (value) =>
+                                                      value != null &&
+                                                              value.isNotEmpty
+                                                          ? null
+                                                          : 'Nom requis',
                                                 ),
                                               ),
                                             ],
@@ -276,18 +285,23 @@ class _AuthScreenState extends State<AuthScreen> {
                                             child: Card(
                                               child: TextFormField(
                                                 // Champ de texte pour l'email
-                                                controller: emailInputController,
-                                                decoration: const InputDecoration(
+                                                controller:
+                                                    emailInputController,
+                                                decoration:
+                                                    const InputDecoration(
                                                   hintText: '*Adresse email',
                                                   border: OutlineInputBorder(),
                                                 ),
-                                                autofillHints: const [AutofillHints.email],
-                                                keyboardType: TextInputType.emailAddress,
-                                                validator:
-                                                    (value) => // TODO : Améliorer la validation de ce champ (rajouter une verif d'un @ par exemple)
-                                                        value != null && value.isNotEmpty
-                                                            ? null
-                                                            : 'Email requis',
+                                                autofillHints: const [
+                                                  AutofillHints.email
+                                                ],
+                                                keyboardType:
+                                                    TextInputType.emailAddress,
+                                                validator: (value) =>
+                                                    value != null &&
+                                                            value.isNotEmpty
+                                                        ? null
+                                                        : 'Email requis',
                                               ),
                                             ),
                                           ),
@@ -298,21 +312,28 @@ class _AuthScreenState extends State<AuthScreen> {
                                                 controller: pswInputController,
                                                 obscureText:
                                                     true, // On cache le mot de passe des regards indiscrets
-                                                decoration: const InputDecoration(
+                                                decoration:
+                                                    const InputDecoration(
                                                   hintText: '*Mot de passe',
                                                   border: OutlineInputBorder(),
                                                 ),
                                                 autofillHints: (currentAuthType ==
                                                         AuthTypes
                                                             .signin) // Informations nécessaires pour les éventuels services d'autocomplétion
-                                                    ? const [AutofillHints.password]
-                                                    : const [AutofillHints.newPassword],
-                                                keyboardType: TextInputType.text,
-                                                validator: (value) => value != null &&
-                                                        value
-                                                            .isNotEmpty // TODO : améliorer la validation de ce champ
-                                                    ? null
-                                                    : 'Mot de passe requis',
+                                                    ? const [
+                                                        AutofillHints.password
+                                                      ]
+                                                    : const [
+                                                        AutofillHints
+                                                            .newPassword
+                                                      ],
+                                                keyboardType:
+                                                    TextInputType.text,
+                                                validator: (value) =>
+                                                    value != null &&
+                                                            value.isNotEmpty
+                                                        ? null
+                                                        : 'Mot de passe requis',
                                               ),
                                             ),
                                           ),
@@ -327,7 +348,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                           Padding(
                                             padding: const EdgeInsets.all(16.0),
                                             child: FilledButton(
-                                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Colors.white)),
                                                 onPressed: () {
                                                   if (formKey.currentState!
                                                       .validate()) {
@@ -335,13 +359,18 @@ class _AuthScreenState extends State<AuthScreen> {
                                                     signin();
                                                   }
                                                 },
-                                                child: const Text('Connexion',style: TextStyle(color: Colors.black),)),
+                                                child: const Text(
+                                                  'Connexion',
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                )),
                                           ),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              const Text("Pas encore de compte ?"),
+                                              const Text(
+                                                  "Pas encore de compte ?"),
                                               TextButton(
                                                   onPressed:
                                                       changeAuthType, // Changement de type de connexion
@@ -357,7 +386,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                           Padding(
                                             padding: const EdgeInsets.all(16.0),
                                             child: FilledButton(
-                                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.white)),
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Colors.white)),
                                                 onPressed: () {
                                                   if (formKey.currentState!
                                                       .validate()) {
@@ -365,7 +397,11 @@ class _AuthScreenState extends State<AuthScreen> {
                                                     signup();
                                                   }
                                                 },
-                                                child: const Text('Créer un compte',style: TextStyle(color: Colors.black),)),
+                                                child: const Text(
+                                                  'Créer un compte',
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                )),
                                           ),
                                           Row(
                                             mainAxisAlignment:
@@ -376,8 +412,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                               TextButton(
                                                   onPressed:
                                                       changeAuthType, // Changement de type de connexion
-                                                  child:
-                                                      const Text("Se connecter")),
+                                                  child: const Text(
+                                                      "Se connecter")),
                                             ],
                                           )
                                         ],
@@ -402,7 +438,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         ],
                       ),
                     ),
-            ),
+        ),
       ),
     );
   }

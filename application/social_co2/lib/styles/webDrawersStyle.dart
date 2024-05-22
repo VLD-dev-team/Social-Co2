@@ -5,7 +5,7 @@ final List<List> drawerEntries = <List>[
   ["Logo", Icons.home_outlined], // logo de l'application dans le menu
   ["Accueil", Icons.home_outlined],
   ["Recherche", Icons.search_outlined],
-  ["Activité", Icons.energy_savings_leaf_outlined],
+  ["Activités", Icons.energy_savings_leaf_outlined],
   ["Rapport", Icons.summarize],
   ["Classement", Icons.leaderboard_outlined],
   ["Messages", Icons.message_outlined],

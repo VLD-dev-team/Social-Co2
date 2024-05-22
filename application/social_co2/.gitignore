@@ -51,3 +51,6 @@ app.*.map.json
 
 # Credentials
 /lib/collections/credentials.dart
+
+# Firebase
+.firebase/*

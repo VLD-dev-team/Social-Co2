@@ -10,6 +10,7 @@ import Button from '../app/components/Button';
 export default function Home() {
   return (
       <main>
+        <link rel="icon" href="./logo.png" sizes="any" /> {/* Ajout d'un favicon */}
         <div className='relative'>
           <img className='w-auto h-auto' src="./banner.png" alt="banner" />
             <div className='absolute top-0 sm:top-44 right-0 sm:right-4'>

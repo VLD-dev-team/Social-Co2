@@ -229,7 +229,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                             signInWithGoogle();
                                           },
                                           icon: const Icon(
-                                            Icons.login,
+                                            Icons.login_rounded,
                                             color: Colors.black,
                                           ),
                                           label: const Text(

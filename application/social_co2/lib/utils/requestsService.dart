@@ -6,7 +6,6 @@ class requestService {
   static const String serverApiURL = 'https://api.social-co2.vld-group.com/';
   static const Map<String, String> additionnalHeaders = {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin" : "app.social-co2.vld-group.com"
   };
 
   // REQUETTE GET

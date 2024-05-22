@@ -31,11 +31,10 @@ firebaseAdmin.initializeApp({
 const allowedOrigins = ['https://app.social-co2.vld-group.com'];
 app.use(cors({
   origin: function(origin, callback){
-    console.log(origin);
     if (!origin) {
       return callback(null, true);
     }
-    if (allowedOrigins.includes(origin)) {
+    if (!allowedOrigins.includes(origin)) {
       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
       return callback(new Error(msg), false);
     }

@@ -19,19 +19,6 @@ const messages = require('./messages.js');
 const { executeQuery } = require('../utils/database.js');
 
 /// Pages principale de l'espace de travail
-const allowedOrigins = ['https://app.social-co2.vld-group.com'];
-router.use(cors({
-  origin: function(origin, callback){
-    if (!origin) {
-      return callback(null, true);
-    }
-    if (!allowedOrigins.includes(origin)) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-}));
 router.use('/websocket', websocket);
 router.use('/user', user);
 router.use('/activity', activity);

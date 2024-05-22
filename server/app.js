@@ -31,6 +31,7 @@ firebaseAdmin.initializeApp({
 const allowedOrigins = ['https://app.social-co2.vld-group.com'];
 app.use(cors({
   origin: function(origin, callback){
+    console.log(origin);
     if (!origin) {
       return callback(null, true);
     }

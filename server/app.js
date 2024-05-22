@@ -30,7 +30,15 @@ firebaseAdmin.initializeApp({
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors({ origin: 'https://app.social-co2.vld-group.com' }));
+
+// Paramétrage du CORS
+app.use(cors({ origin: ['https://app.social-co2.vld-group.com/', 'localhost:3000'], optionsSuccessStatus: 200 }));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  next();
+});
 
 const apiroutes = require('./apiroutes/index.js');
 app.use('/', apiroutes);

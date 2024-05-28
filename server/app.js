@@ -45,9 +45,9 @@ app.use(cors({
   },
 }));
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
+app.use((req, res, next) => {
+  console.log(req, res);
+  next();
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));

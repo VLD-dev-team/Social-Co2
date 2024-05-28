@@ -46,7 +46,7 @@ app.use(cors({
 }));
 
 app.use((req, res, next) => {
-  console.log(req, res);
+  console.log(res.getHeaders());
   next();
 });
 

@@ -47,5 +47,38 @@ const verifyAuthToken = (req, res, next) => {
     });
 };
 
+const verifyAuthTokenOnSocket = (token, userID) => {
+  // On vérifie le token avec firebase-admin
+  admin.auth().verifyIdToken(token)
+    .then(decodedToken => {
+      const userIDFromToken = decodedToken.uid;
+
+      // Comparer les userID
+      if (userIDFromToken !== userID) {
+          const response = {
+            error: true,
+            error_message: 'Invalid Token',
+            error_code: 30
+          }
+        return response;
+      }
+
+      // Si les userID correspondent, ajoutez l'utilisateur à la demande
+      return {
+        error: false,
+        succeed: true,
+      }
+    })
+    .catch(error => {
+      console.error('Erreur de vérification du token Firebase:', error);
+      const response = {
+        error: true,
+        error_message: 'Invalid Token',
+        error_code: 30
+      }
+      return response;
+    });
+}
+
 // On exporte le middleware pour l'utiliser
-module.exports = verifyAuthToken;
+module.exports = { verifyAuthToken, verifyAuthTokenOnSocket };

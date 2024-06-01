@@ -19,7 +19,6 @@ const messages = require('./messages.js');
 const { executeQuery } = require('../utils/database.js');
 
 /// Pages principale de l'espace de travail
-router.use('/websocket', websocket);
 router.use('/user', user);
 router.use('/activity', activity);
 router.use('/activities', activities);
@@ -36,9 +35,9 @@ router.use('/messages', messages);
 
 router.get('/',async (req,res)=>{
     const response = {
-        ping : 'Is check',
+        ping : 'pong',
         status : 200,
-        type : 'response'
+        status : 'online'
     }
     return res.status(200).json(response);
 })

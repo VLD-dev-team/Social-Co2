@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
-const verifyAuthToken = require('../utils/requireAuth.js');
+const {verifyAuthToken} = require('../utils/requireAuth.js');
 const getDay = require('../utils/getDay.js')
 
 

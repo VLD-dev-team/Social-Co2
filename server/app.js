@@ -2,13 +2,12 @@
 
 // Le module express
 const express = require('express');
+const { createServer } = require('node:http');
 
 // Le module bodyParser
 const bodyParser = require('body-parser');
 
 const { executeQuery } = require('./utils/database.js');
-
-const websocketRouter = require('./apiroutes/websocket.js'); // Importer le routeur WebSocket
 
 const path = require('path'); // Le module path pour react
 
@@ -18,8 +17,9 @@ const cors = require('cors');
 // initialisation de la variable environnement
 require('dotenv').config()
 
-// initialisation d'express
+// initialisation d'express et socket.io
 const app = express();
+const server = createServer(app);
 
 // initialisation de firebase admin
 const firebaseAdmin = require("firebase-admin");
@@ -45,22 +45,21 @@ app.use(cors({
   },
 }));
 
-app.use((req, res, next) => {
-  console.log(res.getHeaders());
-  next();
-});
-
+// Paramètrage de l'encodage des corps des requetes
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Définition du router 
 const apiroutes = require('./apiroutes/index.js');
+const WebsocketService = require('./websocket/websocketService.js');
 app.use('/', apiroutes);
+
+// démarrage du socket et handle des routes socket
+let socket = new WebsocketService().initialize(server, allowedOrigins);
 
 // Utiliser un port différent que socket.io -> port 3006
 // lancement du serveur
-const server = app.listen(process.env.ServerPort || 3000, () => {
+server.listen(process.env.ServerPort || 3000, () => {
   console.log(`Server listening on port ${process.env.ServerPort || 3000}`);
 });
 
-// Utilisation du routeur WebSocket sur /api/websocket
-app.use('/api/websocket', websocketRouter);

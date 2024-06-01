@@ -1,5 +1,5 @@
 const notificationHandler = require('../utils/notificationHandler.js');
-const socketManager = require('../utils/socketManager.js');
+const socketManager = require('../websocketHandler/socketManager.js');
 const { executeQuery } = require('../utils/database.js');
 
 const emailSender = async(userID) => {

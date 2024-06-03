@@ -5,19 +5,26 @@ const { verifyAuthTokenOnSocket } = require('../utils/requireAuth');
 class WebsocketService {
   constructor() {
     this.io = null;
+    this.status = "Scoket not initialized"
   }
 
-  getIO() {
-    return this.io;
+  getStatus() {
+    return this.status;
   }
 
   initialize(server, allowedOrigins) {
+    this.status = "Socket Initializing";
+    console.log(this.status);
+
     this.io = socketIO(server, {
       cors: {
         origin: allowedOrigins,
         methods: ["GET", "POST"]
       }
     });
+
+    this.status = "Socket Active";
+    console.log(this.status);
 
     this.io.on('connection', (socket) => {
       console.log('Nouvel utilisateur connecté au socket - ID:', socket.id);

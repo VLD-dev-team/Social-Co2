@@ -7,10 +7,6 @@ const { createServer } = require('node:http');
 // Le module bodyParser
 const bodyParser = require('body-parser');
 
-const { executeQuery } = require('./utils/database.js');
-
-const path = require('path'); // Le module path pour react
-
 // Le module CORS
 const cors = require('cors');
 
@@ -33,7 +29,6 @@ const allowedOrigins = ['https://app.social-co2.vld-group.com'];
 app.options('*', cors())
 app.use(cors({
   origin: function(origin, callback){
-    return callback(null, true); // TODO: à enlever à la fin des test en prod
     if (!origin) {
       return callback(null, true);
     }
@@ -51,7 +46,6 @@ app.use(bodyParser.json());
 
 // Définition du router 
 const apiroutes = require('./apiroutes/index.js');
-const WebsocketService = require('./websocket/websocketService.js');
 app.use('/', apiroutes);
 
 // démarrage du socket et handle des routes socket

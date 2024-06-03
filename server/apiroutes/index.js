@@ -33,8 +33,9 @@ router.use('/messages', messages);
 router.get('/',async (req,res)=>{
     const response = {
         ping : 'pong',
-        status : 200,
-        status : 'online'
+        code : 200,
+        status : 'online',
+        websocket : require('../websocket/websocketService.js').getStatus()
     }
     return res.status(200).json(response);
 })

@@ -1,5 +1,5 @@
 const socketIO = require('socket.io');
-const { sendMessage } = require('../utils/messageHandler');
+const { sendMessage } = require('./messageHandler');
 const { verifyAuthTokenOnSocket } = require('../utils/requireAuth');
 
 class WebsocketService {

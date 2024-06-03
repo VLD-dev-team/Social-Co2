@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
-const {verifyAuthToken} = require('../utils/requireAuth.js');
-const notificationHandler = require('../utils/notificationHandler.js'); // Importez le gestionnaire de notifications
-const socketManager = require('../websocketHandler/socketManager.js'); // Importez le gestionnaire de sockets pour accéder à `io`
+const { verifyAuthToken } = require('../utils/requireAuth.js');
+const { newNotif } = require('../websocket/notificationHandler.js'); // Importez le gestionnaire de notifications
 const admin = require('firebase-admin');
 const getDay = require('../utils/getDay.js')
 
@@ -167,8 +166,7 @@ router.route('/like')
             await executeQuery(`INSERT INTO notifications (userID, notificationContent, notificationTitle, notificationStatus) VALUES (?, ?, ?, ?) ;`, [postOwnerID, notificationContent, notificationTitle, notificationStatus]);
 
             // Émission de la notification via Socket.io
-            // const io = socketManager.getIO();
-            // notificationHandler.handleNewNotification(io, { userID: postOwnerID, notificationContent });
+            await newNotif({ userID: postOwnerID, notificationContent });
 
             const NbLikesQuery = `SELECT postLikesNumber FROM posts WHERE postID = ? ;`;
             const NbLikesQueryResult = await executeQuery(NbLikesQuery, [postID]);
@@ -280,8 +278,7 @@ router.route('/comments') // Route pour charger les commentaires
                 await executeQuery(`INSERT INTO notifications (userID, notificationContent, notificationTitle, notificationStatus) VALUES (?, ?, ?, ?) ;`, [postOwnerID, notificationContent, notificationTitle, notificationStatus]);
 
                 // Émission de la notification via Socket.io
-                const io = socketManager.getIO();
-                notificationHandler.handleNewNotification(io, { userID: postOwnerID, notificationContent });
+                await newNotif({ userID: postOwnerID, notificationContent });
 
                 const response = {
                     userID: postOwnerID,

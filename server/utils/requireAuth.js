@@ -1,5 +1,4 @@
 const admin = require('firebase-admin');
-const jwt = require('jsonwebtoken');
 
 // Middleware pour vérifier le token d'authentification
 const verifyAuthToken = (req, res, next) => {

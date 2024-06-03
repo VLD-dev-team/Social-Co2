@@ -5,8 +5,8 @@ const {verifyAuthToken} = require('../utils/requireAuth.js');
 const getDay = require('../utils/getDay.js')
 
 
-// router.route('/*')
-//     .all((req, res, next) => verifyAuthToken(req, res, next));
+router.route('/*')
+    .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/')
     .get(async (req,res) => {

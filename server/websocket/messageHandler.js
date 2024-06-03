@@ -1,4 +1,4 @@
-const { executeQuery } = require('./database.js');
+const { executeQuery } = require('../utils/database.js');
 
 // Fonction pour envoyer un message
 

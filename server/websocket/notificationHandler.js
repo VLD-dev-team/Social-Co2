@@ -1,5 +1,4 @@
 const { executeQuery } = require('../utils/database.js');
-const socketManager = require('../websocketHandler/socketManager.js');
 
 const newNotif = async (notificationData) => {
     const { userID, notificationContent } = notificationData;

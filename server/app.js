@@ -55,7 +55,8 @@ const WebsocketService = require('./websocket/websocketService.js');
 app.use('/', apiroutes);
 
 // démarrage du socket et handle des routes socket
-let socket = new WebsocketService().initialize(server, allowedOrigins);
+const socketService = require('./websocket/websocketService.js');
+socketService.initialize(server, allowedOrigins);
 
 // Utiliser un port différent que socket.io -> port 3006
 // lancement du serveur

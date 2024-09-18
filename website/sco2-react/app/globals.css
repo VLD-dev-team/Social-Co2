@@ -1,9 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
-body{
-  background: linear-gradient( rgb(108, 163, 94) 0%, rgb(108, 163, 94) 0%, rgb(99, 136, 137) 100%);
+body {
+    background-color
 }
-

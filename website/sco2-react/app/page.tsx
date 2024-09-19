@@ -4,10 +4,10 @@ import "./globals.css";
 
 const Home = () => {
   return (
-  <h1 className="bg-black">
-    LandinPage
-  </h1>
-)
-}
+    <div className="">
+      <h1 className="">LandinPage</h1>
+    </div>
+  );
+};
 
 export default Home;

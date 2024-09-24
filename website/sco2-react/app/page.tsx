@@ -5,6 +5,7 @@ import "./globals.css";
 const Home = () => {
   return (
     <div className="">
+      <img src="" alt="" />
       <h1 className="">LandinPage</h1>
     </div>
   );

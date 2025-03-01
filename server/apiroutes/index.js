@@ -5,7 +5,6 @@ const express = require('express');
 const router = express.Router();
 
 // on importe les fonctions des routes
-const websocket = require('./websocket.js')
 const user = require('./user.js')
 const activity = require('./activity.js')
 const activities = require('./activities.js')
@@ -15,10 +14,8 @@ const friends= require('./friends.js')
 const rapport= require('./rapport.js')
 const conversations = require('./conversations.js')
 const messages = require('./messages.js');
-const { executeQuery } = require('../utils/database.js');
 
 /// Pages principale de l'espace de travail
-router.use('/websocket', websocket);
 router.use('/user', user);
 router.use('/activity', activity);
 router.use('/activities', activities);
@@ -34,11 +31,11 @@ router.use('/messages', messages);
 // Route de l'api pour voir si la connection fonctionne bel et bien
 
 router.get('/',async (req,res)=>{
-    await executeQuery(`SELECT * FROM users;`,[])
     const response = {
-        ping : 'Is check',
-        status : 200,
-        type : 'response'
+        ping : 'pong',
+        code : 200,
+        status : 'online',
+        websocket : require('../websocket/websocketService.js').getStatus()
     }
     return res.status(200).json(response);
 })

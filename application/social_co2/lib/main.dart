@@ -23,6 +23,7 @@ import 'package:social_co2/providers/SCO2ReportProvider.dart';
 import 'package:social_co2/providers/SearchProvider.dart';
 import 'package:social_co2/providers/UserActivitiesProvider.dart';
 import 'package:social_co2/providers/UserSCO2DataProvider.dart';
+import 'package:social_co2/providers/SocketProvider.dart';
 
 // Importation du screen de page d'accueil et de l'écran de connexion/création de compte
 import 'package:social_co2/screens/authScreen.dart';
@@ -135,6 +136,9 @@ class HomeScreen extends StatelessWidget {
         ListenableProvider<SCO2ReportProvider>(
             create: (_) =>
                 SCO2ReportProvider()), // Provider qui permet d'afficher le rapport
+        ListenableProvider<SocketProvider>(
+            create: (_) =>
+                SocketProvider()), // Provider qui permet d'échanger avec le socket
       ],
       builder: (context, child) {
         if (kIsWeb) {

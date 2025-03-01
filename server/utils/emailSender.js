@@ -1,5 +1,4 @@
-const notificationHandler = require('../utils/notificationHandler.js');
-const socketManager = require('../utils/socketManager.js');
+const { newNotif } = require('../websocket/notificationHandler.js');
 const { executeQuery } = require('../utils/database.js');
 
 const emailSender = async(userID) => {
@@ -11,8 +10,7 @@ const emailSender = async(userID) => {
     await executeQuery(`INSERT INTO notifications (userID, notificationContent, notificationTitle, notificationStatus) VALUES (?, ?, ?, ?) ;`, [userID, notificationContent, notificationTitle, notificationStatus]);
 
     // Émission de la notification via Socket.io
-    const io = socketManager.getIO();
-    notificationHandler.handleNewNotification(io, { userID: userID, notificationContent });
+    newNotif({ userID: userID, notificationContent });
 };
 
 // Fonction pour envoyer une notification toutes les 24 heures

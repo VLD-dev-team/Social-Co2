@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
-const verifyAuthToken = require('../utils/requireAuth.js');
+const { verifyAuthToken } = require('../utils/requireAuth.js');
 const admin = require('firebase-admin');
 
 router.route('/*')
@@ -118,7 +118,7 @@ router.route('/')
                 return res.status(400).json(response);
             }
 
-            // -add : pour envoyer une demande d'ami
+            // - add : pour envoyer une demande d'ami
             // - block : pour bloquer
             // - accept : pour accepter la demande d'ami si il y en a une
             // - refuse : pour refuser une demande d'ami

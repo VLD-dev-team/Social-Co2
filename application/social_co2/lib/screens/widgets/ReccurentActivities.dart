@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:social_co2/providers/ReccurentActivitiesProvider.dart';
 import 'package:social_co2/screens/widgets/ActivitiesList.dart';
 import 'package:social_co2/styles/CardStyles.dart';
+import 'package:social_co2/utils/responsiveHandler.dart';
 
 class ReccurentActivities extends StatelessWidget {
   const ReccurentActivities({super.key});
@@ -11,7 +12,9 @@ class ReccurentActivities extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      height: MediaQuery.of(context).size.height - 630,
+      height: (whichResponsiveFormat(context) == ResponsiveFormats.large)
+          ? MediaQuery.of(context).size.height - 630
+          : 600,
       decoration: primaryCard,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

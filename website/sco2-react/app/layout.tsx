@@ -5,8 +5,11 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "SCO2",
-  description: "Bienvenue sur le site web de SCO2", 
+  title: "Social CO2 - Accueil",
+  description: "Bienvenue sur le site web de SCO2",
+  icons: {
+    icon: "/LOGO_SCO2.svg", // Chemin vers votre fichier favicon dans le dossier public
+  },
 };
 
 export default function RootLayout({

@@ -124,8 +124,13 @@ export default function Home() {
   );
 }
 
+interface FeatureCardProps {
+  image: string;
+  title: string;
+  description: string;
+}
 // Composant de carte de fonctionnalité
-function FeatureCard({ image, title, description }) {
+function FeatureCard({ image, title, description }: FeatureCardProps) {
   return (
     <div className="bg-gray-100 p-6 rounded-lg shadow-lg text-center">
       <img className="w-full h-48 object-cover rounded-lg" src={image} alt={title} />
@@ -135,8 +140,15 @@ function FeatureCard({ image, title, description }) {
   );
 }
 
+// Define the interface for the props
+interface ContributorCardProps {
+  name: string;
+  role: string;
+  avatar: string;
+}
+
 // Composant de carte de contributeur
-function ContributorCard({ name, role, avatar }) {
+function ContributorCard({ name, role, avatar }: ContributorCardProps) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg text-center w-64">
       <img className="w-24 h-24 rounded-full mx-auto mb-4" src={avatar} alt={name} />

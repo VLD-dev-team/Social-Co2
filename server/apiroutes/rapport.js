@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
-const verifyAuthToken = require('../utils/requireAuth.js');
+const {verifyAuthToken} = require('../utils/requireAuth.js');
 const getDay = require('../utils/getDay.js')
 
 
-// router.route('/*')
-//     .all((req, res, next) => verifyAuthToken(req, res, next));
+router.route('/*')
+    .all((req, res, next) => verifyAuthToken(req, res, next));
 
 router.route('/')
     .get(async (req,res) => {

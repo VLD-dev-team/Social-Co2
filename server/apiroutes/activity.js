@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { executeQuery } = require('../utils/database.js');
-const verifyAuthToken = require('../utils/requireAuth.js');
-const admin = require('firebase-admin');
+const { verifyAuthToken } = require('../utils/requireAuth.js');
 const activityCalculator = require('../utils/activityCalculator.js')
 
 router.route('/*')
@@ -13,7 +12,6 @@ router.route('/')
     .get(async (req, res) => {
         const userID = req.headers.userid;
         const activityID = req.headers.activityid;
-
 
         // Type verification
         if (typeof userID !== 'string') {
